@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kcc-spring-boot-svc
+  labels:
+    app: kcc-spring-boot-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kcc-spring-boot-svc
+  template:
+    metadata:
+      labels:
+        app: kcc-spring-boot-svc
+    spec:
+      nodeSelector:
+        ha-logtype: hostpathlogging
+      volumes:
+        - name: log-path
+          persistentVolumeClaim:
+            claimName: hostpathcldlog-kccnonckccstagingprd-pvc
+      containers:
+        - name: kcc-spring-boot-svc
+          image: docker-registry.default.svc:5000/kccnonc-kcc-staging-prd/kcc-spring-boot-svc
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 200m
+            limits:
+              memory: 768Mi
+              cpu: 400m
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+            successThreshold: 1
+          env:
+            - name: TZ
+              value: Asia/Hong_Kong
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: spring.profiles.active
+            - name: JWT_SECERT
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt.secret
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-db-secret
+                  key: mssql.db.user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-db-secret
+                  key: mssql.db.password
+            - name: ALS_PROJECT_CODE
+              value: SC0
+            - name: ALS_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ALS_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ALS_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: ALS_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: ALS_POD_LABELS
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+            - name: ALS_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  key: application.yml
+                  name: als-default-config
+          volumeMounts:
+            - name: log-path
+              mountPath: /appl
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kcc-spring-boot-svc
+spec:
+  selector:
+    app: kcc-spring-boot-svc
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: kcc-spring-boot-svc
+spec:
+  port:
+    targetPort: 8080
+  to:
+    name: kcc-spring-boot-svc
