@@ -59,7 +59,7 @@ spec:
                 configMapKeyRef:
                   name: env-config
                   key: spring.profiles.active
-            - name: JWT_SECERT
+            - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
