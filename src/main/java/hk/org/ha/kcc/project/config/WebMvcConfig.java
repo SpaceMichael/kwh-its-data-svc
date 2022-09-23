@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.springboot.config;
+package hk.org.ha.kcc.project.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

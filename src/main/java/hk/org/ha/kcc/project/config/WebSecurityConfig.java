@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.springboot.config;
+package hk.org.ha.kcc.project.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,7 +19,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtTokenFilter jwtTokenFilter;
 
-  public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtTokenFilter jwtTokenFilter) {
+  public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+      JwtTokenFilter jwtTokenFilter) {
     this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     this.jwtTokenFilter = jwtTokenFilter;
   }
@@ -27,7 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     // Set permissions on endpoints
-    http.antMatcher("/api/**").authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());
+    http.antMatcher("/api/**")
+        .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());
     // Add JWT token filter
     http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     // Set unauthorized requests exception handler

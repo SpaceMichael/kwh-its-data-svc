@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.springboot.controller;
+package hk.org.ha.kcc.project.controller;
 
 import java.lang.invoke.MethodHandles;
 
@@ -18,7 +18,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(SampleApiController.BASE_URL)
 public class SampleApiController {
 
-  private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+  private static final AlsXLogger log =
+      AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
   public static final String BASE_URL = "/api/v1/samples";
 }

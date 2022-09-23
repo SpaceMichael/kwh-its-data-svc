@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.springboot.config;
+package hk.org.ha.kcc.project.config;
 
 import java.util.Optional;
 
@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaAuditing
 @EnableTransactionManagement
-@EnableJpaRepositories("hk.org.ha.kcc.springboot.repository")
-@EntityScan("hk.org.ha.kcc.springboot.model")
+@EnableJpaRepositories("hk.org.ha.kcc.project.repository")
+@EntityScan("hk.org.ha.kcc.project.model")
 public class JpaTestConfig {
 
   public static final String AUDITOR = "tester";

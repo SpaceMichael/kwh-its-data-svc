@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.springboot;
+package hk.org.ha.kcc.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

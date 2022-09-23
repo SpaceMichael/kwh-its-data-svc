@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.springboot;
+package hk.org.ha.kcc.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 class KccSpringBootSvcApplicationTests {
 
 	@Test
-	void contextLoads() {
-	}
+	void contextLoads() {}
 
 }
