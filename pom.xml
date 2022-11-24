@@ -99,7 +99,7 @@
 		<dependency>
 			<groupId>hk.org.ha.audit</groupId>
 			<artifactId>ha-app-audit-als-k8s</artifactId>
-			<version>4.3.1</version>
+			<version>4.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
