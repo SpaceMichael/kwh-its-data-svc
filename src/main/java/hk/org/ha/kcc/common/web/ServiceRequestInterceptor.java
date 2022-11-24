@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,7 +17,8 @@ import hk.org.ha.kcc.common.logging.AlsXLogger;
 public class ServiceRequestInterceptor implements HandlerInterceptor {
 
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+      throws Exception {
     // X-Forwarded-For / REMOTE_ADDR
     MDC.put(AlsXLogger.CLIENT_IP, getClientIp(request));
     // X-Correlation-Id
@@ -29,8 +31,8 @@ public class ServiceRequestInterceptor implements HandlerInterceptor {
   }
 
   @Override
-  public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-      throws Exception {
+  public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+      Object handler, @Nullable Exception ex) throws Exception {
     MDC.remove(AlsXLogger.CLIENT_IP);
     MDC.remove(AlsXLogger.CORRELATION_ID);
     MDC.remove(AlsXLogger.TRANSACTION_ID);

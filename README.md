@@ -39,7 +39,7 @@
   ```
 * Add environment variables to `.env` for VS Code and Docker Compose:
   ```
-  JWT_SECERT=[secert]
+  JWT_SECRET=[secret]
   DB_USER=[username]
   DB_PASS=[password]
   ```
@@ -47,7 +47,7 @@
 ## 2. Configure Maven
 * Add environment variables to `.mvn/maven.config` for Maven Testing:
   ```
-  -DJWT_SECERT=[secert]
+  -DJWT_SECRET=[secret]
   -DDB_USER=[username]
   -DDB_PASS=[password]
   ```

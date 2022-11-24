@@ -32,7 +32,8 @@ import io.jsonwebtoken.security.SignatureException;
 @Component
 public class JwtTokenUtil {
 
-  private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+  private static final AlsXLogger log =
+      AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
   private static final String JWT_ID_KEY = "jti";
   private static final String NAME_KEY = "name";
@@ -51,7 +52,8 @@ public class JwtTokenUtil {
   public String generateJwtToken(String username, String password, String roles) {
     List<GrantedAuthority> authorities = Arrays.asList(roles.split(",")).stream()
         .map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
-    UserDetails userDetails = User.builder().username(username).password(password).authorities(authorities).build();
+    UserDetails userDetails =
+        User.builder().username(username).password(password).authorities(authorities).build();
     Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, password,
         userDetails.getAuthorities());
     return this.generateJwtToken(authentication);
@@ -59,8 +61,8 @@ public class JwtTokenUtil {
 
   public String generateJwtToken(Authentication authentication) {
     String subject = authentication.getName();
-    String roles = authentication.getAuthorities().stream().map(authority -> authority.getAuthority())
-        .collect(Collectors.joining(","));
+    String roles = authentication.getAuthorities().stream()
+        .map(authority -> authority.getAuthority()).collect(Collectors.joining(","));
 
     Date issueDate = new Date();
     Date expirationDate = new Date((new Date()).getTime() + this.jwtExpirationMs);
@@ -69,41 +71,39 @@ public class JwtTokenUtil {
       UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
       userDetails.setJwtId(UUID.randomUUID().toString());
       return Jwts.builder().setSubject(subject).setExpiration(expirationDate).setIssuedAt(issueDate)
-          .claim(JWT_ID_KEY, userDetails.getJwtId())
-          .claim(NAME_KEY, userDetails.getName())
-          .claim(HOSP_ID_KEY, userDetails.getHospId())
-          .claim(DEPT_ID_KEY, userDetails.getDeptId())
+          .claim(JWT_ID_KEY, userDetails.getJwtId()).claim(NAME_KEY, userDetails.getName())
+          .claim(HOSP_ID_KEY, userDetails.getHospId()).claim(DEPT_ID_KEY, userDetails.getDeptId())
           .claim(DEPT_DSP_CODE_KEY, userDetails.getDeptDspCode())
-          .claim(POST_ID_KEY, userDetails.getPostId())
-          .claim(ROLES_KEY, roles)
-          .signWith(this.getSecertKey()).compact();
+          .claim(POST_ID_KEY, userDetails.getPostId()).claim(ROLES_KEY, roles)
+          .signWith(this.getSecretKey()).compact();
     } else {
       return Jwts.builder().setSubject(subject).setExpiration(expirationDate).setIssuedAt(issueDate)
-          .claim(JWT_ID_KEY, UUID.randomUUID().toString())
-          .claim(ROLES_KEY, roles)
-          .signWith(this.getSecertKey()).compact();
+          .claim(JWT_ID_KEY, UUID.randomUUID().toString()).claim(ROLES_KEY, roles)
+          .signWith(this.getSecretKey()).compact();
     }
   }
 
   public UsernamePasswordAuthenticationToken getAuthentication(String token) {
-    Claims claims = Jwts.parserBuilder().setSigningKey(this.getSecertKey()).build().parseClaimsJws(token).getBody();
+    Claims claims = Jwts.parserBuilder().setSigningKey(this.getSecretKey()).build()
+        .parseClaimsJws(token).getBody();
     String jwtId = Objects.toString(claims.get(JWT_ID_KEY), null);
     String name = Objects.toString(claims.get(NAME_KEY), null);
     String hospId = Objects.toString(claims.get(HOSP_ID_KEY), null);
     String deptId = Objects.toString(claims.get(DEPT_ID_KEY), null);
     String postId = Objects.toString(claims.get(POST_ID_KEY), null);
 
-    List<GrantedAuthority> authorities = Arrays.asList(Objects.toString(claims.get(ROLES_KEY), "").split(",")).stream()
-        .map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
-    UserDetails userDetails = UserDetailsImpl.builder().username(claims.getSubject()).jwtId(jwtId).name(name)
-        .hospId(hospId).deptId(deptId).postId(postId).authorities(authorities).build();
+    List<GrantedAuthority> authorities =
+        Arrays.asList(Objects.toString(claims.get(ROLES_KEY), "").split(",")).stream()
+            .map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
+    UserDetails userDetails = UserDetailsImpl.builder().username(claims.getSubject()).jwtId(jwtId)
+        .name(name).hospId(hospId).deptId(deptId).postId(postId).authorities(authorities).build();
 
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
   }
 
   public boolean validateJwtToken(String authToken) {
     try {
-      Jwts.parserBuilder().setSigningKey(this.getSecertKey()).build().parseClaimsJws(authToken);
+      Jwts.parserBuilder().setSigningKey(this.getSecretKey()).build().parseClaimsJws(authToken);
       return true;
     } catch (SignatureException e) {
       log.warn("Invalid JWT signature: {}", e.getMessage());
@@ -119,7 +119,7 @@ public class JwtTokenUtil {
     return false;
   }
 
-  private Key getSecertKey() {
+  private Key getSecretKey() {
     byte[] keyBytes = Decoders.BASE64.decode(this.jwtSecret);
     return Keys.hmacShaKeyFor(keyBytes);
   }
