@@ -67,13 +67,13 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: mssql-dev-db-secret
-                  key: mssql.dev.db.user
+                  name: mssql-db-secret
+                  key: mssql.db.user
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: mssql-dev-db-secret
-                  key: mssql.dev.db.password
+                  name: mssql-db-secret
+                  key: mssql.db.password
             - name: ALS_PROJECT_CODE
               value: SC0
             - name: ALS_POD_NAME
