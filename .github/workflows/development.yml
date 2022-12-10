@@ -9,7 +9,7 @@ on:
 
 env:
   APP_NAME: ${{ github.event.repository.name }}
-  JFROG_DOCKER_REGISTRY: idfartif:55742
+  JFROG_DOCKER_REGISTRY: artifactrepo.server.ha.org.hk:55743
   JFROG_REPO_PATH: int_docker_dev/projects/kcc-non/intranet
   OC_NAMESPACE: kccnonc-kcc-staging-prd
   OC_SERVER: https://cldpaasp61-asm.server.ha.org.hk:8443
