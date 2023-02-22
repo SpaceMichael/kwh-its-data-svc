@@ -23,6 +23,9 @@
         "console": "internalConsole",
         ...
         "args": "",
+        "env": {
+                "SPRING_PROFILES_ACTIVE": "dev"
+        },
         "envFile": "${workspaceFolder}/.env"
       }
     ]
@@ -85,7 +88,7 @@
   ```
 * Deploy `kcc-spring-boot-svc` service with OC commands:
   ```shell
-  $ cd D:\Users\THH703\Workspaces\kcc-spring-boot-svc
+  $ cd D:\Users\<Username>\Workspaces\kcc-spring-boot-svc
   $ oc apply -f openshift-stg\kcc-spring-boot-svc.yaml
   $ oc get pod
   $ oc logs -f kcc-spring-boot-svc-57cb8ff78f-qctht
@@ -109,7 +112,7 @@
   ```
 * Deploy `kcc-spring-boot-svc` service with OC commands:
   ```shell
-  $ cd D:\Users\THH703\Workspaces\kcc-spring-boot-svc
+  $ cd D:\Users\<Username>\Workspaces\kcc-spring-boot-svc
   $ oc apply -f openshift\kcc-spring-boot-svc.yaml
   $ oc get pod
   $ oc logs -f kcc-spring-boot-svc-57cb8ff78f-qctht
