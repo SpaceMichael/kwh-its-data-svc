@@ -5,7 +5,7 @@ metadata:
   labels:
     app: kcc-spring-boot-svc
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: kcc-spring-boot-svc
@@ -75,7 +75,7 @@ spec:
                   name: mssql-db-secret
                   key: mssql.db.password
             - name: ALS_PROJECT_CODE
-              value: SC0
+              value: KCC
             - name: ALS_POD_NAME
               valueFrom:
                 fieldRef:

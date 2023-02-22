@@ -75,7 +75,7 @@ spec:
                   name: mssql-db-secret
                   key: mssql.db.password
             - name: ALS_PROJECT_CODE
-              value: SC0
+              value: KCC
             - name: ALS_POD_NAME
               valueFrom:
                 fieldRef:
