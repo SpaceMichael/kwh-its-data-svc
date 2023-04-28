@@ -1,16 +1,16 @@
 # KCC Spring Boot Service - Base Project
 
-| Env.    | Git Branch | Database        | URL                                                                             |
-| ------- | ---------- | --------------- | ------------------------------------------------------------------------------- |
-| Staging | main       | kcc_spring_boot | https://kcc-spring-boot-svc-kccnonc-kcc-staging-prd.cldpaasp61.server.ha.org.hk |
-| PROD    | main (tag) | kcc_spring_boot | https://kcc-spring-boot-svc-kccnonc-kcc-prd.cldpaasp61.server.ha.org.hk         |
+| Env.    | Git Branch | Database        | URL                                                                        |
+| ------- | ---------- | --------------- | -------------------------------------------------------------------------- |
+| Staging | main       | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk |
+| PROD    | main (tag) | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-prd.prdcld61.server.ha.org.hk      |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
 - [2. Configure Maven](#2-configure-maven)
 - [3. Run `kcc-spring-boot-svc` container on Docker Desktop at Local Machine](#3-run-kcc-spring-boot-svc-container-on-docker-desktop-at-local-machine)
-- [4. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccnonc-kcc-staging-prd`)](#4-deploy-kcc-spring-boot-svc-to-openshift-at-ha-private-cloud-staging-production-kccnonc-kcc-staging-prd)
-- [5. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud Production (`kccnonc-kcc-prd`)](#5-deploy-kcc-spring-boot-svc-to-openshift-at-ha-private-cloud-production-kccnonc-kcc-prd)
+- [4. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#4-deploy-kcc-spring-boot-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
+- [5. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#5-deploy-kcc-spring-boot-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
 
 ## 1. Configure VS Code
 * Add `envFile` to `.vscode/launch.json` for VS Code Debugger:
@@ -58,61 +58,56 @@
 ## 3. Run `kcc-spring-boot-svc` container on Docker Desktop at Local Machine
 * Run `kcc-spring-boot-svc` container from `docker-compose.yml` file:
   ```shell
-  $ cd D:\Users\<Username>\Workspaces\kcc-spring-boot-svc
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
   $ docker build -t kcc-spring-boot-svc .
-  $ docker tag kcc-spring-boot-svc docker-registry-default.cldpaast71.server.ha.org.hk/kccnonc-kcc-dev/kcc-spring-boot-svc
-  
   $ docker-compose config
   $ docker-compose down
   $ docker-compose up -d
   $ docker logs -f kcc-spring-boot-svc
   ```
 
-## 4. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccnonc-kcc-staging-prd`)
+## 4. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
 * Build, Tag and Push `kcc-spring-boot-svc` image:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
   $ docker build -t kcc-spring-boot-svc .
-  $ docker tag kcc-spring-boot-svc docker-registry-default.cldpaasp61.server.ha.org.hk/kccnonc-kcc-staging-prd/kcc-spring-boot-svc
+  $ docker tag default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kcc-spring-boot-svc
   
-  $ oc login https://cldpaasp61-asm.server.ha.org.hk:8443
-  $ oc project kccnonc-kcc-staging-prd
-  $ docker login -u $(oc whoami) -p $(oc whoami -t) docker-registry-default.cldpaasp61.server.ha.org.hk
-  $ docker push docker-registry-default.cldpaasp61.server.ha.org.hk/kccnonc-kcc-staging-prd/kcc-spring-boot-svc
+  $ oc login -u [username] https://api.prdcld61.server.ha.org.hk:6443
+  $ oc project kccclinical-stag-prd
+  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.prdcld61.server.ha.org.hk
+  $ docker push default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kcc-spring-boot-svc
   $ oc get is kcc-spring-boot-svc
   ```
 * Deploy `kcc-spring-boot-svc` service with OC commands:
   ```shell
-  $ cd D:\Users\<Username>\Workspaces\kcc-spring-boot-svc
   $ oc apply -f openshift-stg\kcc-spring-boot-svc.yaml
   $ oc get pod
   $ oc logs -f kcc-spring-boot-svc-57cb8ff78f-qctht
   $ oc get route
   ```
 
-## 5. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud Production (`kccnonc-kcc-prd`)
+## 5. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
 * Build, Tag and Push `kcc-spring-boot-svc` image:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
   $ docker build -t kcc-spring-boot-svc .
-  $ docker tag kcc-spring-boot-svc docker-registry-default.cldpaasp61.server.ha.org.hk/kccnonc-kcc-prd/kcc-spring-boot-svc:1.0
+  $ docker tag kcc-spring-boot-svc default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-prd/kcc-spring-boot-svc
   
-  $ oc login https://cldpaasp61-asm.server.ha.org.hk:8443
-  $ oc project kccnonc-kcc-prd
-  $ docker login -u $(oc whoami) -p $(oc whoami -t) docker-registry-default.cldpaasp61.server.ha.org.hk
-  $ docker push docker-registry-default.cldpaasp61.server.ha.org.hk/kccnonc-kcc-prd/kcc-spring-boot-svc
+  $ oc login -u [username] https://api.prdcld61.server.ha.org.hk:6443
+  $ oc project kccclinical-prd
+  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.prdcld61.server.ha.org.hk
+  $ docker push default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-prd/kcc-spring-boot-svc
   $ oc get is kcc-spring-boot-svc
   ```
 * Deploy `kcc-spring-boot-svc` service with OC commands:
   ```shell
-  $ cd D:\Users\<Username>\Workspaces\kcc-spring-boot-svc
   $ oc apply -f openshift\kcc-spring-boot-svc.yaml
   $ oc get pod
   $ oc logs -f kcc-spring-boot-svc-57cb8ff78f-qctht

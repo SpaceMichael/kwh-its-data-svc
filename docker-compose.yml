@@ -3,7 +3,7 @@ version: '3'
 services:
   kcc-spring-boot-svc:
     container_name: kcc-spring-boot-svc
-    image: docker-registry-default.cldpaast71.server.ha.org.hk/kccnonc-kcc-dev/kcc-spring-boot-svc
+    image: kcc-spring-boot-svc
     restart: unless-stopped
     ports:
       - 30000:8080
