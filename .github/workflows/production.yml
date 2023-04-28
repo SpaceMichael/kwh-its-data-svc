@@ -9,7 +9,7 @@ env:
   APP_NAME: ${{ github.event.repository.name }}
   JFROG_DOCKER_REGISTRY: artifactrepo.server.ha.org.hk:55743
   JFROG_REPO_PATH: int_docker/projects/kcc-non/intranet
-  OC_NAMESPACE: kccclinical-stag-prd
+  OC_NAMESPACE: kccclinical-prd
   OC_SERVER: https://api.prdcld61.server.ha.org.hk:6443
   OC_DOCKER_REGISTRY: image-registry.openshift-image-registry.svc:5000
 
