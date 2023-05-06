@@ -1,11 +1,9 @@
 # KCC Spring Boot Service - Base Project
 
-| Env.    | Git Branch | Database        | URL                                                                        |
-| ------- | ---------- | --------------- | -------------------------------------------------------------------------- |
-| Staging | main       | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk |
-|         |            |                 | https://kcc-spring-boot-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
-| PROD    | main (tag) | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-prd.prdcld61.server.ha.org.hk      |
-|         |            |                 | https://kcc-spring-boot-svc-kccclinical-prd.prdcld71.server.ha.org.hk      |
+| Env.    | Git Branch | Database        | URL                                                                                                                                                         |
+| ------- | ---------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Staging | main       | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kcc-spring-boot-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
+| PROD    | main (tag) | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kcc-spring-boot-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
