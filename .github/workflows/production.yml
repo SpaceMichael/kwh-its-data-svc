@@ -76,7 +76,7 @@ jobs:
           oc rollout status deployment/${{ env.APP_NAME }} -n ${{env.OC_NAMESPACE}}
 
   deploy-openshift-prd-sec:
-    needs: [build-image, deploy-openshift-prd-pri]
+    needs: [build-image]
     runs-on: [self-hosted]
     env:
       IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
