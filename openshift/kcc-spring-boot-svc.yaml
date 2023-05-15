@@ -4,6 +4,9 @@ metadata:
   name: kcc-spring-boot-svc
   labels:
     app: kcc-spring-boot-svc
+    app.kubernetes.io/name: spring-boot
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: base-projects
 spec:
   replicas: 1
   selector:

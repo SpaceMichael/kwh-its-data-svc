@@ -55,6 +55,8 @@ jobs:
     env:
       IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
     steps:
+      - uses: actions/checkout@v2
+
       - name: Login to Openshift
         run: |
           oc login --username=${{ secrets.OC_USERNAME }} --password=${{ secrets.OC_PASSWORD }} --server=${{ env.OC_SERVER_PRI }}
@@ -81,6 +83,8 @@ jobs:
     env:
       IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
     steps:
+      - uses: actions/checkout@v2
+
       - name: Login to Openshift
         run: |
           oc login --username=${{ secrets.OC_USERNAME }} --password=${{ secrets.OC_PASSWORD }} --server=${{ env.OC_SERVER_SEC }}
