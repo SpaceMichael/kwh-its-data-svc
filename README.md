@@ -75,7 +75,7 @@
   # $ mvn clean install -DskipTests
   
   $ docker build -t kwh-eform-svc .
-  $ docker tag default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-eform-svc
+  $ docker tag kwh-eform-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-eform-svc
   
   $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
   $ oc project kccclinical-dev
