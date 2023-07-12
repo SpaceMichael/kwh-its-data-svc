@@ -18,9 +18,9 @@ public class EformServiceImpl implements EformService{
         EformResponseDto eformResponseDto = new EformResponseDto();
         eformResponseDto.setSuccess(true);
         List<FormDto> forms = new ArrayList<>();
-        forms.add(FormDto.builder().title("title1").url("url1").barcode(BarcodeDto.builder().enable(true).key("key1").build()).build());
-        forms.add(FormDto.builder().title("title2").url("url2").barcode(BarcodeDto.builder().enable(true).key("key2").build()).build());
-        forms.add(FormDto.builder().title("title3").url("url3").barcode(BarcodeDto.builder().enable(true).key("key3").build()).build());
+        forms.add(FormDto.builder().title("title1").url("http://kwhwebc.home/").barcode(BarcodeDto.builder().enable(true).key("key1").build()).build());
+        forms.add(FormDto.builder().title("title2").url("http://kwhwebc.home/").barcode(BarcodeDto.builder().enable(true).key("key2").build()).build());
+        forms.add(FormDto.builder().title("title3").url("http://kwhwebc.home/").barcode(BarcodeDto.builder().enable(true).key("key3").build()).build());
         eformResponseDto.setData(DataDto.builder().forms(forms).build());
         return eformResponseDto;
     }
