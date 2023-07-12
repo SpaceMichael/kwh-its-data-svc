@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.project;
+package hk.org.ha.kcc.eform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
