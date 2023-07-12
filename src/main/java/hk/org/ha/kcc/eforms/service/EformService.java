@@ -1,7 +1,7 @@
 package hk.org.ha.kcc.eforms.service;
 
-import hk.org.ha.kcc.eforms.dto.EformResponseDto;
+import hk.org.ha.kcc.eforms.dto.EformsResponseDto;
 
 public interface EformService {
-    EformResponseDto getEformList();
+    EformsResponseDto getEformList();
 }

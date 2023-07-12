@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import hk.org.ha.kcc.eforms.dto.EformResponseDto;
+import hk.org.ha.kcc.eforms.dto.EformsResponseDto;
 import hk.org.ha.kcc.eforms.service.EformService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +25,7 @@ public class EformsController {
     private final EformService eformService;
 
     @GetMapping
-    public EformResponseDto getEformList() {
+    public EformsResponseDto getEformList() {
         return eformService.getEformList();
     }
 }

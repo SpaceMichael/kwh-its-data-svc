@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EformResponseDto {
+public class EformsResponseDto {
     private Boolean success;
     private DataDto data;
 }
