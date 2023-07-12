@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.eforms.config;
+package hk.org.ha.kcc.eform.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

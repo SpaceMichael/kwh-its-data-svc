@@ -1,4 +1,6 @@
-package hk.org.ha.kcc.eforms.dto;
+package hk.org.ha.kcc.eform.dto;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EformsResponseDto {
-    private Boolean success;
-    private DataDto data;
+public class DataDto {
+    private List<FormDto> forms;
 }

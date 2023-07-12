@@ -18,6 +18,7 @@ public class JwtTokenUtil {
     var grantedAuthorities = roles.stream()
       .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
       .collect(Collectors.toList());
+    System.out.println(new JwtAuthenticationToken(jwt, grantedAuthorities));
     return new JwtAuthenticationToken(jwt, grantedAuthorities);
   }
 }

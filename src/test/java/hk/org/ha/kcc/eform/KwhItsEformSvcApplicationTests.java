@@ -1,10 +1,10 @@
-package hk.org.ha.kcc.eforms;
+package hk.org.ha.kcc.eform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class KwhEformsSvcApplicationTests {
+class KwhItsEformSvcApplicationTests {
 
 	@Test
 	void contextLoads() {}

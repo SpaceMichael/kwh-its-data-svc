@@ -10,9 +10,9 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>hk.org.ha.kcc</groupId>
-	<artifactId>kwh-eform-svc</artifactId>
+	<artifactId>kwh-its-eform-svc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kwh-eform-svc</name>
+	<name>kwh-its-eform-svc</name>
 	<description>KCC Spring Boot Service</description>
 	<properties>
 		<java.version>11</java.version>
