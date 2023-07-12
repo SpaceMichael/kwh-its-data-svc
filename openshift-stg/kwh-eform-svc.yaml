@@ -6,7 +6,7 @@ metadata:
     app: kwh-eform-svc
     app.kubernetes.io/name: spring-boot
     app.kubernetes.io/component: backend
-    app.kubernetes.io/part-of: base-projects
+    app.kubernetes.io/part-of: kwh-eform
 spec:
   replicas: 1
   selector:
@@ -17,15 +17,9 @@ spec:
       labels:
         app: kwh-eform-svc
     spec:
-      nodeSelector:
-        ha-logtype: hostpathlogging
-      volumes:
-        - name: log-path
-          persistentVolumeClaim:
-            claimName: hostpathcldlog-kccclinicalstagprd-pvc
       containers:
         - name: kwh-eform-svc
-          image: image-registry.openshift-image-registry.svc:5000/kccclinical-stag-prd/kwh-eform-svc
+          image: image-registry.openshift-image-registry.svc:5000/kccclinical-dev/kwh-eform-svc
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -36,24 +30,6 @@ spec:
             limits:
               memory: 768Mi
               cpu: 400m
-          livenessProbe:
-            httpGet:
-              path: /actuator/health/liveness
-              port: 8080
-            initialDelaySeconds: 90
-            periodSeconds: 5
-            timeoutSeconds: 2
-            failureThreshold: 3
-            successThreshold: 1
-          readinessProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: 8080
-            initialDelaySeconds: 90
-            periodSeconds: 10
-            timeoutSeconds: 2
-            failureThreshold: 3
-            successThreshold: 1
           env:
             - name: TZ
               value: Asia/Hong_Kong
@@ -62,9 +38,6 @@ spec:
                 configMapKeyRef:
                   name: env-config
                   key: spring.profiles.active
-          volumeMounts:
-            - name: log-path
-              mountPath: /appl
 ---
 apiVersion: v1
 kind: Service
