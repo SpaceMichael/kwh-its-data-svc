@@ -2,14 +2,14 @@
 
 | Env.    | Git Branch | Database        | URL                                                                                                                                                         |
 | ------- | ---------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Staging | main       | kcc_spring_boot | https://kwh-eform-svc-kccclinical-dev.tstcld61.server.ha.org.hk |
-| PROD    | main (tag) | kcc_spring_boot | https://kwh-eform-svc-kccclinical-prd.tstcld61.server.ha.org.hk |
+| Staging | main       |                 | https://kwh-eform-svc-kccclinical-dev.tstcld61.server.ha.org.hk |
+| PROD    | main (tag) |                 | https://kwh-eform-svc-kccclinical-prd.tstcld61.server.ha.org.hk |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
 - [2. Configure Maven](#2-configure-maven)
 - [3. Run `kwh-eform-svc` container on Docker Desktop at Local Machine](#3-run-kwh-eform-svc-container-on-docker-desktop-at-local-machine)
-- [4. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#4-deploy-kwh-eform-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
+- [4. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-dev`)](#4-deploy-kwh-eform-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-dev)
 - [5. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#5-deploy-kwh-eform-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
 
 ## 1. Configure VS Code
@@ -68,19 +68,19 @@
   $ docker logs -f kwh-eform-svc
   ```
 
-## 4. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
+## 4. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-dev`)
 * Build, Tag and Push `kwh-eform-svc` image:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
   $ docker build -t kwh-eform-svc .
-  $ docker tag default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-eform-svc
+  $ docker tag default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-eform-svc
   
   $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
-  $ oc project kccclinical-stag-prd
+  $ oc project kccclinical-dev
   $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.tstcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-eform-svc
+  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-eform-svc
   $ oc get is kwh-eform-svc
   ```
 * Deploy `kwh-eform-svc` service with OC commands:
