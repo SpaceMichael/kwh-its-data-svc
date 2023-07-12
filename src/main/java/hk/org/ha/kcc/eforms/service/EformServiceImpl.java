@@ -1,14 +1,14 @@
-package hk.org.ha.kcc.eform.service;
+package hk.org.ha.kcc.eforms.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import hk.org.ha.kcc.eform.dto.BarcodeDto;
-import hk.org.ha.kcc.eform.dto.DataDto;
-import hk.org.ha.kcc.eform.dto.EformResponseDto;
-import hk.org.ha.kcc.eform.dto.FormDto;
+import hk.org.ha.kcc.eforms.dto.BarcodeDto;
+import hk.org.ha.kcc.eforms.dto.DataDto;
+import hk.org.ha.kcc.eforms.dto.EformResponseDto;
+import hk.org.ha.kcc.eforms.dto.FormDto;
 
 @Service
 public class EformServiceImpl implements EformService{

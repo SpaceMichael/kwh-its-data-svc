@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.eform;
+package hk.org.ha.kcc.eforms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "hk.org.ha.kcc")
-public class KwhEformSvcApplication {
+public class KwhEformsSvcApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KwhEformSvcApplication.class, args);
+		SpringApplication.run(KwhEformsSvcApplication.class, args);
 	}
 
 }

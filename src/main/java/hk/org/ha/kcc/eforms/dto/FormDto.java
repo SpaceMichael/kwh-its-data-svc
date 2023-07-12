@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.eform.dto;
+package hk.org.ha.kcc.eforms.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kwh-eform-svc
+  name: kwh-eforms-svc
   labels:
-    app: kwh-eform-svc
+    app: kwh-eforms-svc
     app.kubernetes.io/name: spring-boot
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: kwh-eform
@@ -11,15 +11,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kwh-eform-svc
+      app: kwh-eforms-svc
   template:
     metadata:
       labels:
-        app: kwh-eform-svc
+        app: kwh-eforms-svc
     spec:
       containers:
-        - name: kwh-eform-svc
-          image: image-registry.openshift-image-registry.svc:5000/kccclinical-dev/kwh-eform-svc
+        - name: kwh-eforms-svc
+          image: image-registry.openshift-image-registry.svc:5000/kccclinical-prd/kwh-eforms-svc
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -42,10 +42,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kwh-eform-svc
+  name: kwh-eforms-svc
 spec:
   selector:
-    app: kwh-eform-svc
+    app: kwh-eforms-svc
   ports:
     - port: 8080
       targetPort: 8080
@@ -53,9 +53,9 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: kwh-eform-svc
+  name: kwh-eforms-svc
 spec:
   port:
     targetPort: 8080
   to:
-    name: kwh-eform-svc
+    name: kwh-eforms-svc

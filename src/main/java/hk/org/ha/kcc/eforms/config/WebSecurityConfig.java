@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.eform.config;
+package hk.org.ha.kcc.eforms.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
