@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaAuditing
 @EnableTransactionManagement
-@EnableJpaRepositories("hk.org.ha.kcc.project.repository")
-@EntityScan("hk.org.ha.kcc.project.model")
+@EnableJpaRepositories("hk.org.ha.kcc.eform.repository")
+@EntityScan("hk.org.ha.kcc.eform.model")
 public class JpaTestConfig {
 
   public static final String AUDITOR = "tester";

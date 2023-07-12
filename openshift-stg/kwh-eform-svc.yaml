@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kcc-spring-boot-svc
+  name: kwh-eform-svc
   labels:
-    app: kcc-spring-boot-svc
+    app: kwh-eform-svc
     app.kubernetes.io/name: spring-boot
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: base-projects
@@ -11,11 +11,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kcc-spring-boot-svc
+      app: kwh-eform-svc
   template:
     metadata:
       labels:
-        app: kcc-spring-boot-svc
+        app: kwh-eform-svc
     spec:
       nodeSelector:
         ha-logtype: hostpathlogging
@@ -24,8 +24,8 @@ spec:
           persistentVolumeClaim:
             claimName: hostpathcldlog-kccclinicalstagprd-pvc
       containers:
-        - name: kcc-spring-boot-svc
-          image: image-registry.openshift-image-registry.svc:5000/kccclinical-stag-prd/kcc-spring-boot-svc
+        - name: kwh-eform-svc
+          image: image-registry.openshift-image-registry.svc:5000/kccclinical-stag-prd/kwh-eform-svc
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -62,48 +62,6 @@ spec:
                 configMapKeyRef:
                   name: env-config
                   key: spring.profiles.active
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: jwt-secret
-                  key: jwt.secret
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-db-secret
-                  key: mssql.db.user
-            - name: DB_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-db-secret
-                  key: mssql.db.password
-            - name: ALS_PROJECT_CODE
-              value: KCC
-            - name: ALS_POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: ALS_POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: ALS_POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: ALS_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: ALS_POD_LABELS
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['app']
-            - name: ALS_CONFIG
-              valueFrom:
-                configMapKeyRef:
-                  key: application.yml
-                  name: als-default-config
           volumeMounts:
             - name: log-path
               mountPath: /appl
@@ -111,10 +69,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kcc-spring-boot-svc
+  name: kwh-eform-svc
 spec:
   selector:
-    app: kcc-spring-boot-svc
+    app: kwh-eform-svc
   ports:
     - port: 8080
       targetPort: 8080
@@ -122,9 +80,9 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: kcc-spring-boot-svc
+  name: kwh-eform-svc
 spec:
   port:
     targetPort: 8080
   to:
-    name: kcc-spring-boot-svc
+    name: kwh-eform-svc

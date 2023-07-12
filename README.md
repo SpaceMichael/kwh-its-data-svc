@@ -2,15 +2,15 @@
 
 | Env.    | Git Branch | Database        | URL                                                                                                                                                         |
 | ------- | ---------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Staging | main       | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kcc-spring-boot-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
-| PROD    | main (tag) | kcc_spring_boot | https://kcc-spring-boot-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kcc-spring-boot-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
+| Staging | main       | kcc_spring_boot | https://kwh-eform-svc-kccclinical-dev.tstcld61.server.ha.org.hk |
+| PROD    | main (tag) | kcc_spring_boot | https://kwh-eform-svc-kccclinical-prd.tstcld61.server.ha.org.hk |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
 - [2. Configure Maven](#2-configure-maven)
-- [3. Run `kcc-spring-boot-svc` container on Docker Desktop at Local Machine](#3-run-kcc-spring-boot-svc-container-on-docker-desktop-at-local-machine)
-- [4. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#4-deploy-kcc-spring-boot-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
-- [5. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#5-deploy-kcc-spring-boot-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
+- [3. Run `kwh-eform-svc` container on Docker Desktop at Local Machine](#3-run-kwh-eform-svc-container-on-docker-desktop-at-local-machine)
+- [4. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#4-deploy-kwh-eform-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
+- [5. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#5-deploy-kwh-eform-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
 
 ## 1. Configure VS Code
 * Add `envFile` to `.vscode/launch.json` for VS Code Debugger:
@@ -55,61 +55,61 @@
   -DDB_PASS=[password]
   ```
 
-## 3. Run `kcc-spring-boot-svc` container on Docker Desktop at Local Machine
-* Run `kcc-spring-boot-svc` container from `docker-compose.yml` file:
+## 3. Run `kwh-eform-svc` container on Docker Desktop at Local Machine
+* Run `kwh-eform-svc` container from `docker-compose.yml` file:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
-  $ docker build -t kcc-spring-boot-svc .
+  $ docker build -t kwh-eform-svc .
   $ docker-compose config
   $ docker-compose down
   $ docker-compose up -d
-  $ docker logs -f kcc-spring-boot-svc
+  $ docker logs -f kwh-eform-svc
   ```
 
-## 4. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
-* Build, Tag and Push `kcc-spring-boot-svc` image:
+## 4. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
+* Build, Tag and Push `kwh-eform-svc` image:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
-  $ docker build -t kcc-spring-boot-svc .
-  $ docker tag default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kcc-spring-boot-svc
+  $ docker build -t kwh-eform-svc .
+  $ docker tag default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-eform-svc
   
-  $ oc login -u [username] https://api.prdcld61.server.ha.org.hk:6443
+  $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
   $ oc project kccclinical-stag-prd
-  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.prdcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kcc-spring-boot-svc
-  $ oc get is kcc-spring-boot-svc
+  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.tstcld61.server.ha.org.hk
+  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-eform-svc
+  $ oc get is kwh-eform-svc
   ```
-* Deploy `kcc-spring-boot-svc` service with OC commands:
+* Deploy `kwh-eform-svc` service with OC commands:
   ```shell
-  $ oc apply -f openshift-stg\kcc-spring-boot-svc.yaml
+  $ oc apply -f openshift-stg\kwh-eform-svc.yaml
   $ oc get pod
-  $ oc logs -f kcc-spring-boot-svc-57cb8ff78f-qctht
+  $ oc logs -f kwh-eform-svc-57cb8ff78f-qctht
   $ oc get route
   ```
 
-## 5. Deploy `kcc-spring-boot-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
-* Build, Tag and Push `kcc-spring-boot-svc` image:
+## 5. Deploy `kwh-eform-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
+* Build, Tag and Push `kwh-eform-svc` image:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
-  $ docker build -t kcc-spring-boot-svc .
-  $ docker tag kcc-spring-boot-svc default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-prd/kcc-spring-boot-svc
+  $ docker build -t kwh-eform-svc .
+  $ docker tag kwh-eform-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-eform-svc
   
-  $ oc login -u [username] https://api.prdcld61.server.ha.org.hk:6443
+  $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
   $ oc project kccclinical-prd
-  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.prdcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-prd/kcc-spring-boot-svc
-  $ oc get is kcc-spring-boot-svc
+  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.tstcld61.server.ha.org.hk
+  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-eform-svc
+  $ oc get is kwh-eform-svc
   ```
-* Deploy `kcc-spring-boot-svc` service with OC commands:
+* Deploy `kwh-eform-svc` service with OC commands:
   ```shell
-  $ oc apply -f openshift\kcc-spring-boot-svc.yaml
+  $ oc apply -f openshift\kwh-eform-svc.yaml
   $ oc get pod
-  $ oc logs -f kcc-spring-boot-svc-57cb8ff78f-qctht
+  $ oc logs -f kwh-eform-svc-57cb8ff78f-qctht
   $ oc get route
   ```

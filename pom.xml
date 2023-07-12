@@ -10,9 +10,9 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>hk.org.ha.kcc</groupId>
-	<artifactId>kcc-spring-boot-svc</artifactId>
+	<artifactId>kwh-eform-svc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kcc-spring-boot-svc</name>
+	<name>kwh-eform-svc</name>
 	<description>KCC Spring Boot Service</description>
 	<properties>
 		<java.version>11</java.version>
@@ -127,6 +127,19 @@
 			<artifactId>awaitility</artifactId>
 			<version>4.2.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-starter</artifactId>
+			<version>21.1.2</version>
 		</dependency>
 	</dependencies>
 

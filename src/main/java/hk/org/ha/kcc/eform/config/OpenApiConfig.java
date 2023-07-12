@@ -1,4 +1,4 @@
-package hk.org.ha.kcc.project.config;
+package hk.org.ha.kcc.eform.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
