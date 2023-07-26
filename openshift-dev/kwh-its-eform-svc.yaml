@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: kwh-its-eform-svc
-          image: image-registry.openshift-image-registry.svc:5000/kccclinical-stg-prd/kwh-its-eform-svc
+          image: image-registry.openshift-image-registry.svc:5000/kccclinical-dev/kwh-its-eform-svc
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

@@ -6,7 +6,7 @@ metadata:
     app: kwh-its-eform-svc
     app.kubernetes.io/name: spring-boot
     app.kubernetes.io/component: backend
-    app.kubernetes.io/part-of: kwh-eform
+    app.kubernetes.io/part-of: kwh-its-eform
 spec:
   replicas: 1
   selector:
