@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.invoke.MethodHandles;
 
 
-
 @Tag(name = "auth", description = "auth API")
 @SecurityRequirement(name = "JWT")
 @CrossOrigin
@@ -28,8 +27,6 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public Object getAuth() throws Exception {
         log.debug("Get Authentication object with valid JWT.");
-        System.out.println("Get Authentication object with valid JWT.");
-        Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
         return SecurityContextHolder.getContext().getAuthentication();
     }
 }
