@@ -8,11 +8,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.lang.invoke.MethodHandles;
 
 @Tag(name = "storage", description = "storage API")
@@ -25,14 +25,17 @@ public class StorageController {
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
     public static final String BASE_URL = "/bitrix/users";  // /bitrix/users/:corpId/workgroups for dummy test
 
-    private final StorageService storageService;
+    @Autowired
+    private StorageService storageService;
 
     @Operation(summary = "Get storage list")
     @GetMapping(value = "/{corpId}/workgroups/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public StorageListRespDto getStorageList(@PathVariable String corpId) throws Exception {
+    public StorageListRespDto getStorageList(@PathVariable String corpId) {
         log.debug("Get Storage List corpId." + corpId);
         return storageService.getStorageList();
     }
+
+
 
 }
