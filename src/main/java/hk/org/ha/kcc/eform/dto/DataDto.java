@@ -2,6 +2,7 @@ package hk.org.ha.kcc.eform.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DataDto {
     private List<FormDto> forms;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private DetailDto details;
 
 }
