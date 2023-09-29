@@ -22,8 +22,7 @@ public class EformServiceImpl implements EformService {
             DetailDto details = new DetailDto();
             details.setType("bed");
             //details.setData(DetailDataDto.builder().dept("M&G").ward("16A1").bedNo("10").build());
-            details.setData(DetailDataDto.builder().ward("12BM").cubicle("1").bedNo("1-01").bedChecked(falseexit
-            ).build());
+            details.setData(DetailDataDto.builder().ward("12BM").cubicle("1").bedNo("1-01").bedChecked(false).build());
             eformResponseDto.setData(DataDto.builder().forms(forms).details(details).build());
             return eformResponseDto;
         } else {
