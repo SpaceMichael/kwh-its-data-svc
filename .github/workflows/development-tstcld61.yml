@@ -17,7 +17,7 @@ env:
 
 jobs:
   build-artifact:
-    runs-on: [kevin]
+    runs-on: [self-hosted]
     env:
       MAVEN_CONFIG: ${{ secrets.MAVEN_CONFIG }}
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   build-image:
     needs: build-artifact
-    runs-on: [kevin]
+    runs-on: [self-hosted]
     steps:
       - name: Generate image tag
         id: gen-image-tag
@@ -52,7 +52,7 @@ jobs:
 
   deploy-openshift-dev-pri:
     needs: build-image
-    runs-on: [kevin]
+    runs-on: [self-hosted]
     env:
       IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
     steps:
