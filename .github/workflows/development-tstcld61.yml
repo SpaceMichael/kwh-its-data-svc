@@ -52,7 +52,7 @@ jobs:
 
   deploy-openshift-dev-pri:
     needs: build-image
-    runs-on: [peter]
+    runs-on: [self-hosted]
     env:
       IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
     steps:
