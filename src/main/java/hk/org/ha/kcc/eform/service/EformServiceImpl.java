@@ -17,7 +17,7 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) throws IOException {
-        String serverAddress = "https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk";
+        String serverAddress = "https://kwh-its-eform-svc-kccclinical-dev.tstcld61.server.ha.org.hk";
         String iconBedCleansing =serverAddress+ "/iconBedCleansing.png";
         String iconDrugDispensing =serverAddress+ "/iconDrugDispensing.png";
         String iconLabReport =serverAddress+ "/iconLabReport.png";
