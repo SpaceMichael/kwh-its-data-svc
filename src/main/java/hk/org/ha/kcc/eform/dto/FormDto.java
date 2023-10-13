@@ -16,7 +16,7 @@ public class FormDto {
     private String description;
     private String url;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String icon;
+    private byte[] icon;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private BarcodeDto barcode;
 }

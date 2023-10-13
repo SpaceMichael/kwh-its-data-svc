@@ -1,18 +1,26 @@
 package hk.org.ha.kcc.eform.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import hk.org.ha.kcc.eform.dto.*;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EformServiceImpl implements EformService {
 
     @Override
-    public EformResponseDto getEformList(String qrcode) {
+    public ResponseEntity<EformResponseDto> getEformList(String qrcode) throws IOException {
         String serverAddress = "https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk";
         String iconBedCleansing = "/static/iconBedCleansing.png";
+        //ClassPathResource resource = new ClassPathResource("static/image.png");
+        ClassPathResource resource = new ClassPathResource("static/iconBedCleansing.png");
+        // byte[] imageBytes = Files.readAllBytes(resource.getFile().toPath());
+        byte[] imageBytes = resource.getInputStream().readAllBytes();
         String iconDrugDispensing = "/static/iconDrugDispensing.png";
         String iconLabReport = "/static/iconLabReport.png";
 
@@ -30,19 +38,25 @@ public class EformServiceImpl implements EformService {
             //details.setData(DetailDataDto.builder().dept("M&G").ward("16A1").bedNo("10").build());
             details.setData(DetailDataDto.builder().ward("12BM").cubicle("1").bedNo("1-01").bedChecked(false).build());
             eformResponseDto.setData(DataDto.builder().forms(forms).details(details).build());
-            return eformResponseDto;
+            //return eformResponseDto;
+            return ResponseEntity.ok(eformResponseDto);
         } else {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
             //forms.add(FormDto.builder().title("Bed Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing").barcode(BarcodeDto.builder().enable(true).key("patientId").build()).build());
-            forms.add(FormDto.builder().title("Bed Cleansing").description("Request form").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing").icon(serverAddress+iconBedCleansing).build());
+            forms.add(FormDto.builder().title("Bed Cleansing").description("Request form").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing").icon(imageBytes).build());
             //forms.add(FormDto.builder().title("Drug dispensing Tracker").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/DrugDispensing").barcode(BarcodeDto.builder().enable(true).key("patientId").build()).build());
-            forms.add(FormDto.builder().title("Drug dispensing Tracker").description("Request form, Tracker").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/DrugDispensing").icon(serverAddress+iconDrugDispensing).build());
+            forms.add(FormDto.builder().title("Drug dispensing Tracker").description("Request form, Tracker").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/DrugDispensing").build());
             //forms.add(FormDto.builder().title("Lab Report Tracker").description("Request form, Report search").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport").barcode(BarcodeDto.builder().enable(true).key("patientId").build()).build());
-            forms.add(FormDto.builder().title("Lab Report Tracker").description("Request form, Report search").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport").icon(serverAddress+iconLabReport).build());
+            forms.add(FormDto.builder().title("Lab Report Tracker").description("Request form, Report search").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport").build());
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
-            return eformResponseDto;
+            //return eformResponseDto;
+            //retrun eformResponseDto with png file imageBytes
+            return ResponseEntity.ok()
+                    .body(eformResponseDto);
+            /*return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG).body(eformResponseDto);*/
         }
     }
 

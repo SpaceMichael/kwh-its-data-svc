@@ -2,6 +2,7 @@ package hk.org.ha.kcc.eform.controller;
 
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import hk.org.ha.kcc.eform.dto.EformResponseDto;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
 
@@ -27,7 +29,7 @@ public class EformController {
     private final EformService eformService;
 
     @GetMapping
-    public EformResponseDto getEformList(@RequestParam(required = false) String qrcode){
+    public ResponseEntity<EformResponseDto> getEformList(@RequestParam(required = false) String qrcode) throws IOException {
         log.debug("qrcode: " + qrcode);
         System.out.println("qrcode: " + qrcode);
         return eformService.getEformList(qrcode);
