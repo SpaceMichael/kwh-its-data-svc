@@ -1,26 +1,23 @@
 package hk.org.ha.kcc.eform.service;
 
-import java.io.IOException;
-import java.nio.file.Files;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import hk.org.ha.kcc.eform.dto.*;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.core.io.ClassPathResource;
+
 
 @Service
 public class EformServiceImpl implements EformService {
 
     @Override
-    public ResponseEntity<EformResponseDto> getEformList(String qrcode) throws IOException {
+    public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
         String serverAddress = "https://kwh-its-eform-svc-kccclinical-dev.tstcld61.server.ha.org.hk";
-        String iconBedCleansing =serverAddress+ "/iconBedCleansing.png";
-        String iconDrugDispensing =serverAddress+ "/iconDrugDispensing.png";
-        String iconLabReport =serverAddress+ "/iconLabReport.png";
+        String iconBedCleansing = serverAddress + "/iconBedCleansing.png";
+        String iconDrugDispensing = serverAddress + "/iconDrugDispensing.png";
+        String iconLabReport = serverAddress + "/iconLabReport.png";
 
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
