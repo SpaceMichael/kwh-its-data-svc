@@ -17,6 +17,12 @@ spec:
       labels:
         app: kwh-its-eform-svc
     spec:
+      nodeSelector:
+        ha-logtype: hostpathlogging
+      volumes:
+        - name: log-path
+          persistentVolumeClaim:
+            claimName: hostpathcldlog-kccclinicalstagprd-pvc
       containers:
         - name: kwh-its-eform-svc
           image: image-registry.openshift-image-registry.svc:5000/kccclinical-stg-prd/kwh-its-eform-svc
@@ -38,6 +44,36 @@ spec:
                 configMapKeyRef:
                   name: env-config
                   key: spring.profiles.active
+            - name: ALS_PROJECT_CODE
+              value: ITS
+            - name: ALS_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ALS_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ALS_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: ALS_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: ALS_POD_LABELS
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+            - name: ALS_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  key: application.yml
+                  name: als-default-config
+          volumeMounts:
+            - name: log-path
+              mountPath: /appl
 ---
 apiVersion: v1
 kind: Service
