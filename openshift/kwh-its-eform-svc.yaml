@@ -30,12 +30,12 @@ spec:
           ports:
             - containerPort: 8080
           resources:
-            requests:
-              memory: 256Mi
-              cpu: 200m
             limits:
-              memory: 768Mi
-              cpu: 400m
+              cpu: 500m
+              memory: 750Mi
+            requests:
+              cpu: 50m
+              memory: 600Mi
           env:
             - name: TZ
               value: Asia/Hong_Kong
@@ -74,6 +74,31 @@ spec:
           volumeMounts:
             - name: log-path
               mountPath: /appl
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kwh-its-eform-svc
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: kwh-its-eform-svc
+    apiVersion: apps/v1
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 700
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 88
 ---
 apiVersion: v1
 kind: Service
