@@ -24,7 +24,8 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
-            forms.add(FormDto.builder().title("Bed Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest").build());
+            //forms.add(FormDto.builder().title("Bed Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest").build());
+            forms.add(FormDto.builder().title("Bed Cleansing").description("Request form").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing").icon(iconBedCleansing).build());
             // remove barcode in the forms
 
 
@@ -39,11 +40,8 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
-            //forms.add(FormDto.builder().title("Bed Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing").barcode(BarcodeDto.builder().enable(true).key("patientId").build()).build());
             forms.add(FormDto.builder().title("Bed Cleansing").description("Request form").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing").icon(iconBedCleansing).build());
-            //forms.add(FormDto.builder().title("Drug dispensing Tracker").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/DrugDispensing").barcode(BarcodeDto.builder().enable(true).key("patientId").build()).build());
             forms.add(FormDto.builder().title("Drug dispensing Tracker").description("Request form, Tracker").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/DrugDispensing").icon(iconDrugDispensing).build());
-            //forms.add(FormDto.builder().title("Lab Report Tracker").description("Request form, Report search").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport").barcode(BarcodeDto.builder().enable(true).key("patientId").build()).build());
             forms.add(FormDto.builder().title("Lab Report Tracker").description("Request form, Report search").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport").icon(iconLabReport).build());
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
             //return eformResponseDto;
