@@ -25,7 +25,7 @@ public class EformServiceImpl implements EformService {
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
             //forms.add(FormDto.builder().title("Bed Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest").build());
-            forms.add(FormDto.builder().title("Bed Cleansing").description("Request form").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing").icon(iconBedCleansing).build());
+            forms.add(FormDto.builder().title("Bed Cleansing").description("Request form").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest").icon(iconBedCleansing).build());
             // remove barcode in the forms
 
 
