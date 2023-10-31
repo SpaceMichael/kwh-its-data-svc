@@ -1,0 +1,85 @@
+package hk.org.ha.kcc.eform.controller;
+
+import hk.org.ha.kcc.common.logging.AlsXLogger;
+import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
+import hk.org.ha.kcc.eform.dto.BedCleansingRequestDto;
+import hk.org.ha.kcc.eform.service.BedCleansingRequestService;
+import hk.org.ha.kcc.eform.service.GetUsrIdService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.lang.invoke.MethodHandles;
+
+
+@Tag(name = "bed-cleaning", description = "bed-cleaning API")
+@SecurityRequirement(name = "JWT")
+@CrossOrigin
+@RestController
+@RequestMapping(BedCleaningController.BASE_URL)
+public class BedCleaningController {
+    private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+    public static final String BASE_URL = "/api/v1/bed-cleansing/request";
+
+    private final BedCleansingRequestService bedCleansingRequestService;
+
+    private final GetUsrIdService getUsrIdService;
+
+    public BedCleaningController(BedCleansingRequestService bedCleansingRequestService
+            , GetUsrIdService getUsrIdService) {
+        this.bedCleansingRequestService = bedCleansingRequestService;
+        this.getUsrIdService = getUsrIdService;
+    }
+
+    // post BedCleansing
+    @Operation(summary = "Create new BedCleansingRequest")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BedCleansingRequestDto createBCRequest(@RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
+        log.debug("createBedCleansingRequest");
+        return this.bedCleansingRequestService.create(bedCleansingRequestDto);
+    }
+
+    // get all
+    @Operation(summary = "Get list of BedCleansingRequest")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Iterable<BedCleansingRequestDto> getAllBCRequest() {
+        String userId = getUsrIdService.getUserId();
+        log.debug("get all by: " + userId);
+        return this.bedCleansingRequestService.getAllDto();
+    }
+
+    // get by id
+    @Operation(summary = "Get the BedCleansingRequest by id")
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BedCleansingRequestDto getBCRequestById(@PathVariable String id) {
+        String userId = getUsrIdService.getUserId();
+        log.debug("get by id: " + id + "by: " + userId);
+        return this.bedCleansingRequestService.getDtoById(id);
+    }
+
+    // patch by id
+    @Operation(summary = "Update the BedCleansingRequest by id")
+    @PatchMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BedCleansingRequestDto updateBCRequestById(@PathVariable String id
+            , @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
+        String userId = getUsrIdService.getUserId();
+        log.debug("update by id: " + id + "by: " + userId);
+        return this.bedCleansingRequestService.update(id, bedCleansingRequestDto);
+    }
+
+    // delete by id
+    @Operation(summary = "Delete the BedCleansingRequest by id")
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteBCRequestById(@PathVariable String id) {
+        String userId = getUsrIdService.getUserId();
+        log.debug("delete by id: " + id + "by: " + userId);
+        this.bedCleansingRequestService.delete(id);
+    }
+}
