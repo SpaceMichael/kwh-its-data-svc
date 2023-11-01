@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql
+  labels:
+    app: mssql
+    app.kubernetes.io/name: mssql
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: middleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql
+  template:
+    metadata:
+      labels:
+        app: mssql
+    spec:
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: mssql-pvc
+      containers:
+        - name: mssql
+          image: image-registry.openshift-image-registry.svc:5000/kccclinical-dev/mssql:2022-latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1433
+          resources:
+            requests:
+              memory: 4Gi
+              cpu: 1
+            limits:
+              memory: 4Gi
+              cpu: 1
+          env:
+            - name: TZ
+              value: Asia/Hong_Kong
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-db-secret
+                  key: mssql.db.password
+          volumeMounts:
+            - name: data-vol
+              mountPath: /var/opt/mssql/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: mssql
+  name: mssql-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql
+spec:
+  selector:
+    app: mssql
+  ports:
+    - port: 1433
+      targetPort: 1433
