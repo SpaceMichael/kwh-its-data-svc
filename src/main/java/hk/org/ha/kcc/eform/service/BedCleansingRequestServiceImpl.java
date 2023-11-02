@@ -32,21 +32,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         if (bedCleansingRequestDto.getBedChecked() != null) {
             bedCleansingRequest.setBedChecked(false);
         }
-        if (bedCleansingRequestDto.getCleanBedChecked() != null) {
-            bedCleansingRequest.setCleanBedChecked(false);
-        }
-        if (bedCleansingRequestDto.getCleanBedCurtainsChecked() != null) {
-            bedCleansingRequest.setCleanBedCurtainsChecked(false);
-        }
-        if (bedCleansingRequestDto.getCleanEnvChecked() != null) {
-            bedCleansingRequest.setCleanEnvChecked(false);
-        }
-        if (bedCleansingRequestDto.getBleach() != null) {
-            bedCleansingRequest.setBleach(false);
-        }
-        if (bedCleansingRequestDto.getTricel() != null) {
-            bedCleansingRequest.setTricel(false);
-        }
         if (bedCleansingRequestDto.getActiveFlag() != null) {
             bedCleansingRequest.setActiveFlag(true);
         }
@@ -80,79 +65,58 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         if (bedCleansingRequestDto.getHospitalCode() != null) {
             bedCleansingRequest.setHospitalCode(bedCleansingRequestDto.getHospitalCode());
         }
-        //bedCleansingRequest.setHospitalCode(bedCleansingRequestDto.getHospitalCode());
+
         if (bedCleansingRequestDto.getDept() != null) {
             bedCleansingRequest.setDept(bedCleansingRequestDto.getDept());
         }
-        //bedCleansingRequest.setDept(bedCleansingRequestDto.getDept());
+
         if (bedCleansingRequestDto.getWard() != null) {
             bedCleansingRequest.setWard(bedCleansingRequestDto.getWard());
         }
-        //bedCleansingRequest.setWard(bedCleansingRequestDto.getWard());
+
         if (bedCleansingRequestDto.getCubicle() != null) {
             bedCleansingRequest.setCubicle(bedCleansingRequestDto.getCubicle());
         }
-        //bedCleansingRequest.setCubicle(bedCleansingRequestDto.getCubicle());
+
         if (bedCleansingRequestDto.getBedChecked() != null) {
             bedCleansingRequest.setBedChecked(bedCleansingRequestDto.getBedChecked());
         }
-        //bedCleansingRequest.setBedChecked(bedCleansingRequestDto.getBedChecked());
+
         if (bedCleansingRequestDto.getBedNo() != null) {
             bedCleansingRequest.setBedNo(bedCleansingRequestDto.getBedNo());
         }
-        //bedCleansingRequest.setBedNo(bedCleansingRequestDto.getBedNo());
+
         if (bedCleansingRequestDto.getBedType() != null) {
             bedCleansingRequest.setBedType(bedCleansingRequestDto.getBedType());
         }
-        //bedCleansingRequest.setBedType(bedCleansingRequestDto.getBedType());
-        if (bedCleansingRequestDto.getCleanBedChecked() != null) {
-            bedCleansingRequest.setCleanBedChecked(bedCleansingRequestDto.getBedChecked());
-        }
-        //bedCleansingRequest.setCleanBedChecked(bedCleansingRequestDto.getCleanBedChecked());
-        if (bedCleansingRequestDto.getCleanBedCurtainsChecked() != null) {
-            bedCleansingRequest.setCleanBedCurtainsChecked(bedCleansingRequestDto.getCleanBedCurtainsChecked());
-        }
-        //bedCleansingRequest.setCleanBedCurtainsChecked(bedCleansingRequestDto.getCleanBedCurtainsChecked());
-        if (bedCleansingRequestDto.getCleanEnvChecked() != null) {
-            bedCleansingRequest.setCleanEnvChecked(bedCleansingRequestDto.getCleanEnvChecked());
-        }
-        //bedCleansingRequest.setCleanEnvChecked(bedCleansingRequestDto.getCleanEnvChecked());
-        if (bedCleansingRequestDto.getBleach() != null) {
-            bedCleansingRequest.setBleach(bedCleansingRequestDto.getBleach());
-        }
-        //bedCleansingRequest.setBleach(bedCleansingRequestDto.getBleach());
-        if (bedCleansingRequestDto.getTricel() != null) {
-            bedCleansingRequest.setTricel(bedCleansingRequestDto.getTricel());
-        }
-        //bedCleansingRequest.setTricel(bedCleansingRequestDto.getTricel());
+
         if (bedCleansingRequestDto.getRemarks() != null) {
             bedCleansingRequest.setRemarks(bedCleansingRequestDto.getRemarks());
         }
-        //bedCleansingRequest.setRemarks(bedCleansingRequestDto.getRemarks());
+
         if (bedCleansingRequestDto.getStatus() != null) {
             bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus());
         }
-        //bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus());
+
         if (bedCleansingRequestDto.getRequestor() != null) {
             bedCleansingRequest.setRequestor(bedCleansingRequestDto.getRequestor());
         }
-        //bedCleansingRequest.setRequestor(bedCleansingRequestDto.getRequestor());
+
         if (bedCleansingRequestDto.getRequestorName() != null) {
             bedCleansingRequest.setRequestorName(bedCleansingRequestDto.getRequestorName());
         }
-        //bedCleansingRequest.setRequestorName(bedCleansingRequestDto.getRequestorName());
+
         if (bedCleansingRequestDto.getRequestorContactNo() != null) {
             bedCleansingRequest.setRequestorContactNo(bedCleansingRequestDto.getRequestorContactNo());
         }
-        //bedCleansingRequest.setRequestorContactNo(bedCleansingRequestDto.getRequestorContactNo());
+
         if (bedCleansingRequestDto.getCleaner() != null) {
             bedCleansingRequest.setCleaner(bedCleansingRequestDto.getCleaner());
         }
-        //bedCleansingRequest.setCleaner(bedCleansingRequestDto.getCleaner());
+
         if (bedCleansingRequestDto.getActiveFlag() != null) {
             bedCleansingRequest.setActiveFlag(bedCleansingRequestDto.getActiveFlag());
         }
-        //bedCleansingRequest.setActiveFlag(bedCleansingRequestDto.getActiveFlag());
         this.bedCleansingServiceRepository.save(bedCleansingRequest);
         return this.bedCleansingRequestMapper.BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest);
     }

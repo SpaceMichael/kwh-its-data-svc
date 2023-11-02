@@ -4,10 +4,10 @@ import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 import hk.org.ha.kcc.eform.dto.BedCleansingRequestDto;
 import hk.org.ha.kcc.eform.service.BedCleansingRequestService;
-import hk.org.ha.kcc.eform.service.GetUsrIdService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +25,13 @@ public class BedCleaningController {
 
     private final BedCleansingRequestService bedCleansingRequestService;
 
-    private final GetUsrIdService getUsrIdService;
+    private final AuditorAware<String> auditorAware;
+
 
     public BedCleaningController(BedCleansingRequestService bedCleansingRequestService
-            , GetUsrIdService getUsrIdService) {
+            , AuditorAware<String> auditorAware) {
         this.bedCleansingRequestService = bedCleansingRequestService;
-        this.getUsrIdService = getUsrIdService;
+        this.auditorAware = auditorAware;
     }
 
     // post BedCleansing
@@ -38,7 +39,8 @@ public class BedCleaningController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BedCleansingRequestDto createBCRequest(@RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
-        log.debug("createBedCleansingRequest");
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("create by: " + currentAuditor);
         return this.bedCleansingRequestService.create(bedCleansingRequestDto);
     }
 
@@ -47,8 +49,8 @@ public class BedCleaningController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Iterable<BedCleansingRequestDto> getAllBCRequest() {
-        String userId = getUsrIdService.getUserId();
-        log.debug("get all by: " + userId);
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("get all by: " + currentAuditor);
         return this.bedCleansingRequestService.getAllDto();
     }
 
@@ -57,8 +59,8 @@ public class BedCleaningController {
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BedCleansingRequestDto getBCRequestById(@PathVariable String id) {
-        String userId = getUsrIdService.getUserId();
-        log.debug("get by id: " + id + "by: " + userId);
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("get by id: " + id + "by: " + currentAuditor);
         return this.bedCleansingRequestService.getDtoById(id);
     }
 
@@ -68,8 +70,8 @@ public class BedCleaningController {
     @ResponseStatus(HttpStatus.OK)
     public BedCleansingRequestDto updateBCRequestById(@PathVariable String id
             , @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
-        String userId = getUsrIdService.getUserId();
-        log.debug("update by id: " + id + "by: " + userId);
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("update by id: " + id + "by: " + currentAuditor);
         return this.bedCleansingRequestService.update(id, bedCleansingRequestDto);
     }
 
@@ -78,8 +80,8 @@ public class BedCleaningController {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBCRequestById(@PathVariable String id) {
-        String userId = getUsrIdService.getUserId();
-        log.debug("delete by id: " + id + "by: " + userId);
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("delete by id: " + id + "by: " + currentAuditor);
         this.bedCleansingRequestService.delete(id);
     }
 }

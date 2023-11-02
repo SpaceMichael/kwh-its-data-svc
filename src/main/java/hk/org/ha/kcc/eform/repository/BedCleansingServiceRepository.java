@@ -10,6 +10,4 @@ public interface BedCleansingServiceRepository extends JpaRepository<BedCleansin
 
     void deleteById(String id);
 
-    //BedCleansingRequest findById(String id);
-
 }

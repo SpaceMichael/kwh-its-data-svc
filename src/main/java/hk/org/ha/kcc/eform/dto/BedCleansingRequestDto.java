@@ -14,7 +14,6 @@ import javax.persistence.Lob;
 @NoArgsConstructor
 public class BedCleansingRequestDto {
 
-
     private String id;
     private String hospitalCode;    //e.g KWH
     private String dept;            //e.g M&G
@@ -23,11 +22,12 @@ public class BedCleansingRequestDto {
     private Boolean bedChecked;   // e.g all clean in the room  全房大抹
     private String bedNo;       // e.g 01 or 1-02
     private String bedType;    // e.g 普通床 掛牌床
-    private Boolean cleanBedChecked;  // e.g 清潔工序 ->床
+ /*   private Boolean cleanBedChecked;  // e.g 清潔工序 ->床
     private Boolean cleanBedCurtainsChecked; // e.g 清潔工序 ->床簾
-    private Boolean cleanEnvChecked; // e.g 清潔工序 ->環境
-    private Boolean bleach; // e.g 漂白水
-    private Boolean tricel;  // e.g tricel
+    private Boolean cleanEnvChecked; // e.g 清潔工序 ->環境*/
+    private String detergent;
+    /*    private Boolean bleach; // e.g 漂白水
+    private Boolean tricel;  // e.g tricel*/
     private String remarks;
     private String status;  // apply or pending or completed
     private String requestor; // e,g cmw002  // use token check?

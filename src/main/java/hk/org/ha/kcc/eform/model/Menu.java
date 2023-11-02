@@ -11,8 +11,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "service")
-public class Service extends Auditable{
+@Table(name = "menu")
+public class Menu extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;  // e.g 1? or use Prefixed?

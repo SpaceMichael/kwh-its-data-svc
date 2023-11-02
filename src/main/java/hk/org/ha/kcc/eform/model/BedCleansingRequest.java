@@ -26,6 +26,7 @@ public class BedCleansingRequest extends Auditable {
     //@Column(name = "id")
     private String id;
 
+
     @Column(name = "hospital_code", length = 3)
     private String hospitalCode;    //e.g KWH
 
@@ -47,24 +48,11 @@ public class BedCleansingRequest extends Auditable {
     @Column(name = "bed_type", length = 20)
     private String bedType;    // e.g 普通床 掛牌床
 
-    @Column(name = "clean_bed")
-    private Boolean cleanBedChecked;  // e.g 清潔工序 ->床
+    @Column(name = "cleaning_process", length = 50)
+    private String cleaningProcess;    // e.g 清潔工序 ->床,床簾,環境
 
-    @Column(name = "clean_bed_curtains")
-    private Boolean cleanBedCurtainsChecked; // e.g 清潔工序 ->床簾
-
-    @Column(name = "clean_Env")
-    private Boolean cleanEnvChecked; // e.g 清潔工序 ->環境
-
-    @Column(name = "bleach")
-    private Boolean bleach; // e.g 漂白水
-
-    @Column(name = "tricel")
-    private Boolean tricel;  // e.g tricel
-
-    @Lob
-    @Column(name = "remarks", length = Integer.MAX_VALUE)
-    private String remarks;
+    @Column(name = "detergent", length = 50)
+    private String detergent; // e.g 清潔劑(detergent)->漂白水
 
     @Column(name = "status", length = 20)
     private String status;  // apply or pending or completed
@@ -84,4 +72,7 @@ public class BedCleansingRequest extends Auditable {
     @Column(name = "active_flag")
     private Boolean activeFlag; //
 
+    @Lob
+    @Column(name = "remarks", length = Integer.MAX_VALUE)
+    private String remarks;
 }
