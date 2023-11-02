@@ -17,8 +17,6 @@ spec:
       labels:
         app: kwh-its-eform-svc
     spec:
-      nodeSelector:
-        ha-logtype: hostpathlogging
       volumes:
         - name: log-path
           persistentVolumeClaim:
