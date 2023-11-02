@@ -2,17 +2,31 @@
 
 | Env.        | Git Branch | Database | URL                                                                                                                                                     |
 | ----------- | ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+<<<<<<< HEAD
 | Development | main       | N/A      | https://kwh-its-menu-svc-kccclinical-dev.tstcld61.server.ha.org.hk                                                                                     |
 | Staging     | main       | N/A      | https://kwh-its-menu-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-menu-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
 | PROD        | main (tag) | N/A      | https://kwh-its-menu-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-menu-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
+=======
+| Development | main       | kwh_its  | https://kwh-its-eform-svc-kccclinical-dev.tstcld61.server.ha.org.hk                                                                                     |
+| Staging     | main       | kwh_its  | https://kwh-its-eform-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-eform-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
+| PROD        | main (tag) | kwh_its  | https://kwh-its-eform-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-eform-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
+>>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
 - [2. Configure Maven](#2-configure-maven)
+<<<<<<< HEAD
 - [3. Run `kwh-its-menu-svc` container on Docker Desktop at Local Machine](#3-run-kwh-its-menu-svc-container-on-docker-desktop-at-local-machine)
 - [4. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-kwh-its-menu-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
 - [5. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#5-deploy-kwh-its-menu-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
 - [6. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#6-deploy-kwh-its-menu-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
+=======
+- [3. Run `kwh-its-eform-svc` container on Docker Desktop at Local Machine](#3-run-kwh-its-eform-svc-container-on-docker-desktop-at-local-machine)
+- [4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-mssql-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
+- [5. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#5-deploy-kwh-its-eform-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
+- [6. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#6-deploy-kwh-its-eform-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
+- [7. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#7-deploy-kwh-its-eform-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
+>>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
 
 ## 1. Configure VS Code
 * Add `envFile` to `.vscode/launch.json` for VS Code Debugger:
@@ -70,8 +84,49 @@
   $ docker logs -f kwh-its-menu-svc
   ```
 
+<<<<<<< HEAD
 ## 4. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
 * Build, Tag and Push `kwh-its-menu-svc` image:
+=======
+## 4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
+* Tag and Push `mssql` image:
+  ```shell
+  $ docker pull mcr.microsoft.com/mssql/server:2022-latest
+  $ docker tag mcr.microsoft.com/mssql/server:2022-latest artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest
+
+  $ docker login -u [username] artifactrepo.server.ha.org.hk:55743
+  $ docker push artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest
+  
+  $ oc login -u [username] --server=https://api.cldkwhtst1.server.ha.org.hk:6443
+  $ oc project kccclinical-dev
+  $ oc create secret docker-registry jfrog-secret --docker-server artifactrepo.server.ha.org.hk:55743 --docker-username=[serviceusername] --docker-password='[password]' -n kccclinical-dev
+  $ oc import-image mssql:2022-latest --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest --insecure --confirm --reference-policy=local -n kccclinical-dev
+  ```
+* Deploy `mssql` service with OC commands:
+  ```shell
+  $ oc create secret generic mssql-db-secret --from-literal=mssql.db.user=[db_user] --from-literal=mssql.db.password=[db_password]
+  $ oc get secret mssql-db-secret
+  
+  $ oc apply -f openshift-dev\mssql.yaml
+  $ oc get pod --selector='app=mssql'
+  $ oc logs -f mssql-689cc8699c-nmt7k
+  ```
+* Run `sqlcmd` utility in `mssql` pod:
+  ```
+  $ oc exec -ti mssql-689cc8699c-nmt7k -- /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P [password]
+
+  > SELECT name FROM sys.databases
+  > GO
+  > QUIT
+  ```
+* Forward local 1433 port to `mysql` pod:
+  ```
+  $ oc port-forward mssql-689cc8699c-nmt7k 1433:1433
+  ```
+
+## 5. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
+* Build, Tag and Push `kwh-its-eform-svc` image:
+>>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
@@ -93,8 +148,13 @@
   $ oc get route
   ```
 
+<<<<<<< HEAD
 ## 5. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
 * Build, Tag and Push `kwh-its-menu-svc` image:
+=======
+## 6. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
+* Build, Tag and Push `kwh-its-eform-svc` image:
+>>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
@@ -116,8 +176,13 @@
   $ oc get route
   ```
 
+<<<<<<< HEAD
 ## 6. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
 * Build, Tag and Push `kwh-its-menu-svc` image:
+=======
+## 7. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
+* Build, Tag and Push `kwh-its-eform-svc` image:
+>>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
