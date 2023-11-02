@@ -55,6 +55,16 @@ spec:
           env:
             - name: TZ
               value: Asia/Hong_Kong
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-db-secret
+                  key: mssql.db.user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-db-secret
+                  key: mssql.db.password
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
