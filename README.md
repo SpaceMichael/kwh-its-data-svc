@@ -1,31 +1,23 @@
 # KWH ITS Eform Service - API Service
 
-| Env.        | Git Branch | Database | URL                                                                                                                                                     |
-| ----------- | ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-<<<<<<< HEAD
-| Development | main       | N/A      | https://kwh-its-menu-svc-kccclinical-dev.tstcld61.server.ha.org.hk                                                                                     |
-| Staging     | main       | N/A      | https://kwh-its-menu-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-menu-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
-| PROD        | main (tag) | N/A      | https://kwh-its-menu-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-menu-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
-=======
-| Development | main       | kwh_its  | https://kwh-its-eform-svc-kccclinical-dev.tstcld61.server.ha.org.hk                                                                                     |
-| Staging     | main       | kwh_its  | https://kwh-its-eform-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-eform-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
-| PROD        | main (tag) | kwh_its  | https://kwh-its-eform-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-eform-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
->>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
+| Env.        | Git Branch | Database | URL                                                                                                                                                   |
+| ----------- | ---------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Development | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.tstcld61.server.ha.org.hk                                                                                    |
+| Staging     | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
+| PROD        | main (tag) | kwh_its  | https://kwh-its-data-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
+|             |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
 - [2. Configure Maven](#2-configure-maven)
-<<<<<<< HEAD
-- [3. Run `kwh-its-menu-svc` container on Docker Desktop at Local Machine](#3-run-kwh-its-menu-svc-container-on-docker-desktop-at-local-machine)
-- [4. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-kwh-its-menu-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
-- [5. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#5-deploy-kwh-its-menu-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
-- [6. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#6-deploy-kwh-its-menu-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
-=======
-- [3. Run `kwh-its-eform-svc` container on Docker Desktop at Local Machine](#3-run-kwh-its-eform-svc-container-on-docker-desktop-at-local-machine)
+- [3. Run `kwh-its-data-svc` container on Docker Desktop at Local Machine](#3-run-kwh-its-data-svc-container-on-docker-desktop-at-local-machine)
+- [4. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
 - [4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-mssql-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
-- [5. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#5-deploy-kwh-its-eform-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
-- [6. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#6-deploy-kwh-its-eform-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
-- [7. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#7-deploy-kwh-its-eform-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
+- [5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#5-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
+- [5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#5-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
+- [6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#6-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
+- [6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#6-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
+- [7. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#7-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
 >>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
 
 ## 1. Configure VS Code
@@ -71,22 +63,22 @@
   -DDB_PASS=[password]
   ```
 
-## 3. Run `kwh-its-menu-svc` container on Docker Desktop at Local Machine
-* Run `kwh-its-menu-svc` container from `docker-compose.yml` file:
+## 3. Run `kwh-its-data-svc` container on Docker Desktop at Local Machine
+* Run `kwh-its-data-svc` container from `docker-compose.yml` file:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
-  $ docker build -t kwh-its-menu-svc .
+  $ docker build -t kwh-its-data-svc .
   $ docker-compose config
   $ docker-compose down
   $ docker-compose up -d
-  $ docker logs -f kwh-its-menu-svc
+  $ docker logs -f kwh-its-data-svc
   ```
 
 <<<<<<< HEAD
-## 4. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
-* Build, Tag and Push `kwh-its-menu-svc` image:
+## 4. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
+* Build, Tag and Push `kwh-its-data-svc` image:
 =======
 ## 4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
 * Tag and Push `mssql` image:
@@ -124,82 +116,82 @@
   $ oc port-forward mssql-689cc8699c-nmt7k 1433:1433
   ```
 
-## 5. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
-* Build, Tag and Push `kwh-its-eform-svc` image:
+## 5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
+* Build, Tag and Push `kwh-its-data-svc` image:
 >>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
-  $ docker build -t kwh-its-menu-svc .
-  $ docker tag kwh-its-menu-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-its-menu-svc
+  $ docker build -t kwh-its-data-svc .
+  $ docker tag kwh-its-data-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-its-data-svc
   
   $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
   $ oc project kccclinical-dev
   $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.tstcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-its-menu-svc
-  $ oc get is kwh-its-menu-svc
+  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-its-data-svc
+  $ oc get is kwh-its-data-svc
   ```
-* Deploy `kwh-its-menu-svc` service with OC commands:
+* Deploy `kwh-its-data-svc` service with OC commands:
   ```shell
-  $ oc apply -f openshift-dev\kwh-its-menu-svc.yaml
+  $ oc apply -f openshift-dev\kwh-its-data-svc.yaml
   $ oc get pod
-  $ oc logs -f kwh-its-menu-svc-845d67f8f5-t79dt
+  $ oc logs -f kwh-its-data-svc-845d67f8f5-t79dt
   $ oc get route
   ```
 
 <<<<<<< HEAD
-## 5. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
-* Build, Tag and Push `kwh-its-menu-svc` image:
+## 5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
+* Build, Tag and Push `kwh-its-data-svc` image:
 =======
-## 6. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
-* Build, Tag and Push `kwh-its-eform-svc` image:
+## 6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
+* Build, Tag and Push `kwh-its-data-svc` image:
 >>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
-  $ docker build -t kwh-its-menu-svc .
-  $ docker tag default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-its-menu-svc
+  $ docker build -t kwh-its-data-svc .
+  $ docker tag default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-its-data-svc
   
   $ oc login -u [username] https://api.prdcld61.server.ha.org.hk:6443
   $ oc project kccclinical-stag-prd
   $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.prdcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-its-menu-svc
-  $ oc get is kwh-its-menu-svc
+  $ docker push default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-its-data-svc
+  $ oc get is kwh-its-data-svc
   ```
-* Deploy `kwh-its-menu-svc` service with OC commands:
+* Deploy `kwh-its-data-svc` service with OC commands:
   ```shell
-  $ oc apply -f openshift-stg\kwh-its-menu-svc.yaml
+  $ oc apply -f openshift-stg\kwh-its-data-svc.yaml
   $ oc get pod
-  $ oc logs -f kwh-its-menu-svc-57cb8ff78f-qctht
+  $ oc logs -f kwh-its-data-svc-57cb8ff78f-qctht
   $ oc get route
   ```
 
 <<<<<<< HEAD
-## 6. Deploy `kwh-its-menu-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
-* Build, Tag and Push `kwh-its-menu-svc` image:
+## 6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
+* Build, Tag and Push `kwh-its-data-svc` image:
 =======
-## 7. Deploy `kwh-its-eform-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
-* Build, Tag and Push `kwh-its-eform-svc` image:
+## 7. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
+* Build, Tag and Push `kwh-its-data-svc` image:
 >>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
-  $ docker build -t kwh-its-menu-svc .
-  $ docker tag kwh-its-menu-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-its-menu-svc
+  $ docker build -t kwh-its-data-svc .
+  $ docker tag kwh-its-data-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-its-data-svc
   
   $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
   $ oc project kccclinical-prd
   $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.tstcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-its-menu-svc
-  $ oc get is kwh-its-menu-svc
+  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-its-data-svc
+  $ oc get is kwh-its-data-svc
   ```
-* Deploy `kwh-its-menu-svc` service with OC commands:
+* Deploy `kwh-its-data-svc` service with OC commands:
   ```shell
-  $ oc apply -f openshift\kwh-its-menu-svc.yaml
+  $ oc apply -f openshift\kwh-its-data-svc.yaml
   $ oc get pod
-  $ oc logs -f kwh-its-menu-svc-57cb8ff78f-qctht
+  $ oc logs -f kwh-its-data-svc-57cb8ff78f-qctht
   $ oc get route
   ```

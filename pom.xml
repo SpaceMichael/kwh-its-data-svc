@@ -10,10 +10,10 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>hk.org.ha.kcc</groupId>
-	<artifactId>kwh-its-menu-svc</artifactId>
+	<artifactId>kwh-its-data-svc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kwh-its-menu-svc</name>
-	<description>KCC Spring Boot Service</description>
+	<name>kwh-its-data-svc</name>
+	<description>KWH ITS (Integration Telecommunication System) Data Repository Service</description>
 	<properties>
 		<java.version>11</java.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>

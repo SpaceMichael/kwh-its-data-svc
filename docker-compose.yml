@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  kwh-its-eform-svc:
-    container_name: kwh-its-eform-svc
-    image: kwh-its-eform-svc
+  kwh-its-data-svc:
+    container_name: kwh-its-data-svc
+    image: kwh-its-data-svc
     restart: unless-stopped
     ports:
       - 30000:8080

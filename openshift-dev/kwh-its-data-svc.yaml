@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kwh-its-eform-svc
+  name: kwh-its-data-svc
   labels:
-    app: kwh-its-eform-svc
+    app: kwh-its-data-svc
     app.kubernetes.io/name: spring-boot
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: kwh-its-eform
@@ -11,21 +11,19 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kwh-its-eform-svc
+      app: kwh-its-data-svc
   template:
     metadata:
       labels:
-        app: kwh-its-eform-svc
+        app: kwh-its-data-svc
     spec:
-      nodeSelector:
-        ha-logtype: hostpathlogging
       volumes:
         - name: log-path
           persistentVolumeClaim:
-            claimName: hostpathcldlog-kccclinicalstagprd-pvc
+            claimName: hostpathcldlog-kccclinicaldev-pvc
       containers:
-        - name: kwh-its-eform-svc
-          image: image-registry.openshift-image-registry.svc:5000/kccclinical-stg-prd/kwh-its-eform-svc
+        - name: kwh-its-data-svc
+          image: image-registry.openshift-image-registry.svc:5000/kccclinical-dev/kwh-its-data-svc
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -57,6 +55,16 @@ spec:
           env:
             - name: TZ
               value: Asia/Hong_Kong
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-db-secret
+                  key: mssql.db.user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-db-secret
+                  key: mssql.db.password
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
@@ -96,11 +104,11 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: kwh-its-eform-svc
+  name: kwh-its-data-svc
 spec:
   scaleTargetRef:
     kind: Deployment
-    name: kwh-its-eform-svc
+    name: kwh-its-data-svc
     apiVersion: apps/v1
   minReplicas: 1
   maxReplicas: 3
@@ -121,10 +129,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kwh-its-eform-svc
+  name: kwh-its-data-svc
 spec:
   selector:
-    app: kwh-its-eform-svc
+    app: kwh-its-data-svc
   ports:
     - port: 8080
       targetPort: 8080
@@ -132,9 +140,9 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: kwh-its-eform-svc
+  name: kwh-its-data-svc
 spec:
   port:
     targetPort: 8080
   to:
-    name: kwh-its-eform-svc
+    name: kwh-its-data-svc
