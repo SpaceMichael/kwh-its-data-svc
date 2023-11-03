@@ -1,20 +1,19 @@
-# KWH ITS Eform Service - API Service
+# KWH ITS (Integration Telecommunication System) Data Repository - API Service
 
 | Env.        | Git Branch | Database | URL                                                                                                                                                   |
 | ----------- | ---------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Development | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk                                                                                  |
 | Staging     | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
 | PROD        | main (tag) | kwh_its  | https://kwh-its-data-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
-|             |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
 - [2. Configure Maven](#2-configure-maven)
 - [3. Run `kwh-its-data-svc` container on Docker Desktop at Local Machine](#3-run-kwh-its-data-svc-container-on-docker-desktop-at-local-machine)
-- [4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-mssql-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
-- [5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#5-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
-- [6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#6-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
-- [7. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#7-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
+- [4. Deploy `mssql` to OpenShift at KWH Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-mssql-to-openshift-at-kwh-private-cloud-non-production-kccclinical-dev)
+- [5. Deploy `kwh-its-data-svc` to OpenShift at KWH Private Cloud Non-Production (`kccclinical-dev`)](#5-deploy-kwh-its-data-svc-to-openshift-at-kwh-private-cloud-non-production-kccclinical-dev)
+- [6. Deploy `kwh-its-data-svc` to OpenShift at KWH Private Cloud Production (`kccclinical-stag-prd`)](#6-deploy-kwh-its-data-svc-to-openshift-at-kwh-private-cloud-production-kccclinical-stag-prd)
+- [7. Deploy `kwh-its-data-svc` to OpenShift at KWH Private Cloud Production (`kccclinical-prd`)](#7-deploy-kwh-its-data-svc-to-openshift-at-kwh-private-cloud-production-kccclinical-prd)
 
 ## 1. Configure VS Code
 * Add `envFile` to `.vscode/launch.json` for VS Code Debugger:
@@ -72,19 +71,20 @@
   $ docker logs -f kwh-its-data-svc
   ```
 
-## 4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
-* Tag and Push `mssql` image:
+## 4. Deploy `mssql` to OpenShift at KWH Private Cloud Non-Production (`kccclinical-dev`)
+* Tag and Push `mssql` image to JFrog Docker Registry:
   ```shell
   $ docker pull mcr.microsoft.com/mssql/server:2022-latest
   $ docker tag mcr.microsoft.com/mssql/server:2022-latest artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest
-
   $ docker login -u [username] artifactrepo.server.ha.org.hk:55743
   $ docker push artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest
-  
+  ```
+* Import `mssql` image from JFrog with OC commands:
+  ```shell
   $ oc login -u [username] --server=https://api.cldkwhtst1.server.ha.org.hk:6443
   $ oc project kccclinical-dev
-  $ oc create secret docker-registry jfrog-secret --docker-server artifactrepo.server.ha.org.hk:55743 --docker-username=[serviceusername] --docker-password='[password]' -n kccclinical-dev
   $ oc import-image mssql:2022-latest --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest --insecure --confirm --reference-policy=local -n kccclinical-dev
+  $ oc get is mssql
   ```
 * Deploy `mssql` service with OC commands:
   ```shell
@@ -108,19 +108,22 @@
   $ oc port-forward mssql-689cc8699c-nmt7k 1433:1433
   ```
 
-## 5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
-* Build, Tag and Push `kwh-its-data-svc` image:
+## 5. Deploy `kwh-its-data-svc` to OpenShift at KWH Private Cloud Non-Production (`kccclinical-dev`)
+* Build, Tag and Push `kwh-its-data-svc` image to JFrog Docker Registry:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
   $ docker build -t kwh-its-data-svc .
-  $ docker tag kwh-its-data-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-its-data-svc
-  
-  $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
+  $ docker tag kwh-its-data-svc artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc
+  $ docker login -u [username] artifactrepo.server.ha.org.hk:55743
+  $ docker push artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc
+  ```
+* Import `kwh-its-data-svc` image from JFrog with OC commands:
+  ```shell
+  $ oc login -u [username] --server=https://api.cldkwhtst1.server.ha.org.hk:6443
   $ oc project kccclinical-dev
-  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.tstcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-dev/kwh-its-data-svc
+  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc --insecure --confirm --reference-policy=local -n kccclinical-dev
   $ oc get is kwh-its-data-svc
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
@@ -131,19 +134,22 @@
   $ oc get route
   ```
 
-## 6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
-* Build, Tag and Push `kwh-its-data-svc` image:
+## 6. Deploy `kwh-its-data-svc` to OpenShift at KWH Private Cloud Production (`kccclinical-stag-prd`)
+* Build, Tag and Push `kwh-its-data-svc` image to JFrog Docker Registry:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
-  
+
   $ docker build -t kwh-its-data-svc .
-  $ docker tag default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-its-data-svc
-  
-  $ oc login -u [username] https://api.prdcld61.server.ha.org.hk:6443
+  $ docker tag kwh-its-data-svc artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc
+  $ docker login -u [username] artifactrepo.server.ha.org.hk:55743
+  $ docker push artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc
+  ```
+* Import `kwh-its-data-svc` image from JFrog with OC commands:
+  ```shell
+  $ oc login -u [username] --server=https://api.cldkwhprd1.server.ha.org.hk:6443
   $ oc project kccclinical-stag-prd
-  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.prdcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.prdcld61.server.ha.org.hk/kccclinical-stag-prd/kwh-its-data-svc
+  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc --insecure --confirm --reference-policy=local -n kccclinical-stag-prd
   $ oc get is kwh-its-data-svc
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
@@ -153,19 +159,23 @@
   $ oc logs -f kwh-its-data-svc-57cb8ff78f-qctht
   $ oc get route
   ```
-## 7. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
-* Build, Tag and Push `kwh-its-data-svc` image:
+
+## 7. Deploy `kwh-its-data-svc` to OpenShift at KWH Private Cloud Production (`kccclinical-prd`)
+* Build, Tag and Push `kwh-its-data-svc` image to JFrog Docker Registry:
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
   
   $ docker build -t kwh-its-data-svc .
-  $ docker tag kwh-its-data-svc default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-its-data-svc
-  
-  $ oc login -u [username] https://api.tstcld61.server.ha.org.hk:6443
+  $ docker tag kwh-its-data-svc artifactrepo.server.ha.org.hk:55743/int_docker/projects/kcc-non/intranet/kwh-its-data-svc
+  $ docker login -u [username] artifactrepo.server.ha.org.hk:55743
+  $ docker push artifactrepo.server.ha.org.hk:55743/int_docker/projects/kcc-non/intranet/kwh-its-data-svc
+  ```
+* Import `kwh-its-data-svc` image from JFrog with OC commands:
+  ```shell
+  $ oc login -u [username] --server=https://api.cldkwhprd1.server.ha.org.hk:6443
   $ oc project kccclinical-prd
-  $ docker login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.tstcld61.server.ha.org.hk
-  $ docker push default-route-openshift-image-registry.tstcld61.server.ha.org.hk/kccclinical-prd/kwh-its-data-svc
+  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker/projects/kcc-non/intranet/kwh-its-data-svc --insecure --confirm --reference-policy=local -n kccclinical-prd
   $ oc get is kwh-its-data-svc
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
