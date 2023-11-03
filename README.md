@@ -2,7 +2,7 @@
 
 | Env.        | Git Branch | Database | URL                                                                                                                                                   |
 | ----------- | ---------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Development | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.tstcld61.server.ha.org.hk                                                                                    |
+| Development | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk                                                                                  |
 | Staging     | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
 | PROD        | main (tag) | kwh_its  | https://kwh-its-data-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
 |             |
@@ -11,14 +11,10 @@
 - [1. Configure VS Code](#1-configure-vs-code)
 - [2. Configure Maven](#2-configure-maven)
 - [3. Run `kwh-its-data-svc` container on Docker Desktop at Local Machine](#3-run-kwh-its-data-svc-container-on-docker-desktop-at-local-machine)
-- [4. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
 - [4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#4-deploy-mssql-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
 - [5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)](#5-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-non-production-kccclinical-dev)
-- [5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#5-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
 - [6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)](#6-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-staging-production-kccclinical-stag-prd)
-- [6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#6-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
 - [7. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)](#7-deploy-kwh-its-data-svc-to-openshift-at-ha-private-cloud-production-kccclinical-prd)
->>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
 
 ## 1. Configure VS Code
 * Add `envFile` to `.vscode/launch.json` for VS Code Debugger:
@@ -76,10 +72,6 @@
   $ docker logs -f kwh-its-data-svc
   ```
 
-<<<<<<< HEAD
-## 4. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
-* Build, Tag and Push `kwh-its-data-svc` image:
-=======
 ## 4. Deploy `mssql` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
 * Tag and Push `mssql` image:
   ```shell
@@ -118,7 +110,6 @@
 
 ## 5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Non-Production (`kccclinical-dev`)
 * Build, Tag and Push `kwh-its-data-svc` image:
->>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
@@ -140,13 +131,8 @@
   $ oc get route
   ```
 
-<<<<<<< HEAD
-## 5. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
-* Build, Tag and Push `kwh-its-data-svc` image:
-=======
 ## 6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud (Staging) Production (`kccclinical-stag-prd`)
 * Build, Tag and Push `kwh-its-data-svc` image:
->>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
@@ -167,14 +153,8 @@
   $ oc logs -f kwh-its-data-svc-57cb8ff78f-qctht
   $ oc get route
   ```
-
-<<<<<<< HEAD
-## 6. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
-* Build, Tag and Push `kwh-its-data-svc` image:
-=======
 ## 7. Deploy `kwh-its-data-svc` to OpenShift at HA Private Cloud Production (`kccclinical-prd`)
 * Build, Tag and Push `kwh-its-data-svc` image:
->>>>>>> 614fc30c1e38ae9ead05f2b521b58e13ebc606fb
   ```shell
   $ mvn clean install
   # $ mvn clean install -DskipTests
