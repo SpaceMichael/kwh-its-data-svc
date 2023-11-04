@@ -65,7 +65,7 @@ jobs:
         continue-on-error: true
 
       - name: Import image from JFrog to OpenShift
-        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --insecure --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
+        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
 
       - name: Create resources from configuration file
         run: oc apply -f openshift-stg\${{ env.APP_NAME }}.yaml
@@ -94,7 +94,7 @@ jobs:
         continue-on-error: true
 
       - name: Import image from JFrog to OpenShift
-        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --insecure --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
+        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
 
       - name: Create resources from configuration file
         run: oc apply -f openshift-stg\${{ env.APP_NAME }}.yaml

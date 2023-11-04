@@ -1,10 +1,10 @@
 # KWH ITS (Integration Telecommunication System) Data Repository - API Service
 
-| Env.        | Git Branch | Database | URL                                                                                                                                                   |
-| ----------- | ---------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Development | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk                                                                                  |
-| Staging     | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-stag-prd.prdcld71.server.ha.org.hk |
-| PROD        | main (tag) | kwh_its  | https://kwh-its-data-svc-kccclinical-prd.prdcld61.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-prd.prdcld71.server.ha.org.hk           |
+| Env.        | Git Branch | Database | URL                                                                                                                                                       |
+| ----------- | ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Development | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk                                                                                      |
+| Staging     | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-stag-prd.cldkwhprd1.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-stag-prd.cldqehprd1.server.ha.org.hk |
+| PROD        | main (tag) | kwh_its  | https://kwh-its-data-svc-kccclinical-prd.cldkwhprd1.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-prd.cldqehprd1.server.ha.org.hk           |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
@@ -83,7 +83,7 @@
   ```shell
   $ oc login -u [username] --server=https://api.cldkwhtst1.server.ha.org.hk:6443
   $ oc project kccclinical-dev
-  $ oc import-image mssql:2022-latest --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest --insecure --confirm --reference-policy=local -n kccclinical-dev
+  $ oc import-image mssql:2022-latest --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/mssql:2022-latest --confirm --reference-policy=local -n kccclinical-dev
   $ oc get is mssql
   ```
 * Deploy `mssql` service with OC commands:
@@ -123,7 +123,7 @@
   ```shell
   $ oc login -u [username] --server=https://api.cldkwhtst1.server.ha.org.hk:6443
   $ oc project kccclinical-dev
-  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc --insecure --confirm --reference-policy=local -n kccclinical-dev
+  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc --confirm --reference-policy=local -n kccclinical-dev
   $ oc get is kwh-its-data-svc
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
@@ -149,7 +149,7 @@
   ```shell
   $ oc login -u [username] --server=https://api.cldkwhprd1.server.ha.org.hk:6443
   $ oc project kccclinical-stag-prd
-  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc --insecure --confirm --reference-policy=local -n kccclinical-stag-prd
+  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker_dev/projects/kcc-non/intranet/kwh-its-data-svc --confirm --reference-policy=local -n kccclinical-stag-prd
   $ oc get is kwh-its-data-svc
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
@@ -175,7 +175,7 @@
   ```shell
   $ oc login -u [username] --server=https://api.cldkwhprd1.server.ha.org.hk:6443
   $ oc project kccclinical-prd
-  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker/projects/kcc-non/intranet/kwh-its-data-svc --insecure --confirm --reference-policy=local -n kccclinical-prd
+  $ oc import-image kwh-its-data-svc --from artifactrepo.server.ha.org.hk:55743/int_docker/projects/kcc-non/intranet/kwh-its-data-svc --confirm --reference-policy=local -n kccclinical-prd
   $ oc get is kwh-its-data-svc
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:

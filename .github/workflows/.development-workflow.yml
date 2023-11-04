@@ -65,7 +65,7 @@ jobs:
         continue-on-error: true
 
       - name: Import image from JFrog to OpenShift
-        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_DEV }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --insecure --confirm --reference-policy=local -n ${{ vars.NAMESPACE_DEV }}
+        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_DEV }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_DEV }}
 
       - name: Create resources from configuration file
         run: oc apply -f openshift-dev\${{ env.APP_NAME }}.yaml
