@@ -29,8 +29,8 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
   public BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto) {
     BedCleansingRequest bedCleansingRequest = this.bedCleansingRequestMapper
         .BedCleansingRequestDtoToBedCleansingRequest(bedCleansingRequestDto);
-    if (bedCleansingRequestDto.getBedChecked() != null) {
-      bedCleansingRequest.setBedChecked(false);
+    if (bedCleansingRequestDto.getWholeBed() != null) {
+      bedCleansingRequest.setWholeBed(false);
     }
     if (bedCleansingRequestDto.getActiveFlag() != null) {
       bedCleansingRequest.setActiveFlag(true);
@@ -86,8 +86,8 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
       bedCleansingRequest.setCubicle(bedCleansingRequestDto.getCubicle());
     }
 
-    if (bedCleansingRequestDto.getBedChecked() != null) {
-      bedCleansingRequest.setBedChecked(bedCleansingRequestDto.getBedChecked());
+    if (bedCleansingRequestDto.getWholeBed() != null) {
+      bedCleansingRequest.setWholeBed(bedCleansingRequestDto.getWholeBed());
     }
 
     if (bedCleansingRequestDto.getBedNo() != null) {
