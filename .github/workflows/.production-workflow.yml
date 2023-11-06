@@ -46,7 +46,7 @@ jobs:
       IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
   deploy-prd-c1:
-    name: Deploy (Production primary)
+    name: Deploy (PROD primary)
     needs: build-container
     runs-on: [self-hosted]
     env:
@@ -76,7 +76,7 @@ jobs:
         run: oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_PRD }}
 
   deploy-prd-c2:
-    name: Deploy (Production secondary)
+    name: Deploy (PROD secondary)
     needs: [build-container]
     runs-on: [self-hosted]
     env:

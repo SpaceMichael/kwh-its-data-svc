@@ -47,7 +47,7 @@ jobs:
       IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
   deploy-dev-c1:
-    name: Deploy (Development primary)
+    name: Deploy (DEV primary)
     needs: build-container
     runs-on: [self-hosted]
     env:
