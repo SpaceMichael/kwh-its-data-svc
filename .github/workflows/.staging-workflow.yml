@@ -60,15 +60,11 @@ jobs:
           oc login --token=${{ secrets.ECP_SA_TOKEN_STG_C1 }} --server=${{ vars.CLUSTER_URL_STG_C1 }}
           oc project ${{ vars.NAMESPACE_STG }}
 
-      # - name: Create JFrog Secret
-      #   run: oc create secret docker-registry jfrog-secret --docker-server ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }} --docker-username=${{ secrets.ARTIFACTORY_USER_STG }} --docker-password='${{ secrets.ARTIFACTORY_PASSWORD_STG }}' --docker-email=${{ secrets.ARTIFACTORY_EMAIL_STG }} -n ${{ vars.NAMESPACE_STG }}
-      #   continue-on-error: true
-
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
 
       - name: Update image tag in YAML configuration file
-        run: (Get-Content openshift\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift\${{ env.APP_NAME }}.yaml
+        run: (Get-Content openshift-stg\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift-stg\${{ env.APP_NAME }}.yaml
 
       - name: Create resources from YAML configuration file
         run: oc apply -f openshift-stg\${{ env.APP_NAME }}.yaml
@@ -90,15 +86,11 @@ jobs:
           oc login --token=${{ secrets.ECP_SA_TOKEN_STG_C2 }} --server=${{ vars.CLUSTER_URL_STG_C2 }}
           oc project ${{ vars.NAMESPACE_STG }}
 
-      # - name: Create JFrog Secret
-      #   run: oc create secret docker-registry jfrog-secret --docker-server ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }} --docker-username=${{ secrets.ARTIFACTORY_USER_STG }} --docker-password='${{ secrets.ARTIFACTORY_PASSWORD_STG }}' --docker-email=${{ secrets.ARTIFACTORY_EMAIL_STG }} -n ${ vars.NAMESPACE_STG }}
-      #   continue-on-error: true
-
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
 
       - name: Update image tag in YAML configuration file
-        run: (Get-Content openshift\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift\${{ env.APP_NAME }}.yaml
+        run: (Get-Content openshift-stg\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift-stg\${{ env.APP_NAME }}.yaml
 
       - name: Create resources from YAML configuration file
         run: oc apply -f openshift-stg\${{ env.APP_NAME }}.yaml

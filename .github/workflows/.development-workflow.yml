@@ -60,10 +60,6 @@ jobs:
           oc login --token=${{ secrets.ECP_SA_TOKEN_DEV_C1 }} --server=${{ vars.CLUSTER_URL_DEV_C1 }}
           oc project ${{ vars.NAMESPACE_DEV }}
 
-      # - name: Create JFrog Secret
-      #   run: oc create secret docker-registry jfrog-secret --docker-server ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }} --docker-username=${{ secrets.ARTIFACTORY_USER_DEV }} --docker-password='${{ secrets.ARTIFACTORY_PASSWORD_DEV }}' -n ${{ vars.NAMESPACE_DEV }}
-      #   continue-on-error: true
-
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_DEV }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_DEV }}
 
