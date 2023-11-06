@@ -17,6 +17,8 @@ jobs:
     env:
       MAVEN_CONFIG: ${{ secrets.MAVEN_CONFIG }}
     steps:
+      - run: echo "selected runner = ${{ runner.name }}"
+
       - uses: actions/checkout@v3
 
       - name: Create Maven configuration file
@@ -26,11 +28,13 @@ jobs:
 
       - name: Build source with Maven
         run: mvn clean install
+    outputs:
+      RUNNER: ${{ runner.name }}
 
   build-container:
     name: Build container
     needs: build-artifact
-    runs-on: [self-hosted]
+    runs-on: ${{needs.build-artifact.outputs.RUNNER}}
     steps:
       - name: Generate image tag
         run: echo "IMAGE_TAG=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_ENV
