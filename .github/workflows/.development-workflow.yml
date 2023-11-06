@@ -60,17 +60,17 @@ jobs:
           oc login --token=${{ secrets.ECP_SA_TOKEN_DEV_C1 }} --server=${{ vars.CLUSTER_URL_DEV_C1 }}
           oc project ${{ vars.NAMESPACE_DEV }}
 
-      - name: Create JFrog Secret
-        run: oc create secret docker-registry jfrog-secret --docker-server ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }} --docker-username=${{ secrets.ARTIFACTORY_USER_DEV }} --docker-password='${{ secrets.ARTIFACTORY_PASSWORD_DEV }}' --docker-email=${{ secrets.ARTIFACTORY_EMAIL_DEV }} -n ${{ vars.NAMESPACE_DEV }}
-        continue-on-error: true
+      # - name: Create JFrog Secret
+      #   run: oc create secret docker-registry jfrog-secret --docker-server ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }} --docker-username=${{ secrets.ARTIFACTORY_USER_DEV }} --docker-password='${{ secrets.ARTIFACTORY_PASSWORD_DEV }}' -n ${{ vars.NAMESPACE_DEV }}
+      #   continue-on-error: true
 
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_DEV }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_DEV }}
 
-      - name: Update image tag in configuration file
+      - name: Update image tag in YAML configuration file
         run: (Get-Content openshift-dev\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift-dev\${{ env.APP_NAME }}.yaml
 
-      - name: Create resources from configuration file
+      - name: Create resources from YAML configuration file
         run: oc apply -f openshift-dev\${{ env.APP_NAME }}.yaml
 
       - name: Check Rollout Status
