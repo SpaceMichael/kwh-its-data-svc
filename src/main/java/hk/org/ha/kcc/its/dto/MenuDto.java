@@ -6,13 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MenuServiceDto {
+public class MenuDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer id; // e.g 1? or use Prefixed?
@@ -39,6 +37,11 @@ public class MenuServiceDto {
     private Boolean enable;
 
     private String barcodeKey;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String url2; // e.g service url for cleaner use
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String title2; // e.g "Bed Cleansing status" may be not use
 }
 
 /*

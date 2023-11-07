@@ -1,21 +1,22 @@
 package hk.org.ha.kcc.its.service;
 
 import java.util.List;
-import hk.org.ha.kcc.its.dto.MenuServiceDto;
+
+import hk.org.ha.kcc.its.dto.MenuDto;
 
 public interface MenuService {
 
   // create new
-  MenuServiceDto create(MenuServiceDto menuServiceDto);
+  MenuDto create(MenuDto menuDto);
 
   // get All
-  List<MenuServiceDto> getAllDto();
+  List<MenuDto> getAllDto();
 
   // get by ID
-  MenuServiceDto getDtoById(Integer id);
+  MenuDto getDtoById(Integer id);
 
   // update by ID\
-  MenuServiceDto updateById(Integer id, MenuServiceDto menuServiceDto);
+  MenuDto updateById(Integer id, MenuDto menuDto);
 
   // delete by ID
   void deleteById(Integer id);

@@ -12,12 +12,13 @@ import org.springframework.stereotype.Service;
 public class EformServiceImpl implements EformService {
 
 
+    @Autowired
     private MenuService menuService;
 
-    @Autowired
+ /*   @Autowired
     public void setMenuService(MenuService menuService) {
         this.menuService = menuService;
-    }
+    }*/
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
@@ -33,14 +34,28 @@ public class EformServiceImpl implements EformService {
             List<FormDto> forms = new ArrayList<>();
             // forms.add(FormDto.builder().title("Bed
             // Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest").build());
+
+            // get menuService by title= Bed Cleansing id =1
+
+            // use the menuServiceDto to fill the forms field with url
+
             forms.add(FormDto.builder().title("Bed Cleansing")
+                    .description("Request form")
+                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
+                    .icon(iconBedCleansing).build());
+            forms.add(FormDto.builder().title("Bed Cleansing")
+                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingMenu")
+                    .icon(iconBedCleansing).build());
+
+            /*forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("Request form")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
                     .icon(iconBedCleansing).build());
             forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingMenu")
-                    .icon(iconBedCleansing).build());
+                    .icon(iconBedCleansing).build());*/
+
             // remove barcode in the forms
 
 
@@ -56,16 +71,16 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
-            // get all the meunservice and fill the forms field
-            List<MenuServiceDto> menuServiceDtos = this.menuService.getAllDto();
-            for (MenuServiceDto menuServiceDto : menuServiceDtos) {
-                forms.add(FormDto.builder().title(menuServiceDto.getTitle())
-                        .description(menuServiceDto.getDescription())
-                        .url(menuServiceDto.getUrl())
-                        .icon(menuServiceDto.getIcon()).build());
+            // get all the menu and fill the forms field
+            List<MenuDto> menuDtoList = this.menuService.getAllDto();
+            for (MenuDto menuDto : menuDtoList) {
+                forms.add(FormDto.builder().title(menuDto.getTitle())
+                        .description(menuDto.getDescription())
+                        .url(menuDto.getUrl())
+                        .icon(menuDto.getIcon()).build());
             }
 
-            /*forms.add(FormDto.builder()
+      /*      forms.add(FormDto.builder()
                     .title("Bed Cleansing")
                     .description("Request form")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing")
@@ -78,7 +93,7 @@ public class EformServiceImpl implements EformService {
                     .title("Lab Report Tracker")
                     .description("Request form, Report search")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport")
-                    .icon(iconLabReport).build()); */
+                    .icon(iconLabReport).build());*/
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
             return ResponseEntity.ok().body(eformResponseDto);
         }

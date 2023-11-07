@@ -1,78 +1,81 @@
 package hk.org.ha.kcc.its.service;
 
+import hk.org.ha.kcc.its.dto.MenuDto;
+import hk.org.ha.kcc.its.mapper.MenuMapper;
+import hk.org.ha.kcc.its.model.Menu;
+import hk.org.ha.kcc.its.repository.MenuRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-
-import hk.org.ha.kcc.its.dto.MenuServiceDto;
-import hk.org.ha.kcc.its.mapper.MenuServiceMapper;
-import org.springframework.stereotype.Service;
-import hk.org.ha.kcc.its.repository.MenuRepository;
-import org.springframework.transaction.annotation.Transactional;
-
 @Service
-@Transactional
-public class MenuServiceImpl implements hk.org.ha.kcc.its.service.MenuService {
-
+public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
 
-    private final MenuServiceMapper menuMapper;
+    private final MenuMapper menuMapper;
 
-    public MenuServiceImpl(MenuRepository menuRepository, MenuServiceMapper menuMapper) {
+    public MenuServiceImpl(MenuRepository menuRepository, MenuMapper menuMapper) {
         this.menuRepository = menuRepository;
         this.menuMapper = menuMapper;
     }
 
     @Override
-    public MenuServiceDto create(MenuServiceDto menuServiceDto) {
-        hk.org.ha.kcc.its.model.MenuService menuService = this.menuMapper.MenuDtoToMenu(menuServiceDto);
+    public MenuDto create(MenuDto menuDto) {
+        Menu menu = this.menuMapper.MenuDtoToMenu(menuDto);
         // this.menuRepository.save(menu);
-        return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menuService));
+        return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
     }
 
     @Override
-    public List<MenuServiceDto> getAllDto() {
-        List<hk.org.ha.kcc.its.model.MenuService> menuServiceList = this.menuRepository.findAll();
-        return menuServiceList.stream().map(menuMapper::MenuToMenuDto)
+    public List<MenuDto> getAllDto() {
+        List<Menu> menuList = this.menuRepository.findAll();
+        return menuList.stream().map(menuMapper::MenuToMenuDto)
                 .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
-    public MenuServiceDto getDtoById(Integer id) {
-        hk.org.ha.kcc.its.model.MenuService menuService = this.menuRepository.findById(id)
+    public MenuDto getDtoById(Integer id) {
+        Menu menu = this.menuRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu not found"));
-        return this.menuMapper.MenuToMenuDto(menuService);
+        return this.menuMapper.MenuToMenuDto(menu);
     }
 
     @Override
-    public MenuServiceDto updateById(Integer id, MenuServiceDto menuServiceDto) {
-        hk.org.ha.kcc.its.model.MenuService menuService = this.menuRepository.findById(id)
+    public MenuDto updateById(Integer id, MenuDto menuDto) {
+        Menu menu = this.menuRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu not found"));
-        if (menuServiceDto.getTitle() != null) {
-            menuService.setTitle(menuServiceDto.getTitle());
+        if (menuDto.getTitle() != null) {
+            menu.setTitle(menuDto.getTitle());
         }
-        if (menuServiceDto.getDescription() != null) {
-            menuService.setDescription(menuServiceDto.getDescription());
+        if (menuDto.getDescription() != null) {
+            menu.setDescription(menuDto.getDescription());
         }
-        if (menuServiceDto.getRemarks() != null) {
-            menuService.setRemarks(menuServiceDto.getRemarks());
+        if (menuDto.getRemarks() != null) {
+            menu.setRemarks(menuDto.getRemarks());
         }
-        if (menuServiceDto.getIcon() != null) {
-            menuService.setIcon(menuServiceDto.getIcon());
+        if (menuDto.getIcon() != null) {
+            menu.setIcon(menuDto.getIcon());
         }
-        if (menuServiceDto.getUrl() != null) {
-            menuService.setUrl(menuServiceDto.getUrl());
+        if (menuDto.getUrl() != null) {
+            menu.setUrl(menuDto.getUrl());
         }
-        if (menuServiceDto.getActiveFlag() != null) {
-            menuService.setActiveFlag(menuServiceDto.getActiveFlag());
+        if (menuDto.getActiveFlag() != null) {
+            menu.setActiveFlag(menuDto.getActiveFlag());
         }
-        if (menuServiceDto.getEnable() != null) {
-            menuService.setEnable(menuServiceDto.getEnable());
+        if (menuDto.getEnable() != null) {
+            menu.setEnable(menuDto.getEnable());
         }
-        if (menuServiceDto.getBarcodeKey() != null) {
-            menuService.setBarcodeKey(menuServiceDto.getBarcodeKey());
+        if (menuDto.getBarcodeKey() != null) {
+            menu.setBarcodeKey(menuDto.getBarcodeKey());
         }
-        menuService.setActiveFlag(menuServiceDto.getActiveFlag());
-        return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menuService));
+        if (menuDto.getUrl2() !=null){
+            menu.setUrl2(menuDto.getUrl2());
+        }
+        if (menuDto.getTitle2() !=null){
+            menu.setTitle2(menuDto.getTitle2());
+        }
+        menu.setActiveFlag(menuDto.getActiveFlag());
+        return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
 
         /*
          * private String title; // Bed Cleansing private String description; // e.g "Request form" ,
