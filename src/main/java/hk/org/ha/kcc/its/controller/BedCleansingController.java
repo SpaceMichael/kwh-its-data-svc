@@ -82,7 +82,7 @@ public class BedCleansingController {
       @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
     String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
     log.debug("update by id: " + id + "by: " + currentAuditor);
-    return this.bedCleansingRequestService.update(id, bedCleansingRequestDto);
+    return this.bedCleansingRequestService.updateById(id, bedCleansingRequestDto);
   }
 
   // delete by id
@@ -92,6 +92,6 @@ public class BedCleansingController {
   public void deleteBCRequestById(@PathVariable String id) {
     String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
     log.debug("delete by id: " + id + "by: " + currentAuditor);
-    this.bedCleansingRequestService.delete(id);
+    this.bedCleansingRequestService.deleteById(id);
   }
 }

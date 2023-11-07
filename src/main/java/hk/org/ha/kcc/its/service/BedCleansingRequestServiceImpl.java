@@ -6,8 +6,9 @@ import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
 import hk.org.ha.kcc.its.mapper.BedCleansingRequestMapper;
 import hk.org.ha.kcc.its.model.BedCleansingRequest;
 import hk.org.ha.kcc.its.repository.BedCleansingServiceRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +40,9 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         if (bedCleansingRequestDto.getActiveFlag() == null) {
             bedCleansingRequest.setActiveFlag(true);
         }
-        this.bedCleansingServiceRepository.save(bedCleansingRequest);
+        BedCleansingRequest bedCleansingRequest1 = this.bedCleansingServiceRepository.save(bedCleansingRequest);
         return this.bedCleansingRequestMapper
-                .BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest);
+                .BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest1);
     }
 
     @Override
@@ -60,17 +61,17 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         // Use findById() to get the record from the table. If not found, throw
         // ResourceNotFoundException
         BedCleansingRequest bedCleansingRequest =
-                (BedCleansingRequest) this.bedCleansingServiceRepository.findById(id)
+                this.bedCleansingServiceRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
         return this.bedCleansingRequestMapper
                 .BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest);
     }
 
     @Override
-    public BedCleansingRequestDto update(String id, BedCleansingRequestDto bedCleansingRequestDto) {
+    public BedCleansingRequestDto updateById(String id, BedCleansingRequestDto bedCleansingRequestDto) {
         // get by id , if is not exist, throw ResourceNotFoundException
         BedCleansingRequest bedCleansingRequest =
-                (BedCleansingRequest) this.bedCleansingServiceRepository.findById(id)
+                this.bedCleansingServiceRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
 
         // update by dto
@@ -110,14 +111,10 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
             bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus());
         }
 
-  /*  if (bedCleansingRequestDto.getRequestor() != null) {
-      bedCleansingRequest.setRequestor(bedCleansingRequestDto.getRequestor());
-    }
-
+  /*
     if (bedCleansingRequestDto.getRequestorName() != null) {
       bedCleansingRequest.setRequestorName(bedCleansingRequestDto.getRequestorName());
     }*/
-
         if (bedCleansingRequestDto.getRequestorContactNo() != null) {
             bedCleansingRequest.setRequestorContactNo(bedCleansingRequestDto.getRequestorContactNo());
         }
@@ -135,7 +132,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     }
 
     @Override
-    public void delete(String id) {
+    public void deleteById(String id) {
         try {
             this.bedCleansingServiceRepository.deleteById(id);
         } catch (DataRetrievalFailureException e) {
