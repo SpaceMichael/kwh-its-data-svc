@@ -22,10 +22,10 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
-        String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
+      /*  String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
         String iconBedCleansing = serverAddress + "/iconBedCleansing.png";
         String iconDrugDispensing = serverAddress + "/iconDrugDispensing.png";
-        String iconLabReport = serverAddress + "/iconLabReport.png";
+        String iconLabReport = serverAddress + "/iconLabReport.png";*/
 
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
@@ -35,17 +35,18 @@ public class EformServiceImpl implements EformService {
             // forms.add(FormDto.builder().title("Bed
             // Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest").build());
 
-            // get menuService by title= Bed Cleansing id =1
-
+            // get menuService by title= Bed Cleansing id =1 for hardcode test
+            MenuDto menuDto = this.menuService.getDtoById(1);
             // use the menuServiceDto to fill the forms field with url
+            forms.add(FormDto.builder().title(menuDto.getTitle())
+                    .description(menuDto.getDescription())
+                    .url(menuDto.getUrl())
+                    .icon(menuDto.getIcon()).build());
 
-            forms.add(FormDto.builder().title("Bed Cleansing")
-                    .description("Request form")
-                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
-                    .icon(iconBedCleansing).build());
-            forms.add(FormDto.builder().title("Bed Cleansing")
-                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingMenu")
-                    .icon(iconBedCleansing).build());
+            // use the menuServiceDto to fill the forms field with url2 no description
+            forms.add(FormDto.builder().title(menuDto.getTitle())
+                    .url(menuDto.getUrl2())
+                    .icon(menuDto.getIcon()).build());
 
             /*forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("Request form")

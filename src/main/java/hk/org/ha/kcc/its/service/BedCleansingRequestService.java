@@ -7,7 +7,7 @@ public interface BedCleansingRequestService {
 
   BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto);
 
-  List<BedCleansingRequestDto> getAllDto();
+  List<BedCleansingRequestDto> getAllDto(String ward, String cubicle, String bed);
 
   BedCleansingRequestDto getDtoById(String id);
 

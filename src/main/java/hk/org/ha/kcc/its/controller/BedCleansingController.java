@@ -4,16 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
@@ -59,10 +50,12 @@ public class BedCleansingController {
     @Operation(summary = "Get list of BedCleansingRequest")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<BedCleansingRequestDto> getAllBCRequest() {
+    public Iterable<BedCleansingRequestDto> getAllBCRequest(@RequestParam(required = false) String ward,
+                                                            @RequestParam(required = false) String cubicle,
+                                                            @RequestParam(required = false) String bed) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get all by: " + currentAuditor);
-        return this.bedCleansingRequestService.getAllDto();
+        return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed);
     }
 
     // get by id
