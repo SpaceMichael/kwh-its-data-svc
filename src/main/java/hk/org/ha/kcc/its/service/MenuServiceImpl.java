@@ -22,14 +22,19 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuDto create(MenuDto menuDto) {
         Menu menu = this.menuMapper.MenuDtoToMenu(menuDto);
-        // this.menuRepository.save(menu);
+        if (menuDto.getActiveFlag() == null) {
+            menu.setActiveFlag(true);
+        }
+        if (menuDto.getEnable() == null) {
+            menu.setEnable(true);
+        }
         return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
     }
 
     @Override
     public List<MenuDto> getAllDto() {
         List<Menu> menuList = this.menuRepository.findAll();
-        return menuList.stream().map(menuMapper::MenuToMenuDto)
+        return menuList.stream().map(menuMapper::MenuToMenuDto).filter(MenuDto::getActiveFlag)
                 .collect(java.util.stream.Collectors.toList());
     }
 
@@ -68,10 +73,10 @@ public class MenuServiceImpl implements MenuService {
         if (menuDto.getBarcodeKey() != null) {
             menu.setBarcodeKey(menuDto.getBarcodeKey());
         }
-        if (menuDto.getUrl2() !=null){
+        if (menuDto.getUrl2() != null) {
             menu.setUrl2(menuDto.getUrl2());
         }
-        if (menuDto.getTitle2() !=null){
+        if (menuDto.getTitle2() != null) {
             menu.setTitle2(menuDto.getTitle2());
         }
         menu.setActiveFlag(menuDto.getActiveFlag());

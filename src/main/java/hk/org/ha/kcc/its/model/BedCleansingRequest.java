@@ -26,7 +26,7 @@ import org.hibernate.envers.Audited;
 @AllArgsConstructor
 @Builder
 @Entity
-//@Audited
+@Audited
 @Table(name = "bed_cleansing_request")
 public class BedCleansingRequest extends Auditable {
 

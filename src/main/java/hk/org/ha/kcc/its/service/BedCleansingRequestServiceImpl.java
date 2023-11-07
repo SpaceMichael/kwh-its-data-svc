@@ -49,6 +49,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     public List<BedCleansingRequestDto> getAllDto(String ward, String cubicle, String bed) {
         // use findAll() to get all the records from the table and filter ward, cubicle, bed if they are not null, and request.ward, cubicle, bed !=null
         List<BedCleansingRequest> bedCleansingRequestList = bedCleansingServiceRepository.findAll().stream()
+                .filter(BedCleansingRequest::getActiveFlag)
                 .filter(request -> ward == null || (request.getWard() != null && request.getWard().equals(ward)))
                 .filter(request -> cubicle == null || (request.getCubicle() != null && request.getCubicle().equals(cubicle)))
                 .filter(request -> bed == null || (request.getBedNo() != null && request.getBedNo().equals(bed)))

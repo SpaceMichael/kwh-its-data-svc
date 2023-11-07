@@ -15,6 +15,9 @@ public class EformServiceImpl implements EformService {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private BedCleansingRequestService bedCleansingRequestService;
+
  /*   @Autowired
     public void setMenuService(MenuService menuService) {
         this.menuService = menuService;
@@ -57,14 +60,21 @@ public class EformServiceImpl implements EformService {
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingMenu")
                     .icon(iconBedCleansing).build());*/
 
-            // remove barcode in the forms
-
-
+            // get bed cleansing request id =BC-2300033 for hardcode test
+            BedCleansingRequestDto bedCleansingRequestDto = bedCleansingRequestService.getDtoById("BC-2300033");
             DetailDto details = new DetailDto();
-            details.setType("bed");
+            // and fill the details field
+            details.setType(bedCleansingRequestDto.getBedType());
+            details.setData(DetailDataDto.builder()
+                    .ward(bedCleansingRequestDto.getWard())
+                    .cubicle(bedCleansingRequestDto.getCubicle())
+                    .bedNo(bedCleansingRequestDto.getBedNo())
+                    .bedChecked(bedCleansingRequestDto.getWholeBed())
+                    .build());
+            /*details.setType("bed");
             // details.setData(DetailDataDto.builder().dept("M&G").ward("16A1").bedNo("10").build());
             details.setData(DetailDataDto.builder().ward("12BM").cubicle("1").bedNo("1-02")
-                    .bedChecked(false).build());
+                    .bedChecked(false).build());*/
             eformResponseDto.setData(DataDto.builder().forms(forms).details(details).build());
             // return eformResponseDto;
             return ResponseEntity.ok(eformResponseDto);
