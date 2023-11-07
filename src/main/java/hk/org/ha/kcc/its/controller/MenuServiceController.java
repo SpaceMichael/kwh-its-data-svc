@@ -49,7 +49,7 @@ public class MenuServiceController {
     @ResponseStatus(HttpStatus.OK)
     public MenuServiceDto updateMenu(@PathVariable Integer id, @RequestBody MenuServiceDto menuServiceDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("updateMenu by : " + currentAuditor);
+        log.debug("updateMenu id: " + id + " by : " + currentAuditor);
         return this.menuService.updateById(id, menuServiceDto);
     }
 
@@ -69,7 +69,7 @@ public class MenuServiceController {
     @ResponseStatus(HttpStatus.OK)
     public MenuServiceDto getMenuById(@PathVariable Integer id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("getMenuById by : " + currentAuditor);
+        log.debug("getMenuById id:" + id + " by : " + currentAuditor);
         return this.menuService.getDtoById(id);
     }
 
@@ -79,7 +79,7 @@ public class MenuServiceController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteMenuById(@PathVariable Integer id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("deleteMenuById by : " + currentAuditor);
+        log.debug("deleteMenuById id:" + id + " by : " + currentAuditor);
         this.menuService.deleteById(id);
     }
 }

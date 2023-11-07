@@ -1,6 +1,7 @@
 package hk.org.ha.kcc.its.controller;
 
 import java.lang.invoke.MethodHandles;
+
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,70 +29,70 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(BedCleansingController.BASE_URL)
 public class BedCleansingController {
 
-  private static final AlsXLogger log =
-      AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
-  public static final String BASE_URL = "/api/v1/bed-cleansing/requests";
+    private static final AlsXLogger log =
+            AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+    public static final String BASE_URL = "/api/v1/bed-cleansing/requests";
 
-  private final BedCleansingRequestService bedCleansingRequestService;
+    private final BedCleansingRequestService bedCleansingRequestService;
 
-  private final AuditorAware<String> auditorAware;
+    private final AuditorAware<String> auditorAware;
 
 
-  public BedCleansingController(BedCleansingRequestService bedCleansingRequestService,
-                                AuditorAware<String> auditorAware) {
-    this.bedCleansingRequestService = bedCleansingRequestService;
-    this.auditorAware = auditorAware;
-  }
+    public BedCleansingController(BedCleansingRequestService bedCleansingRequestService,
+                                  AuditorAware<String> auditorAware) {
+        this.bedCleansingRequestService = bedCleansingRequestService;
+        this.auditorAware = auditorAware;
+    }
 
-  // post BedCleansing
-  @Operation(summary = "Create new BedCleansingRequest")
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public BedCleansingRequestDto createBCRequest(
-      @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
-    String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-    log.debug("create by: " + currentAuditor);
-    return this.bedCleansingRequestService.create(bedCleansingRequestDto);
-  }
+    // post BedCleansing
+    @Operation(summary = "Create new BedCleansingRequest")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BedCleansingRequestDto createBCRequest(
+            @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("create by: " + currentAuditor);
+        return this.bedCleansingRequestService.create(bedCleansingRequestDto);
+    }
 
-  // get all
-  @Operation(summary = "Get list of BedCleansingRequest")
-  @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  public Iterable<BedCleansingRequestDto> getAllBCRequest() {
-    String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-    log.debug("get all by: " + currentAuditor);
-    return this.bedCleansingRequestService.getAllDto();
-  }
+    // get all
+    @Operation(summary = "Get list of BedCleansingRequest")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Iterable<BedCleansingRequestDto> getAllBCRequest() {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("get all by: " + currentAuditor);
+        return this.bedCleansingRequestService.getAllDto();
+    }
 
-  // get by id
-  @Operation(summary = "Get the BedCleansingRequest by id")
-  @GetMapping(value = "/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public BedCleansingRequestDto getBCRequestById(@PathVariable String id) {
-    String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-    log.debug("get by id: " + id + "by: " + currentAuditor);
-    return this.bedCleansingRequestService.getDtoById(id);
-  }
+    // get by id
+    @Operation(summary = "Get the BedCleansingRequest by id")
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BedCleansingRequestDto getBCRequestById(@PathVariable String id) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("get by id: " + id + " by: " + currentAuditor);
+        return this.bedCleansingRequestService.getDtoById(id);
+    }
 
-  // patch by id
-  @Operation(summary = "Update the BedCleansingRequest by id")
-  @PatchMapping(value = "/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public BedCleansingRequestDto updateBCRequestById(@PathVariable String id,
-      @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
-    String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-    log.debug("update by id: " + id + "by: " + currentAuditor);
-    return this.bedCleansingRequestService.updateById(id, bedCleansingRequestDto);
-  }
+    // patch by id
+    @Operation(summary = "Update the BedCleansingRequest by id")
+    @PatchMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BedCleansingRequestDto updateBCRequestById(@PathVariable String id,
+                                                      @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("update by id: " + id + " by: " + currentAuditor);
+        return this.bedCleansingRequestService.updateById(id, bedCleansingRequestDto);
+    }
 
-  // delete by id
-  @Operation(summary = "Delete the BedCleansingRequest by id")
-  @DeleteMapping(value = "/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public void deleteBCRequestById(@PathVariable String id) {
-    String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-    log.debug("delete by id: " + id + "by: " + currentAuditor);
-    this.bedCleansingRequestService.deleteById(id);
-  }
+    // delete by id
+    @Operation(summary = "Delete the BedCleansingRequest by id")
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteBCRequestById(@PathVariable String id) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("delete by id: " + id + " by: " + currentAuditor);
+        this.bedCleansingRequestService.deleteById(id);
+    }
 }
