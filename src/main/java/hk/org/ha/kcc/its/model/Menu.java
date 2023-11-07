@@ -1,18 +1,18 @@
 package hk.org.ha.kcc.its.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @ToString(callSuper = true)
@@ -58,4 +58,21 @@ public class Menu extends Auditable {
 
     @Column(name = "title2", length = Integer.MAX_VALUE)
     private String title2; // e.g "Bed Cleansing status" may be not use
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    @JsonIgnore
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BedCleansingRequest> bedCleansingRequestList = new ArrayList<>();
+
+    public void addBedCleansingRequest(BedCleansingRequest bedCleansingRequest) {
+        bedCleansingRequestList.add(bedCleansingRequest);
+        bedCleansingRequest.setMenu(this);
+    }
+
+    public void removeBedCleansingRequest(BedCleansingRequest bedCleansingRequest) {
+        bedCleansingRequestList.remove(bedCleansingRequest);
+        bedCleansingRequest.setMenu(null);
+    }
 }

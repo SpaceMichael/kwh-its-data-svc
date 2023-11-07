@@ -1,5 +1,7 @@
 package hk.org.ha.kcc.its.service;
 
+import hk.org.ha.kcc.its.model.Menu;
+import hk.org.ha.kcc.its.repository.MenuRepository;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
@@ -21,16 +23,26 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
 
     private final BedCleansingRequestMapper bedCleansingRequestMapper;
 
+    private final MenuRepository menuRepository;
+
     public BedCleansingRequestServiceImpl(BedCleansingServiceRepository bedCleansingServiceRepository,
-                                          BedCleansingRequestMapper bedCleansingRequestMapper) {
+                                          BedCleansingRequestMapper bedCleansingRequestMapper, MenuRepository menuRepository) {
         this.bedCleansingServiceRepository = bedCleansingServiceRepository;
         this.bedCleansingRequestMapper = bedCleansingRequestMapper;
+        this.menuRepository = menuRepository;
     }
 
     @Override
     public BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto) {
         BedCleansingRequest bedCleansingRequest = this.bedCleansingRequestMapper
                 .BedCleansingRequestDtoToBedCleansingRequest(bedCleansingRequestDto);
+        // check menu id is correct or not
+        if (bedCleansingRequestDto.getMenuId() != null) {
+            Menu menu = this.menuRepository.findById(bedCleansingRequestDto.getMenuId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Id" + bedCleansingRequestDto.getMenuId() + "Menu not found"));
+            bedCleansingRequest.assignMenu(menu);
+        } // check menu table and get teh bed cleansing , id and insert to the bed cleansing table menu id?
+
         if (bedCleansingRequestDto.getStatus() == null) {
             bedCleansingRequest.setStatus("Pending");
         }

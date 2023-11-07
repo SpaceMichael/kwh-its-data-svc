@@ -1,12 +1,6 @@
 package hk.org.ha.kcc.its.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -26,7 +20,7 @@ import org.hibernate.envers.Audited;
 @AllArgsConstructor
 @Builder
 @Entity
-@Audited
+//@Audited
 @Table(name = "bed_cleansing_request")
 public class BedCleansingRequest extends Auditable {
 
@@ -81,4 +75,23 @@ public class BedCleansingRequest extends Auditable {
     @Lob
     @Column(name = "remarks", length = Integer.MAX_VALUE)
     private String remarks;
+
+    @Column(name = "menu_id", length = 20, insertable = false, updatable = false)
+    private Integer menuId;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
+
+    public void assignMenu(Menu menu) {
+        this.menu = menu;
+        this.menuId = menu.getId();
+    }
+
+    public void removeMenu(Menu menu) {
+        this.menu = null;
+        this.menuId = null;
+    }
 }

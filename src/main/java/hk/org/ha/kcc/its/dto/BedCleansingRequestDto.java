@@ -29,4 +29,5 @@ public class BedCleansingRequestDto {
     private String Cleaner; // e.g Mobile Device 008?
     private Boolean activeFlag; //
     private String remarks;
+    private Integer menuId;
 }

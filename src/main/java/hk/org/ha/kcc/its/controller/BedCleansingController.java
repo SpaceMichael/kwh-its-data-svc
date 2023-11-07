@@ -42,7 +42,7 @@ public class BedCleansingController {
     public BedCleansingRequestDto createBCRequest(
             @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("create by: " + currentAuditor);
+        log.debug("create bed cleansing by: " + currentAuditor);
         return this.bedCleansingRequestService.create(bedCleansingRequestDto);
     }
 
