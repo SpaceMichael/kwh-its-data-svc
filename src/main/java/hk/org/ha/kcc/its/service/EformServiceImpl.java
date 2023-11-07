@@ -16,7 +16,7 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
-        String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk/";
+        String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
         String iconBedCleansing = serverAddress + "/iconBedCleansing.png";
         String iconDrugDispensing = serverAddress + "/iconDrugDispensing.png";
         String iconLabReport = serverAddress + "/iconLabReport.png";
@@ -51,24 +51,24 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
-            forms.add(FormDto.builder().title("Bed Cleansing").description("Request form")
+
+
+            forms.add(FormDto.builder()
+                    .title("Bed Cleansing")
+                    .description("Request form")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing")
                     .icon(iconBedCleansing).build());
             forms.add(FormDto.builder().title("Drug dispensing Tracker")
                     .description("Request form, Tracker")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/DrugDispensing")
                     .icon(iconDrugDispensing).build());
-            forms.add(
-                    FormDto.builder().title("Lab Report Tracker").description("Request form, Report search")
-                            .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport")
-                            .icon(iconLabReport).build());
+            forms.add(FormDto.builder()
+                    .title("Lab Report Tracker")
+                    .description("Request form, Report search")
+                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport")
+                    .icon(iconLabReport).build());
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
-            // return eformResponseDto;
-            // retrun eformResponseDto with png file imageBytes
             return ResponseEntity.ok().body(eformResponseDto);
-            /*
-             * return ResponseEntity.ok() .contentType(MediaType.IMAGE_PNG).body(eformResponseDto);
-             */
         }
     }
 }

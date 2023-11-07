@@ -20,8 +20,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "menu")
-public class Menu extends Auditable {
+//@Audited
+@Table(name = "menu_service")
+public class MenuService extends Auditable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,4 +47,10 @@ public class Menu extends Auditable {
 
   @Column(name = "active_flag")
   private Boolean activeFlag;
+
+  @Column(name = "enable")
+  private Boolean enable;
+
+  @Column(name = "barcode_key") // cannot use key keyword in mssql
+  private String barcodeKey;
 }

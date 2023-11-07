@@ -40,10 +40,10 @@ public class BedCleansingRequestDetail extends Auditable {
    */
 
   @Column(name = "service_id")
-  private String serviceId; // request_item: bed cleansing
+  private String serviceId; // use id to mapping request_item: bed cleansing?
 
   @Column(name = "active_flag")
-  private Boolean activeFlag;
+  private Boolean activeFlag; // for Deactive?
 
   @Column(name = "cleaner", length = 50)
   private String Cleaner; // e.g Device 008?

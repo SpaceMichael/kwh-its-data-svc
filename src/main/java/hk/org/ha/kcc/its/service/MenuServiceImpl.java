@@ -2,70 +2,70 @@ package hk.org.ha.kcc.its.service;
 
 import java.util.List;
 import javax.transaction.Transactional;
+
+import hk.org.ha.kcc.its.dto.MenuServiceDto;
+import hk.org.ha.kcc.its.mapper.MenuServiceMapper;
 import org.springframework.stereotype.Service;
-import hk.org.ha.kcc.its.dto.MenuDto;
-import hk.org.ha.kcc.its.mapper.MenuMapper;
-import hk.org.ha.kcc.its.model.Menu;
 import hk.org.ha.kcc.its.repository.MenuRepository;
 
 @Service
 @Transactional
-public class MenuServiceImpl implements MenuService {
+public class MenuServiceImpl implements hk.org.ha.kcc.its.service.MenuService {
 
   private final MenuRepository menuRepository;
 
-  private final MenuMapper menuMapper;
+  private final MenuServiceMapper menuMapper;
 
-  public MenuServiceImpl(MenuRepository menuRepository, MenuMapper menuMapper) {
+  public MenuServiceImpl(MenuRepository menuRepository, MenuServiceMapper menuMapper) {
     this.menuRepository = menuRepository;
     this.menuMapper = menuMapper;
   }
 
   @Override
-  public MenuDto create(MenuDto menuDto) {
-    Menu menu = this.menuMapper.MenuDtoToMenu(menuDto);
+  public MenuServiceDto create(MenuServiceDto menuServiceDto) {
+    hk.org.ha.kcc.its.model.MenuService menuService = this.menuMapper.MenuDtoToMenu(menuServiceDto);
     // this.menuRepository.save(menu);
-    return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
+    return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menuService));
   }
 
   @Override
-  public List<MenuDto> getAllDto() {
-    List<Menu> menuList = this.menuRepository.findAll();
-    return menuList.stream().map(menuMapper::MenuToMenuDto)
+  public List<MenuServiceDto> getAllDto() {
+    List<hk.org.ha.kcc.its.model.MenuService> menuServiceList = this.menuRepository.findAll();
+    return menuServiceList.stream().map(menuMapper::MenuToMenuDto)
         .collect(java.util.stream.Collectors.toList());
   }
 
   @Override
-  public MenuDto getDtoById(Integer id) {
-    Menu menu = this.menuRepository.findById(id)
+  public MenuServiceDto getDtoById(Integer id) {
+    hk.org.ha.kcc.its.model.MenuService menuService = this.menuRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Menu not found"));
-    return this.menuMapper.MenuToMenuDto(menu);
+    return this.menuMapper.MenuToMenuDto(menuService);
   }
 
   @Override
-  public MenuDto update(Integer id, MenuDto menuDto) {
-    Menu menu = this.menuRepository.findById(id)
+  public MenuServiceDto updateById(Integer id, MenuServiceDto menuServiceDto) {
+    hk.org.ha.kcc.its.model.MenuService menuService = this.menuRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Menu not found"));
-    if (menuDto.getTitle() != null) {
-      menu.setTitle(menuDto.getTitle());
+    if (menuServiceDto.getTitle() != null) {
+      menuService.setTitle(menuServiceDto.getTitle());
     }
-    if (menuDto.getDescription() != null) {
-      menu.setDescription(menuDto.getDescription());
+    if (menuServiceDto.getDescription() != null) {
+      menuService.setDescription(menuServiceDto.getDescription());
     }
-    if (menuDto.getRemarks() != null) {
-      menu.setRemarks(menuDto.getRemarks());
+    if (menuServiceDto.getRemarks() != null) {
+      menuService.setRemarks(menuServiceDto.getRemarks());
     }
-    if (menuDto.getIcon() != null) {
-      menu.setIcon(menuDto.getIcon());
+    if (menuServiceDto.getIcon() != null) {
+      menuService.setIcon(menuServiceDto.getIcon());
     }
-    if (menuDto.getUrl() != null) {
-      menu.setUrl(menuDto.getUrl());
+    if (menuServiceDto.getUrl() != null) {
+      menuService.setUrl(menuServiceDto.getUrl());
     }
-    if (menuDto.getActiveFlag() != null) {
-      menu.setActiveFlag(menuDto.getActiveFlag());
+    if (menuServiceDto.getActiveFlag() != null) {
+      menuService.setActiveFlag(menuServiceDto.getActiveFlag());
     }
-    menu.setActiveFlag(menuDto.getActiveFlag());
-    return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
+    menuService.setActiveFlag(menuServiceDto.getActiveFlag());
+    return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menuService));
 
     /*
      * private String title; // Bed Cleansing private String description; // e.g "Request form" ,
@@ -79,7 +79,7 @@ public class MenuServiceImpl implements MenuService {
   }
 
   @Override
-  public void delete(Integer id) {
+  public void deleteById(Integer id) {
     try {
       this.menuRepository.deleteById(id);
     } catch (Exception e) {

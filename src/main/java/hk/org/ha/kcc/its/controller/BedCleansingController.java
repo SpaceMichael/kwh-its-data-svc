@@ -21,24 +21,24 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "bed-cleaning", description = "bed-cleaning API")
+@Tag(name = "bed-cleansing", description = "bed-cleansing API")
 @SecurityRequirement(name = "JWT")
 @CrossOrigin
 @RestController
-@RequestMapping(BedCleaningController.BASE_URL)
-public class BedCleaningController {
+@RequestMapping(BedCleansingController.BASE_URL)
+public class BedCleansingController {
 
   private static final AlsXLogger log =
       AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
-  public static final String BASE_URL = "/api/v1/bed-cleansing/request";
+  public static final String BASE_URL = "/api/v1/bed-cleansing/requests";
 
   private final BedCleansingRequestService bedCleansingRequestService;
 
   private final AuditorAware<String> auditorAware;
 
 
-  public BedCleaningController(BedCleansingRequestService bedCleansingRequestService,
-      AuditorAware<String> auditorAware) {
+  public BedCleansingController(BedCleansingRequestService bedCleansingRequestService,
+                                AuditorAware<String> auditorAware) {
     this.bedCleansingRequestService = bedCleansingRequestService;
     this.auditorAware = auditorAware;
   }
