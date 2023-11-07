@@ -25,8 +25,8 @@ public class BedCleansingRequestDto {
   private String cleaningProcess; // e.g 清潔工序 ->床,床簾,環境  bed, curtain, env
   private String detergent; // e.g 清潔劑(detergent)->漂白水, tricel  =  real name : detergent,tricel
   private String status; // apply or pending or completed
-  private String requestor; // e,g cmw002 // use token check?
-  private String requestorName; // e,g chan siu man
+  /*private String requestor; // e,g cmw002 // use token check?
+  private String requestorName; // e,g chan siu man*/
   private String requestorContactNo;
   private String Cleaner; // e.g Mobile Device 008?
   private Boolean activeFlag; //

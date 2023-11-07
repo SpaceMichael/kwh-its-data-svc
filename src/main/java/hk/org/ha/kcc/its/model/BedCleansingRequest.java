@@ -71,11 +71,11 @@ public class BedCleansingRequest extends Auditable {
     @Column(name = "status", length = 20)
     private String status; // apply or pending or completed
 
-    @Column(name = "requestor", length = 50)
+/*    @Column(name = "requestor", length = 50)
     private String requestor; // e,g cmw002 // use token check?
 
     @Column(name = "requestor_name", length = Integer.MAX_VALUE)
-    private String requestorName; // e,g chan siu man
+    private String requestorName; // e,g chan siu man*/
 
     @Column(name = "requestor_contact_no", length = 50)
     private String requestorContactNo;
