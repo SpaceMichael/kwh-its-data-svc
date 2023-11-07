@@ -3,16 +3,21 @@ package hk.org.ha.kcc.its.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import hk.org.ha.kcc.its.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import hk.org.ha.kcc.its.dto.DataDto;
-import hk.org.ha.kcc.its.dto.DetailDataDto;
-import hk.org.ha.kcc.its.dto.DetailDto;
-import hk.org.ha.kcc.its.dto.EformResponseDto;
-import hk.org.ha.kcc.its.dto.FormDto;
 
 @Service
 public class EformServiceImpl implements EformService {
+
+
+    private MenuService menuService;
+
+    @Autowired
+    public void setMenuService(MenuService menuService) {
+        this.menuService = menuService;
+    }
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
@@ -51,9 +56,16 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
+            // get all the meunservice and fill the forms field
+            List<MenuServiceDto> menuServiceDtos = this.menuService.getAllDto();
+            for (MenuServiceDto menuServiceDto : menuServiceDtos) {
+                forms.add(FormDto.builder().title(menuServiceDto.getTitle())
+                        .description(menuServiceDto.getDescription())
+                        .url(menuServiceDto.getUrl())
+                        .icon(menuServiceDto.getIcon()).build());
+            }
 
-
-            forms.add(FormDto.builder()
+            /*forms.add(FormDto.builder()
                     .title("Bed Cleansing")
                     .description("Request form")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing")
@@ -66,7 +78,7 @@ public class EformServiceImpl implements EformService {
                     .title("Lab Report Tracker")
                     .description("Request form, Report search")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport")
-                    .icon(iconLabReport).build());
+                    .icon(iconLabReport).build()); */
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
             return ResponseEntity.ok().body(eformResponseDto);
         }
