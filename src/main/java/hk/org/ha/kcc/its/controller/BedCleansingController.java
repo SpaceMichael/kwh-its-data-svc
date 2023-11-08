@@ -43,6 +43,7 @@ public class BedCleansingController {
             @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("create bed cleansing by: " + currentAuditor);
+        bedCleansingRequestDto.setRequestor(currentAuditor);
         return this.bedCleansingRequestService.create(bedCleansingRequestDto);
     }
 
@@ -65,6 +66,7 @@ public class BedCleansingController {
     public BedCleansingRequestDto getBCRequestById(@PathVariable String id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get by id: " + id + " by: " + currentAuditor);
+
         return this.bedCleansingRequestService.getDtoById(id);
     }
 
@@ -76,6 +78,11 @@ public class BedCleansingController {
                                                       @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update by id: " + id + " by: " + currentAuditor);
+        // if getStatus = Process || Completed , cleaner = currentAuditor
+        if (bedCleansingRequestDto.getStatus() != null &&
+                (bedCleansingRequestDto.getStatus().equalsIgnoreCase("Process") || bedCleansingRequestDto.getStatus().equalsIgnoreCase("Completed"))) {
+            bedCleansingRequestDto.setCleaner(currentAuditor);
+        }
         return this.bedCleansingRequestService.updateById(id, bedCleansingRequestDto);
     }
 

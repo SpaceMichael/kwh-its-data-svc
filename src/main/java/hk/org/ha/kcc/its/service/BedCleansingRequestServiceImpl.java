@@ -125,6 +125,8 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
             bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus());
         }
 
+        // if getStatus = Process || Completed , cleaner =
+
   /*
     if (bedCleansingRequestDto.getRequestorName() != null) {
       bedCleansingRequest.setRequestorName(bedCleansingRequestDto.getRequestorName());

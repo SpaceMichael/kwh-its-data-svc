@@ -53,10 +53,12 @@ public class BedCleansingRequest extends Auditable {
     private String detergent; // e.g 清潔劑(detergent)->漂白水, tricel  =  real name : detergent,tricel
     @Column(name = "status", length = 20)
     private String status; // apply or pending or completed
+    @Column(name = "requestor_id")
+    private String requestor;
     @Column(name = "requestor_contact_no")
     private Integer requestorContactNo;
     @Column(name = "cleaner", length = 50)
-    private String Cleaner; // e.g Mobile Device 008?
+    private String cleaner; // e.g Mobile Device 008?
     @Column(name = "active_flag")
     private Boolean activeFlag; //
     @Lob

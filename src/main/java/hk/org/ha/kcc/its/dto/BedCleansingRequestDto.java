@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -26,8 +23,9 @@ public class BedCleansingRequestDto {
     private String detergent; // e.g 清潔劑(detergent)->漂白水, tricel  =  real name : detergent,tricel
     private String status; // apply or pending or completed
     private Integer requestorContactNo;
-    private String Cleaner; // e.g Mobile Device 008?
+    private String cleaner; // e.g Mobile Device 008?
     private Boolean activeFlag; //
     private String remarks;
     private Integer menuId;
+    private String requestor;
 }
