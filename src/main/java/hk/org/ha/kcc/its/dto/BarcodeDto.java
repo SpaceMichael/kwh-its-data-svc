@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class BarcodeDto {
 
   private Boolean enable;
-
   private String key;
 }

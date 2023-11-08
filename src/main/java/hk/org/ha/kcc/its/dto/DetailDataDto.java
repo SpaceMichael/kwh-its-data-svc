@@ -14,14 +14,10 @@ public class DetailDataDto {
 
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dept;
-
   private String ward;
-
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String cubicle;
-
   private String bedNo;
-
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Boolean bedChecked;
 }

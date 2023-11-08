@@ -25,8 +25,9 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
 
     private final MenuRepository menuRepository;
 
-    public BedCleansingRequestServiceImpl(BedCleansingServiceRepository bedCleansingServiceRepository,
-                                          BedCleansingRequestMapper bedCleansingRequestMapper, MenuRepository menuRepository) {
+    public BedCleansingRequestServiceImpl(BedCleansingServiceRepository bedCleansingServiceRepository
+            , BedCleansingRequestMapper bedCleansingRequestMapper
+            , MenuRepository menuRepository) {
         this.bedCleansingServiceRepository = bedCleansingServiceRepository;
         this.bedCleansingRequestMapper = bedCleansingRequestMapper;
         this.menuRepository = menuRepository;

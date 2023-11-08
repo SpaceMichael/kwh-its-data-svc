@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class EformResponseDto {
 
     private Boolean success;
-
     private DataDto data;
 }

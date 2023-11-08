@@ -22,7 +22,7 @@ import java.util.List;
 public class MenuController {
     private static final AlsXLogger log =
             AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
-    public static final String BASE_URL = "/api/v1/menu/services";
+    public static final String BASE_URL = "/api/v1/menu/items";
 
     private final AuditorAware<String> auditorAware;
 

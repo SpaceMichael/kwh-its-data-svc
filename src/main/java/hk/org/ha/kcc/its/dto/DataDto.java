@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class DataDto {
 
   private List<FormDto> forms;
-
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private DetailDto details;
 }

@@ -33,6 +33,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuDto> getAllDto() {
+        // filter the active flag is true
         List<Menu> menuList = this.menuRepository.findAll();
         return menuList.stream().map(menuMapper::MenuToMenuDto).filter(MenuDto::getActiveFlag)
                 .collect(java.util.stream.Collectors.toList());
