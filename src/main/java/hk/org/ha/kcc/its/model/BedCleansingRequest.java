@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 
 @Data
@@ -20,7 +21,7 @@ import org.hibernate.envers.Audited;
 @AllArgsConstructor
 @Builder
 @Entity
-//@Audited
+@Audited
 @Table(name = "bed_cleansing_request")
 public class BedCleansingRequest extends Auditable {
 
@@ -45,7 +46,7 @@ public class BedCleansingRequest extends Auditable {
     @Column(name = "bed_no", length = 10)
     private String bedNo; // e.g 01 or 1-02
     @Column(name = "bed_type", length = 20)
-    private String bedType; // e.g 普通床 掛牌床
+    private String bedType; // e.g 普通床 or 掛牌床 bed? listed bed?
     @Column(name = "cleaning_process", length = 50)
     private String cleaningProcess; // e.g 清潔工序 ->床,床簾,環境  bed, curtain, env
     @Column(name = "detergent", length = 50)
@@ -64,6 +65,7 @@ public class BedCleansingRequest extends Auditable {
     @Column(name = "menu_id", length = 20, insertable = false, updatable = false)
     private Integer menuId;
 
+    @NotAudited
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})

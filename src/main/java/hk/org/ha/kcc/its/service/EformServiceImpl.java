@@ -46,20 +46,11 @@ public class EformServiceImpl implements EformService {
                     .url(menuDto.getUrl())
                     .icon(menuDto.getIcon()).build());
 
-            // use the menuServiceDto to fill the forms field with url2 no description
-            forms.add(FormDto.builder().title(menuDto.getTitle())
-                    .url(menuDto.getUrl2())
-                    .icon(menuDto.getIcon()).build());
-
             /*forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("Request form")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
                     .icon(iconBedCleansing).build());
-            forms.add(FormDto.builder().title("Bed Cleansing")
-                    .description("")
-                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingMenu")
-                    .icon(iconBedCleansing).build());*/
-
+             */
             // get bed cleansing request id =BC-2300033 for hardcode test
             BedCleansingRequestDto bedCleansingRequestDto = bedCleansingRequestService.getDtoById("BC-2300033");
             DetailDto details = new DetailDto();
