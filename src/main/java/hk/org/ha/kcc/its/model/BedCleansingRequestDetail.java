@@ -38,7 +38,7 @@ public class BedCleansingRequestDetail extends Auditable {
     private String menuId; // use id to check menu table to find request_item: bed cleansing?
     or use bedCleansingRequestId to find menu id to find the menu.title  */
     @Column(name = "active_flag")
-    private Boolean activeFlag; // for Deactive?
+    private Boolean activeFlag; // for De Active?
     @Column(name = "cleaner", length = 50)
     private String cleaner; // e.g Device 008? common ID for cleaner? one person one decive??
     @Lob
