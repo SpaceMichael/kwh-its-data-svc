@@ -42,7 +42,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         } // check menu table and get teh bed cleansing , id and insert to the bed cleansing table menu id?
 
         if (bedCleansingRequestDto.getStatus() == null) {
-            bedCleansingRequest.setStatus("Pending");
+            bedCleansingRequest.setStatus("PENDING");
         }
         if (bedCleansingRequestDto.getWholeBed() == null) {
             bedCleansingRequest.setWholeBed(false);

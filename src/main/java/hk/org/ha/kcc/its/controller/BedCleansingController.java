@@ -44,6 +44,7 @@ public class BedCleansingController {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("create bed cleansing by: " + currentAuditor);
         bedCleansingRequestDto.setRequestor(currentAuditor);
+
         return this.bedCleansingRequestService.create(bedCleansingRequestDto);
     }
 
