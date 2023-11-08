@@ -54,7 +54,7 @@ public class BedCleansingController {
                                                             @RequestParam(required = false) String cubicle,
                                                             @RequestParam(required = false) String bed) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("get all by: " + currentAuditor);
+        log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed);
         return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed);
     }
 
