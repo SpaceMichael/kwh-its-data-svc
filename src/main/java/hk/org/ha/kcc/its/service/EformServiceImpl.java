@@ -4,24 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hk.org.ha.kcc.its.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EformServiceImpl implements EformService {
 
+    private final MenuService menuService;
 
-    @Autowired
-    private MenuService menuService;
+    private final BedCleansingRequestService bedCleansingRequestService;
 
-    @Autowired
-    private BedCleansingRequestService bedCleansingRequestService;
-
- /*   @Autowired
-    public void setMenuService(MenuService menuService) {
+    public EformServiceImpl(MenuService menuService, BedCleansingRequestService bedCleansingRequestService) {
         this.menuService = menuService;
-    }*/
+        this.bedCleansingRequestService = bedCleansingRequestService;
+    }
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {

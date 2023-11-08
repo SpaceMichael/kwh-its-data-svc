@@ -18,11 +18,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class BedCleansingRequestServiceImpl implements BedCleansingRequestService {
 
-
     private final BedCleansingServiceRepository bedCleansingServiceRepository;
-
     private final BedCleansingRequestMapper bedCleansingRequestMapper;
-
     private final MenuRepository menuRepository;
 
     public BedCleansingRequestServiceImpl(BedCleansingServiceRepository bedCleansingServiceRepository
