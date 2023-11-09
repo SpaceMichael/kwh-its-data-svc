@@ -1,10 +1,10 @@
 # KWH ITS (Integration Telecommunication System) Data Repository - API Service
 
-| Env.        | Git Branch | Database | URL                                                                                                                                                       |
-| ----------- | ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Development | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk                                                                                      |
-| Staging     | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-stag-prd.cldkwhprd1.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-stag-prd.cldqehprd1.server.ha.org.hk |
-| PROD        | main (tag) | kwh_its  | https://kwh-its-data-svc-kccclinical-prd.cldkwhprd1.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-prd.cldqehprd1.server.ha.org.hk           |
+| Env. | Git Branch | Database | URL                                                                                                                                                       |
+| ---- | ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DEV  | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk                                                                                      |
+| STG  | main       | kwh_its  | https://kwh-its-data-svc-kccclinical-stag-prd.cldkwhprd1.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-stag-prd.cldqehprd1.server.ha.org.hk |
+| PRD  | main (tag) | kwh_its  | https://kwh-its-data-svc-kccclinical-prd.cldkwhprd1.server.ha.org.hk <br/> https://kwh-its-data-svc-kccclinical-prd.cldqehprd1.server.ha.org.hk           |
 
 ## Table of Contents <!-- omit in toc -->
 - [1. Configure VS Code](#1-configure-vs-code)
