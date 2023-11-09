@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hk.org.ha.kcc.its.dto.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,13 @@ public class EformServiceImpl implements EformService {
         this.bedCleansingRequestService = bedCleansingRequestService;
     }
 
+    @Value("${server.path}")
+    private String serverAddress;
+
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
-      /*  String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
+        //System.out.println("serverAddress: " + serverAddress);
+        /*String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
         String iconBedCleansing = serverAddress + "/iconBedCleansing.png";
         String iconDrugDispensing = serverAddress + "/iconDrugDispensing.png";
         String iconLabReport = serverAddress + "/iconLabReport.png";*/
@@ -40,7 +45,8 @@ public class EformServiceImpl implements EformService {
             forms.add(FormDto.builder().title(menuDto.getTitle())
                     .description(menuDto.getDescription())
                     .url(menuDto.getUrl())
-                    .icon(menuDto.getIcon()).build());
+                    //.icon(menuDto.getIcon()).build());
+                    .icon(serverAddress + menuDto.getIcon()).build());
 
             /*forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("Request form")
@@ -75,6 +81,7 @@ public class EformServiceImpl implements EformService {
                 forms.add(FormDto.builder().title(menuDto.getTitle())
                         .description(menuDto.getDescription())
                         .url(menuDto.getUrl())
+                        //.icon(serverAddress+menuDto.getIcon()).build());
                         .icon(menuDto.getIcon()).build());
             }
 
