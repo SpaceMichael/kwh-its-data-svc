@@ -2,10 +2,10 @@ name: Staging Workflow
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #     - develop
+  push:
+    branches:
+      - main
+      - develop
 
 env:
   APP_NAME: ${{ github.event.repository.name }}

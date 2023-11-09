@@ -17,8 +17,8 @@ spec:
       labels:
         app: kwh-its-data-svc
     spec:
-      nodeSelector:
-        ha-logtype: hostpathlogging
+      # nodeSelector:
+      #   ha-logtype: hostpathlogging
       volumes:
         - name: log-path
           persistentVolumeClaim:
