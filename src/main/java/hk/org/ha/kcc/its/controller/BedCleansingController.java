@@ -54,10 +54,11 @@ public class BedCleansingController {
     @ResponseStatus(HttpStatus.OK)
     public Iterable<BedCleansingRequestDto> getAllBCRequest(@RequestParam(required = false) String ward,
                                                             @RequestParam(required = false) String cubicle,
-                                                            @RequestParam(required = false) String bed) {
+                                                            @RequestParam(required = false) String bed,
+                                                            @RequestParam(required = false) Integer period) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed);
-        return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed);
+        log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period);
+        return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period);
     }
 
     // get by id

@@ -39,11 +39,11 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
             Menu menu = this.menuRepository.findById(bedCleansingRequestDto.getMenuId())
                     .orElseThrow(() -> new ResourceNotFoundException("Id" + bedCleansingRequestDto.getMenuId() + "Menu not found"));
             bedCleansingRequest.assignMenu(menu);
-        } // check menu table and get teh bed cleansing , id and insert to the bed cleansing table menu id?
+        } // this id can check menu table and get the bed cleansing , id and insert to the bed cleansing table menu id?
 
-        if (bedCleansingRequestDto.getStatus() == null) {
-            bedCleansingRequest.setStatus("PENDING");
-        }
+        // the status should be "PENDING" when create the request
+        bedCleansingRequest.setStatus("PENDING");
+
         if (bedCleansingRequestDto.getWholeBed() == null) {
             bedCleansingRequest.setWholeBed(false);
         }
@@ -56,13 +56,18 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     }
 
     @Override
-    public List<BedCleansingRequestDto> getAllDto(String ward, String cubicle, String bed) {
-        // use findAll() to get all the records from the table and filter ward, cubicle, bed if they are not null, and request.ward, cubicle, bed !=null and activeflag is true
+    public List<BedCleansingRequestDto> getAllDto(String ward, String cubicle, String bed, Integer period) {
+        // use findAll() to get all the records from the table
+        // and filter ward, cubicle, bed if they are not null, and request.ward, cubicle, bed !=null
+        // and activeflag is true
+        // and if period is not null, get the list of BedCleansingRequest in recent period hours  ,check by request.getCreatedDate()
         List<BedCleansingRequest> bedCleansingRequestList = bedCleansingServiceRepository.findAll().stream()
                 .filter(BedCleansingRequest -> BedCleansingRequest.getActiveFlag() != null && BedCleansingRequest.getActiveFlag())
                 .filter(request -> ward == null || (request.getWard() != null && request.getWard().equals(ward)))
                 .filter(request -> cubicle == null || (request.getCubicle() != null && request.getCubicle().equals(cubicle)))
                 .filter(request -> bed == null || (request.getBedNo() != null && request.getBedNo().equals(bed)))
+                // if period is not null, get the list of BedCleansingRequest in recent period hours  ,check by request.getCreatedDate()
+                .filter(request -> period == null || (request.getCreatedDate() != null && request.getCreatedDate().isAfter(java.time.LocalDateTime.now().minusHours(period))))
                 .collect(Collectors.toList());
         // use stream and map and filter to get the list of BedCleansingRequestDto
         return bedCleansingRequestList.stream()
@@ -124,13 +129,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         if (bedCleansingRequestDto.getStatus() != null) {
             bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus().toUpperCase());
         }
-
-        // if getStatus = Process || Completed , cleaner =
-
-  /*
-    if (bedCleansingRequestDto.getRequestorName() != null) {
-      bedCleansingRequest.setRequestorName(bedCleansingRequestDto.getRequestorName());
-    }*/
         if (bedCleansingRequestDto.getRequestorContactNo() != null) {
             bedCleansingRequest.setRequestorContactNo(bedCleansingRequestDto.getRequestorContactNo());
         }
