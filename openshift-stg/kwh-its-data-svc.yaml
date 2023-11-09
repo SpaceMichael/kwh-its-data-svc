@@ -25,7 +25,7 @@ spec:
             claimName: hostpathcldlog-kccclinicalstagprd-pvc
       containers:
         - name: kwh-its-data-svc
-          image: image-registry.openshift-image-registry.svc:5000/kccclinical-stg-prd/kwh-its-data-svc
+          image: image-registry.openshift-image-registry.svc:5000/kccclinical-stag-prd/kwh-its-data-svc
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
