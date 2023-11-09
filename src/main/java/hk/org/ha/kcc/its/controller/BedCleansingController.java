@@ -1,11 +1,14 @@
 package hk.org.ha.kcc.its.controller;
 
 import java.lang.invoke.MethodHandles;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
@@ -69,10 +72,13 @@ public class BedCleansingController {
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BedCleansingRequestDto getBCRequestById(@PathVariable String id) {
+        //public ResponseEntity<Map<String, Object>> getBCRequestById(@PathVariable String id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get by id: " + id + " by: " + currentAuditor);
-
         return this.bedCleansingRequestService.getDtoById(id);
+        /*Map<String, Object> response = new HashMap<>();
+        response.put("data", this.bedCleansingRequestService.getDtoById(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);*/
     }
 
     // patch by id
@@ -104,7 +110,7 @@ public class BedCleansingController {
 
     // get detail by id
     @Operation(summary = "Get the BedCleansingRequest detail by id")
-    @GetMapping(value = "/detail/{id}")
+    @GetMapping(value = "/dtl/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<BedCleansingRequestAuditDto> getBCRequestDetailById(@PathVariable String id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
