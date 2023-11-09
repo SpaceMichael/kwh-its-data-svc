@@ -79,6 +79,7 @@ public class BedCleansingController {
                                                       @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update by id: " + id + " by: " + currentAuditor);
+
         // if getStatus = Process || Completed , cleaner = currentAuditor
         if (bedCleansingRequestDto.getStatus() != null &&
                 (bedCleansingRequestDto.getStatus().equalsIgnoreCase("Process") || bedCleansingRequestDto.getStatus().equalsIgnoreCase("Completed"))) {

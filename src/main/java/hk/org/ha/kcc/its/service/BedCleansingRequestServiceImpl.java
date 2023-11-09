@@ -120,9 +120,9 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         if (bedCleansingRequestDto.getRemarks() != null) {
             bedCleansingRequest.setRemarks(bedCleansingRequestDto.getRemarks());
         }
-
+        // set all status to upperCase
         if (bedCleansingRequestDto.getStatus() != null) {
-            bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus());
+            bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus().toUpperCase());
         }
 
         // if getStatus = Process || Completed , cleaner =
