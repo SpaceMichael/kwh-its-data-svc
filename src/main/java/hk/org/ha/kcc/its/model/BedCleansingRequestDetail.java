@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
 
-@Data
+/*@Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
@@ -24,26 +24,26 @@ import org.hibernate.envers.Audited;
 @Builder
 @Entity
 //@Audited
-@Table(name = "bed_cleansing_detail")
+@Table(name = "bed_cleansing_detail")*/
 public class BedCleansingRequestDetail extends Auditable {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "bed_cleansing_request_id")
     private Integer bedCleansingRequestId; //  can use for case_no?
     @Column(name = "status")
     private String status; // e.g pending, overtime , overload, completed?
-    /*@Column(name = "menu_id")
+    *//*@Column(name = "menu_id")
     private String menuId; // use id to check menu table to find request_item: bed cleansing?
-    or use bedCleansingRequestId to find menu id to find the menu.title  */
+    or use bedCleansingRequestId to find menu id to find the menu.title  *//*
     @Column(name = "active_flag")
     private Boolean activeFlag; // for De Active?
     @Column(name = "cleaner", length = 50)
     private String cleaner; // e.g Device 008? common ID for cleaner? one person one decive??
     @Lob
     @Column(name = "remarks", length = Integer.MAX_VALUE)
-    private String remarks;
+    private String remarks;*/
 
     // handler can refer to created by of this txt e.g Admin take order
 }

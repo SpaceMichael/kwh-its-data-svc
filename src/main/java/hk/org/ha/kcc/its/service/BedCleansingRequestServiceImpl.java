@@ -163,7 +163,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     }
 
     @Override
-    public List<BedCleansingRequestAuditDto> getAllDtoByBCId(String Id) {
+    public List<BedCleansingRequestAuditDto> getDtlByBCId(String Id) {
         List<Object[]> objectList = this.bedCleansingServiceRepository.getAllDtoByBCId(Id);
         // mapp the objectList to BedCleansingRequestAuditDto
         List<BedCleansingRequestAuditDto> bedCleansingRequestAuditDtoList = new ArrayList<>();

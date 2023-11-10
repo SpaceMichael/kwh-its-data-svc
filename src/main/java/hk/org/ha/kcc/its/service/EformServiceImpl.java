@@ -1,8 +1,11 @@
 package hk.org.ha.kcc.its.service;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 
+import hk.org.ha.kcc.common.logging.AlsXLogger;
+import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 import hk.org.ha.kcc.its.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EformServiceImpl implements EformService {
+
+    private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
     private final MenuService menuService;
 
@@ -53,10 +58,10 @@ public class EformServiceImpl implements EformService {
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
                     .icon(iconBedCleansing).build());
              */
-            // get bed cleansing request id =BC-2300033 for hardcode test
+            // get bed cleansing request id =BC-2300033 for hardcode test - > if the QRcode is true value, get the detail from QRcode info
             BedCleansingRequestDto bedCleansingRequestDto = bedCleansingRequestService.getDtoById("BC-2300033");
             DetailDto details = new DetailDto();
-            // and fill the details field
+            // and fill the details field - > if the QRcode is true value, get the detail from QRcode info
             details.setType(bedCleansingRequestDto.getBedType());
             details.setData(DetailDataDto.builder()
                     .ward(bedCleansingRequestDto.getWard())
@@ -83,6 +88,9 @@ public class EformServiceImpl implements EformService {
                         .url(menuDto.getUrl())
                         //.icon(serverAddress+menuDto.getIcon()).build());
                         .icon(menuDto.getIcon()).build());
+                System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
+                log.debug("menuDto.getIcon(): " + menuDto.getIcon());
+
             }
 
       /*      forms.add(FormDto.builder()

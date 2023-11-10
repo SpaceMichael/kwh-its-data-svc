@@ -1,14 +1,11 @@
 package hk.org.ha.kcc.its.controller;
 
 import java.lang.invoke.MethodHandles;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
@@ -57,11 +54,11 @@ public class BedCleansingController {
     @Operation(summary = "Get list of BedCleansingRequest")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<BedCleansingRequestDto> getAllBCRequest(@RequestParam(required = false) String ward,
-                                                            @RequestParam(required = false) String cubicle,
-                                                            @RequestParam(required = false) String bed,
-                                                            @RequestParam(required = false) Integer period,
-                                                            @RequestParam(required = false) Boolean completedStatus) {
+    public Iterable<BedCleansingRequestDto> getAllBCR(@RequestParam(required = false) String ward,
+                                                      @RequestParam(required = false) String cubicle,
+                                                      @RequestParam(required = false) String bed,
+                                                      @RequestParam(required = false) Integer period,
+                                                      @RequestParam(required = false) Boolean completedStatus) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
         return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
@@ -71,7 +68,7 @@ public class BedCleansingController {
     @Operation(summary = "Get the BedCleansingRequest by id")
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BedCleansingRequestDto getBCRequestById(@PathVariable String id) {
+    public BedCleansingRequestDto getBCRById(@PathVariable String id) {
         //public ResponseEntity<Map<String, Object>> getBCRequestById(@PathVariable String id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get by id: " + id + " by: " + currentAuditor);
@@ -85,8 +82,8 @@ public class BedCleansingController {
     @Operation(summary = "Update the BedCleansingRequest by id")
     @PatchMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BedCleansingRequestDto updateBCRequestById(@PathVariable String id,
-                                                      @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
+    public BedCleansingRequestDto updateBCRById(@PathVariable String id,
+                                                @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update by id: " + id + " by: " + currentAuditor);
 
@@ -102,7 +99,7 @@ public class BedCleansingController {
     @Operation(summary = "Delete the BedCleansingRequest by id")
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteBCRequestById(@PathVariable String id) {
+    public void deleteBCRById(@PathVariable String id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("delete by id: " + id + " by: " + currentAuditor);
         this.bedCleansingRequestService.deleteById(id);
@@ -112,10 +109,10 @@ public class BedCleansingController {
     @Operation(summary = "Get the BedCleansingRequest detail by id")
     @GetMapping(value = "/dtl/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<BedCleansingRequestAuditDto> getBCRequestDetailById(@PathVariable String id) {
+    public List<BedCleansingRequestAuditDto> getBCRDtlById(@PathVariable String id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get detail by id: " + id + " by: " + currentAuditor);
-        return this.bedCleansingRequestService.getAllDtoByBCId(id);
+        return this.bedCleansingRequestService.getDtlByBCId(id);
     }
 
 }
