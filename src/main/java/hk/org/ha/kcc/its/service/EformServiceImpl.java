@@ -38,6 +38,8 @@ public class EformServiceImpl implements EformService {
 
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
+
+
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
@@ -58,16 +60,18 @@ public class EformServiceImpl implements EformService {
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
                     .icon(iconBedCleansing).build());
              */
-            // get bed cleansing request id =BC-2300033 for hardcode test - > if the QRcode is true value, get the detail from QRcode info
-            BedCleansingRequestDto bedCleansingRequestDto = bedCleansingRequestService.getDtoById("BC-2300033");
+
+            // get the value of qrcode eg = "BED|KWH|12BG|7|7-02"
+            // splite it "|" to  detail field TYPE|WARD|CUBICLE|BEDNO
             DetailDto details = new DetailDto();
-            // and fill the details field - > if the QRcode is true value, get the detail from QRcode info
-            details.setType(bedCleansingRequestDto.getBedType());
+            String[] qrcodeArray = qrcode.split("\\|");
+
+            details.setType(qrcodeArray[0]);
             details.setData(DetailDataDto.builder()
-                    .ward(bedCleansingRequestDto.getWard())
-                    .cubicle(bedCleansingRequestDto.getCubicle())
-                    .bedNo(bedCleansingRequestDto.getBedNo())
-                    .bedChecked(bedCleansingRequestDto.getWholeBed())
+                    .ward(qrcodeArray[2])
+                    .cubicle(qrcodeArray[3])
+                    .bedNo(qrcodeArray[4])
+                    //.bedChecked(bedCleansingRequestDto.getWholeBed())
                     .build());
             /*details.setType("bed");
             // details.setData(DetailDataDto.builder().dept("M&G").ward("16A1").bedNo("10").build());
@@ -89,7 +93,7 @@ public class EformServiceImpl implements EformService {
                         //.icon(serverAddress+menuDto.getIcon()).build());
                         .icon(menuDto.getIcon()).build());
                 //System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
-                log.debug("menuDto.getIcon(): " + menuDto.getIcon());
+                log.debug("Icon: " + menuDto.getIcon());
 
             }
 
