@@ -33,8 +33,8 @@ public class EformController {
   @GetMapping
   public ResponseEntity<EformResponseDto> getEformList(
       @RequestParam(required = false) String qrcode) throws IOException {
-    log.debug("qrcode: " + qrcode);
-    System.out.println("qrcode: " + qrcode);
+    log.debug("123 qrcode: " + qrcode);
+    System.out.println("132 qrcode: " + qrcode);
     return eformService.getEformList(qrcode);
   }
 
