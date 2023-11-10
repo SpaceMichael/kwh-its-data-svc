@@ -51,7 +51,7 @@ public class EformServiceImpl implements EformService {
             // use the menuServiceDto to fill the forms field with url
             forms.add(FormDto.builder().title(menuDto.getTitle())
                     .description(menuDto.getDescription())
-                    .url(menuDto.getUrl())
+                    .url(menuDto.getUrl2())
                     //.icon(menuDto.getIcon()).build());
                     .icon(serverAddress + menuDto.getIcon()).build());
 
