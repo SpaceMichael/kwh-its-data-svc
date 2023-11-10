@@ -88,7 +88,7 @@ public class EformServiceImpl implements EformService {
                         .url(menuDto.getUrl())
                         //.icon(serverAddress+menuDto.getIcon()).build());
                         .icon(menuDto.getIcon()).build());
-                System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
+                //System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
                 log.debug("menuDto.getIcon(): " + menuDto.getIcon());
 
             }

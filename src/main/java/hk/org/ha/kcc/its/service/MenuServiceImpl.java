@@ -80,7 +80,7 @@ public class MenuServiceImpl implements MenuService {
         if (menuDto.getTitle2() != null) {
             menu.setTitle2(menuDto.getTitle2());
         }
-        menu.setActiveFlag(menuDto.getActiveFlag());
+        //menu.setActiveFlag(menuDto.getActiveFlag());
         return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
 
         /*
