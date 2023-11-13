@@ -28,9 +28,14 @@ public class EformServiceImpl implements EformService {
     @Value("${server.path}")
     private String serverAddress;
 
+    @Value("${server.env}")
+    private String serverEnv;
+
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
         //System.out.println("serverAddress: " + serverAddress);
+        log.debug("serverAddress: " + serverAddress);
+        log.debug("serverEnv: " + serverEnv);
         /*String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
         String iconBedCleansing = serverAddress + "/iconBedCleansing.png";
         String iconDrugDispensing = serverAddress + "/iconDrugDispensing.png";
@@ -38,8 +43,6 @@ public class EformServiceImpl implements EformService {
 
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
-
-
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
@@ -52,8 +55,8 @@ public class EformServiceImpl implements EformService {
             forms.add(FormDto.builder().title(menuDto.getTitle())
                     .description(menuDto.getDescription())
                     .url(menuDto.getUrl2())
-                    //.icon(menuDto.getIcon()).build());
-                    .icon(serverAddress + menuDto.getIcon()).build());
+                    .icon(menuDto.getIcon()).build());
+            //.icon(serverAddress + menuDto.getIcon()).build());
 
             /*forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("Request form")
@@ -99,8 +102,8 @@ public class EformServiceImpl implements EformService {
                 forms.add(FormDto.builder().title(menuDto.getTitle())
                         .description(menuDto.getDescription())
                         .url(menuDto.getUrl())
-                        //.icon(serverAddress+menuDto.getIcon()).build());
-                        .icon(serverAddress + menuDto.getIcon()).build());
+                        .icon(menuDto.getIcon()).build());
+                //.icon(serverAddress + menuDto.getIcon()).build());
                 //System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
                 log.debug("Icon: " + menuDto.getIcon());
 
