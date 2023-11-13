@@ -55,8 +55,8 @@ public class EformServiceImpl implements EformService {
             forms.add(FormDto.builder().title(menuDto.getTitle())
                     .description(menuDto.getDescription())
                     .url(menuDto.getUrl2())
-                    .icon(menuDto.getIcon()).build());
-            //.icon(serverAddress + menuDto.getIcon()).build());
+                    //.icon(menuDto.getIcon()).build());
+                    .icon(serverAddress + menuDto.getIcon()).build());
 
             /*forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("Request form")
@@ -102,8 +102,8 @@ public class EformServiceImpl implements EformService {
                 forms.add(FormDto.builder().title(menuDto.getTitle())
                         .description(menuDto.getDescription())
                         .url(menuDto.getUrl())
-                        .icon(menuDto.getIcon()).build());
-                //.icon(serverAddress + menuDto.getIcon()).build());
+                        //.icon(menuDto.getIcon()).build());
+                        .icon(serverAddress + menuDto.getIcon()).build());
                 //System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
                 log.debug("Icon: " + menuDto.getIcon());
 
