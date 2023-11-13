@@ -64,7 +64,16 @@ public class EformServiceImpl implements EformService {
             // get the value of qrcode eg = "BED|KWH|12BG|7|7-02"
             // splite it "|" to  detail field TYPE|WARD|CUBICLE|BEDNO
             DetailDto details = new DetailDto();
-            String[] qrcodeArray = qrcode.split("\\|");
+            String[] qrcodeArray;
+
+            // check the qrcode "\\|" exist or not, if not,throw the exception error
+            if (qrcode.contains("\\|")) {
+                qrcodeArray = qrcode.split("\\|");
+            } else {
+                log.debug("qrcode no splite " + qrcode);
+                throw new IllegalArgumentException("qrcode no | format not correct " + qrcode);
+            }
+            qrcodeArray = qrcode.split("\\|");
 
             details.setType(qrcodeArray[0]);
             details.setData(DetailDataDto.builder()
@@ -91,7 +100,7 @@ public class EformServiceImpl implements EformService {
                         .description(menuDto.getDescription())
                         .url(menuDto.getUrl())
                         //.icon(serverAddress+menuDto.getIcon()).build());
-                        .icon(serverAddress +menuDto.getIcon()).build());
+                        .icon(serverAddress + menuDto.getIcon()).build());
                 //System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
                 log.debug("Icon: " + menuDto.getIcon());
 
