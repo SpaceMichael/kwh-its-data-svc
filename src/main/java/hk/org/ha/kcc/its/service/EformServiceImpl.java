@@ -33,12 +33,8 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
-/*        log.debug("serverAddress: " + serverAddress);
-        log.debug("serverEnv: " + serverEnv);*/
-        /*String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
-        String iconBedCleansing = serverAddress + "/iconBedCleansing.png";
-        String iconDrugDispensing = serverAddress + "/iconDrugDispensing.png";
-        String iconLabReport = serverAddress + "/iconLabReport.png";*/
+       /*   log.debug("serverAddress: " + serverAddress);
+            log.debug("serverEnv: " + serverEnv);*/
 
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
@@ -54,7 +50,6 @@ public class EformServiceImpl implements EformService {
             forms.add(FormDto.builder().title(menuDto.getTitle())
                     .description(menuDto.getDescription())
                     .url(menuDto.getUrl2())
-                    //.icon(menuDto.getIcon()).build());
                     .icon(serverAddress + menuDto.getIcon()).build());
 
             /*forms.add(FormDto.builder().title("Bed Cleansing")
@@ -63,7 +58,7 @@ public class EformServiceImpl implements EformService {
                     .icon(iconBedCleansing).build());
              */
 
-            // get the value of qrcode eg = "BED|KWH|12BG|7|7-02"
+            // get the value of qrcode eg = "BED|KWH|12BG|7|7-02" for test
             // splite it "|" to  detail field TYPE|WARD|CUBICLE|BEDNO
             DetailDto details = new DetailDto();
             String[] qrcodeArray;
@@ -81,7 +76,6 @@ public class EformServiceImpl implements EformService {
                     .ward(qrcodeArray[2])
                     .cubicle(qrcodeArray[3])
                     .bedNo(qrcodeArray[4])
-                    //.bedChecked(bedCleansingRequestDto.getWholeBed())
                     .build());
             /*details.setType("bed");
             // details.setData(DetailDataDto.builder().dept("M&G").ward("16A1").bedNo("10").build());
@@ -101,7 +95,6 @@ public class EformServiceImpl implements EformService {
                 forms.add(FormDto.builder().title(menuDto.getTitle())
                         .description(menuDto.getDescription())
                         .url(menuDto.getUrl())
-                        //.icon(menuDto.getIcon()).build());
                         .icon(serverAddress + menuDto.getIcon()).build());
                 log.debug("Icon: " + serverAddress + menuDto.getIcon());
             }
