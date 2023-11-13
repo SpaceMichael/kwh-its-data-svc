@@ -68,13 +68,12 @@ public class EformServiceImpl implements EformService {
             DetailDto details = new DetailDto();
             String[] qrcodeArray;
 
-            // check the qrcode contain 4 "|" exist or not, if not,throw the exception error
+            // check the qrcode contain "|" exist or not, if not,throw the exception error
             if (qrcode.contains("|")) {
                 qrcodeArray = qrcode.split("\\|");
             } else {
                 log.debug("qrcode no splite " + qrcode);
-                // throw the response error status code 404
-                throw new ResourceNotFoundException("qrcode no splite " + qrcode);
+                throw new IllegalArgumentException("qrcode no splite " + qrcode);
             }
 
             details.setType(qrcodeArray[0]);
