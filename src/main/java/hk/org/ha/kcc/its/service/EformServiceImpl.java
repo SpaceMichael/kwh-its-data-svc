@@ -93,6 +93,8 @@ public class EformServiceImpl implements EformService {
             // return eformResponseDto;
             return ResponseEntity.ok(eformResponseDto);
         } else {
+            log.debug("serverAddress: " + serverAddress);
+            log.debug("serverEnv: " + serverEnv);
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
@@ -105,7 +107,7 @@ public class EformServiceImpl implements EformService {
                         //.icon(menuDto.getIcon()).build());
                         .icon(serverAddress + menuDto.getIcon()).build());
                 //System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
-                log.debug("Icon: " + menuDto.getIcon());
+                log.debug("Icon: " + serverAddress + menuDto.getIcon());
 
             }
 
