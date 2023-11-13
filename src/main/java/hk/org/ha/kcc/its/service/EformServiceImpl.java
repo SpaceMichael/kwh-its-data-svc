@@ -33,9 +33,8 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
-        //System.out.println("serverAddress: " + serverAddress);
-        log.debug("serverAddress: " + serverAddress);
-        log.debug("serverEnv: " + serverEnv);
+/*        log.debug("serverAddress: " + serverAddress);
+        log.debug("serverEnv: " + serverEnv);*/
         /*String serverAddress = "https://kwh-its-data-svc-kccclinical-dev.cldkwhtst1.server.ha.org.hk";
         String iconBedCleansing = serverAddress + "/iconBedCleansing.png";
         String iconDrugDispensing = serverAddress + "/iconDrugDispensing.png";
@@ -69,14 +68,14 @@ public class EformServiceImpl implements EformService {
             DetailDto details = new DetailDto();
             String[] qrcodeArray;
 
-            // check the qrcode "\\|" exist or not, if not,throw the exception error
-            if (qrcode.contains("\\|")) {
+            // check the qrcode contain 4 "|" exist or not, if not,throw the exception error
+            if (qrcode.contains("|")) {
                 qrcodeArray = qrcode.split("\\|");
             } else {
                 log.debug("qrcode no splite " + qrcode);
-                throw new IllegalArgumentException("qrcode no | format not correct " + qrcode);
+                // throw the response error status code 404
+                throw new ResourceNotFoundException("qrcode no splite " + qrcode);
             }
-            qrcodeArray = qrcode.split("\\|");
 
             details.setType(qrcodeArray[0]);
             details.setData(DetailDataDto.builder()
@@ -90,7 +89,6 @@ public class EformServiceImpl implements EformService {
             details.setData(DetailDataDto.builder().ward("12BM").cubicle("1").bedNo("1-02")
                     .bedChecked(false).build());*/
             eformResponseDto.setData(DataDto.builder().forms(forms).details(details).build());
-            // return eformResponseDto;
             return ResponseEntity.ok(eformResponseDto);
         } else {
             log.debug("serverAddress: " + serverAddress);
@@ -106,25 +104,8 @@ public class EformServiceImpl implements EformService {
                         .url(menuDto.getUrl())
                         //.icon(menuDto.getIcon()).build());
                         .icon(serverAddress + menuDto.getIcon()).build());
-                //System.out.println("menuDto.getIcon(): " + menuDto.getIcon());
                 log.debug("Icon: " + serverAddress + menuDto.getIcon());
-
             }
-
-      /*      forms.add(FormDto.builder()
-                    .title("Bed Cleansing")
-                    .description("Request form")
-                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansing")
-                    .icon(iconBedCleansing).build());
-            forms.add(FormDto.builder().title("Drug dispensing Tracker")
-                    .description("Request form, Tracker")
-                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/DrugDispensing")
-                    .icon(iconDrugDispensing).build());
-            forms.add(FormDto.builder()
-                    .title("Lab Report Tracker")
-                    .description("Request form, Report search")
-                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/LabReport")
-                    .icon(iconLabReport).build());*/
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
             return ResponseEntity.ok().body(eformResponseDto);
         }
