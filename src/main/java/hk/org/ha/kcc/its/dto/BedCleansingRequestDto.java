@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -28,4 +30,14 @@ public class BedCleansingRequestDto {
     private String remarks;
     private Integer menuId;
     private String requestor;
+    private String createdBy;
+    private LocalDateTime createdDate;
+    private String modifiedBy;
+    private LocalDateTime modifiedDate;
+    /*
+    private String createdBy;
+  private LocalDateTime createdDate;
+  private String modifiedBy;
+  private LocalDateTime modifiedDate;
+     */
 }
