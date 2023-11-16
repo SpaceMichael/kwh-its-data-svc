@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaAuditing
 @EnableTransactionManagement
-@EnableJpaRepositories("hk.org.ha.kcc.eform.repository")
+//@EnableJpaRepositories("hk.org.ha.kcc.eform.repository")
 @EntityScan("hk.org.ha.kcc.eform.model")
 public class JpaTestConfig {
 
   public static final String AUDITOR = "tester";
 
-  /*@Bean
+/*  @Bean
   AuditorAware<String> auditorProviderTest() {
     return () -> Optional.of(AUDITOR);
   }*/

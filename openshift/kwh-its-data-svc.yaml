@@ -57,6 +57,11 @@ spec:
           env:
             - name: TZ
               value: Asia/Hong_Kong
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt.secret
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
