@@ -51,7 +51,7 @@ public class BedCleansingController {
     }
 
     // get all
-/*    @Operation(summary = "Get list of BedCleansingRequest")
+    @Operation(summary = "Get list of BedCleansingRequest")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Iterable<BedCleansingRequestDto> getAllBCR(@RequestParam(required = false) String ward,
@@ -62,7 +62,7 @@ public class BedCleansingController {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
         return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
-    }*/
+    }
 
     // get by id
     @Operation(summary = "Get the BedCleansingRequest by id")
