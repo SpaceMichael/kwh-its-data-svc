@@ -7,7 +7,11 @@ import hk.org.ha.kcc.its.service.BedCleansingRequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
@@ -24,7 +28,6 @@ public class BedCleansingDBController {
 
     private final BedCleansingRequestService bedCleansingRequestService;
 
-
     public BedCleansingDBController(BedCleansingRequestService bedCleansingRequestService) {
         this.bedCleansingRequestService = bedCleansingRequestService;
     }
@@ -38,7 +41,10 @@ public class BedCleansingDBController {
                                                       @RequestParam(required = false) String bed,
                                                       @RequestParam(required = false) Integer period,
                                                       @RequestParam(required = false) Boolean completedStatus) {
-        log.debug("get all " + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //System.out.println("authentication.getName()" + authentication.getName());
+        String currentAuditor = authentication.getName();
+        log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
         return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
     }
 }
