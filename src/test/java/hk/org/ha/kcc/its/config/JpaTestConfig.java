@@ -20,8 +20,8 @@ public class JpaTestConfig {
 
   public static final String AUDITOR = "tester";
 
-  @Bean
+  /*@Bean
   AuditorAware<String> auditorProviderTest() {
     return () -> Optional.of(AUDITOR);
-  }
+  }*/
 }
