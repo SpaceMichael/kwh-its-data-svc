@@ -25,7 +25,7 @@ public interface BedCleansingServiceRepository extends JpaRepository<BedCleansin
             "        bed_cleansing_request_audit_log.dept_code,\n" +
             "        bed_cleansing_request_audit_log.detergent,\n" +
             "        bed_cleansing_request_audit_log.hospital_code,\n" +
-            "        bed_cleansing_request_audit_log.menu_id,\n" +
+            "        bed_cleansing_request_audit_log.eform_id,\n" +
             "        bed_cleansing_request_audit_log.remarks,\n" +
             "        bed_cleansing_request_audit_log.requestor_contact_no,\n" +
             "        bed_cleansing_request_audit_log.status,\n" +
