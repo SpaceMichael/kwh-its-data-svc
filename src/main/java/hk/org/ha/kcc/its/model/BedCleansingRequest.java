@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 
 @Data
@@ -66,20 +67,20 @@ public class BedCleansingRequest extends Auditable {
     @Column(name = "eform_id", length = 20, insertable = false, updatable = false)
     private Integer eformId;
 
- /*   @NotAudited
+    @NotAudited
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "menu_id")
+    @JoinColumn(name = "eform_id")
     private Eform eform;
 
-    public void assignMenu(Eform eform) {
+    public void assignEform(Eform eform) {
         this.eform = eform;
-        this.menuId = eform.getId();
+        this.eformId = eform.getId();
     }
 
-    public void removeMenu(Eform eform) {
+    public void removeEform(Eform eform) {
         this.eform = null;
-        this.menuId = null;
-    }*/
+        this.eformId = null;
+    }
 }

@@ -47,12 +47,14 @@ public class Eform extends Auditable {
     private String url2; // e.g service url for cleaner use
     @Column(name = "title2", length = Integer.MAX_VALUE)
     private String title2; // e.g "Bed Cleansing status" may be not use
+    @Column(name = "qrcode_type", length = 50)
+    private String qrcodeType; // e.g BED on the QRcode
 
-   /* @ToString.Exclude
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
     @JsonIgnore
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "eform", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BedCleansingRequest> bedCleansingRequestList = new ArrayList<>();
 
     public void addBedCleansingRequest(BedCleansingRequest bedCleansingRequest) {
@@ -63,5 +65,5 @@ public class Eform extends Auditable {
     public void removeBedCleansingRequest(BedCleansingRequest bedCleansingRequest) {
         bedCleansingRequestList.remove(bedCleansingRequest);
         bedCleansingRequest.setEform(null);
-    }*/
+    }
 }
