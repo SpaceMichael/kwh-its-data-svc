@@ -24,14 +24,11 @@ public class EformServiceImpl implements EformService {
 
     private final EformMapper eformMapper;
 
-    private final MenuService menuService;
-
     private final BedCleansingRequestService bedCleansingRequestService;
 
-    public EformServiceImpl(EformRepository eformRepository, EformMapper eformMapper, MenuService menuService, BedCleansingRequestService bedCleansingRequestService) {
+    public EformServiceImpl(EformRepository eformRepository, EformMapper eformMapper, BedCleansingRequestService bedCleansingRequestService) {
         this.eformRepository = eformRepository;
         this.eformMapper = eformMapper;
-        this.menuService = menuService;
         this.bedCleansingRequestService = bedCleansingRequestService;
     }
 
@@ -101,7 +98,7 @@ public class EformServiceImpl implements EformService {
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
             // get all the menu and fill the forms field
-            List<EformDto> eformDtoList = this.menuService.getAllDto();
+            List<EformDto> eformDtoList = this.getAllDto();
             for (EformDto eformDto : eformDtoList) {
                 forms.add(FormDto.builder().title(eformDto.getTitle())
                         .description(eformDto.getDescription())
