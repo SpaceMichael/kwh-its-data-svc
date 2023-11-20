@@ -1,87 +1,87 @@
 package hk.org.ha.kcc.its.service;
 
-import hk.org.ha.kcc.its.dto.MenuDto;
-import hk.org.ha.kcc.its.mapper.MenuMapper;
-import hk.org.ha.kcc.its.model.Menu;
-import hk.org.ha.kcc.its.repository.MenuRepository;
+import hk.org.ha.kcc.its.dto.EformDto;
+import hk.org.ha.kcc.its.mapper.EformMapper;
+import hk.org.ha.kcc.its.model.Eform;
+import hk.org.ha.kcc.its.repository.EformRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class MenuServiceImpl implements MenuService {
-    private final MenuRepository menuRepository;
+    private final EformRepository eformRepository;
 
-    private final MenuMapper menuMapper;
+    private final EformMapper eformMapper;
 
-    public MenuServiceImpl(MenuRepository menuRepository, MenuMapper menuMapper) {
-        this.menuRepository = menuRepository;
-        this.menuMapper = menuMapper;
+    public MenuServiceImpl(EformRepository eformRepository, EformMapper eformMapper) {
+        this.eformRepository = eformRepository;
+        this.eformMapper = eformMapper;
     }
 
     @Override
-    public MenuDto create(MenuDto menuDto) {
-        Menu menu = this.menuMapper.MenuDtoToMenu(menuDto);
-        if (menuDto.getActiveFlag() == null) {
-            menu.setActiveFlag(true);
+    public EformDto create(EformDto eformDto) {
+        Eform eform = this.eformMapper.EformDtoToEform(eformDto);
+        if (eformDto.getActiveFlag() == null) {
+            eform.setActiveFlag(true);
         }
-        if (menuDto.getEnable() == null) {
-            menu.setEnable(true);
+        if (eformDto.getEnable() == null) {
+            eform.setEnable(true);
         }
-        return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
+        return this.eformMapper.EformToEformDto(this.eformRepository.save(eform));
     }
 
     @Override
-    public List<MenuDto> getAllDto() {
+    public List<EformDto> getAllDto() {
         // filter the active flag is true
-        List<Menu> menuList = this.menuRepository.findAll();
-        return menuList.stream().map(menuMapper::MenuToMenuDto).filter(MenuDto::getActiveFlag)
+        List<Eform> eformList = this.eformRepository.findAll();
+        return eformList.stream().map(eformMapper::EformToEformDto).filter(EformDto::getActiveFlag)
                 .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
-    public MenuDto getDtoById(Integer id) {
-        Menu menu = this.menuRepository.findById(id)
+    public EformDto getDtoById(Integer id) {
+        Eform eform = this.eformRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu not found"));
-        return this.menuMapper.MenuToMenuDto(menu);
+        return this.eformMapper.EformToEformDto(eform);
     }
 
     @Override
-    public MenuDto updateById(Integer id, MenuDto menuDto) {
-        Menu menu = this.menuRepository.findById(id)
+    public EformDto updateById(Integer id, EformDto eformDto) {
+        Eform eform = this.eformRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu not found"));
-        if (menuDto.getTitle() != null) {
-            menu.setTitle(menuDto.getTitle());
+        if (eformDto.getTitle() != null) {
+            eform.setTitle(eformDto.getTitle());
         }
-        if (menuDto.getDescription() != null) {
-            menu.setDescription(menuDto.getDescription());
+        if (eformDto.getDescription() != null) {
+            eform.setDescription(eformDto.getDescription());
         }
-        if (menuDto.getRemarks() != null) {
-            menu.setRemarks(menuDto.getRemarks());
+        if (eformDto.getRemarks() != null) {
+            eform.setRemarks(eformDto.getRemarks());
         }
-        if (menuDto.getIcon() != null) {
-            menu.setIcon(menuDto.getIcon());
+        if (eformDto.getIcon() != null) {
+            eform.setIcon(eformDto.getIcon());
         }
-        if (menuDto.getUrl() != null) {
-            menu.setUrl(menuDto.getUrl());
+        if (eformDto.getUrl() != null) {
+            eform.setUrl(eformDto.getUrl());
         }
-        if (menuDto.getActiveFlag() != null) {
-            menu.setActiveFlag(menuDto.getActiveFlag());
+        if (eformDto.getActiveFlag() != null) {
+            eform.setActiveFlag(eformDto.getActiveFlag());
         }
-        if (menuDto.getEnable() != null) {
-            menu.setEnable(menuDto.getEnable());
+        if (eformDto.getEnable() != null) {
+            eform.setEnable(eformDto.getEnable());
         }
-        if (menuDto.getBarcodeKey() != null) {
-            menu.setBarcodeKey(menuDto.getBarcodeKey());
+        if (eformDto.getBarcodeKey() != null) {
+            eform.setBarcodeKey(eformDto.getBarcodeKey());
         }
-        if (menuDto.getUrl2() != null) {
-            menu.setUrl2(menuDto.getUrl2());
+        if (eformDto.getUrl2() != null) {
+            eform.setUrl2(eformDto.getUrl2());
         }
-        if (menuDto.getTitle2() != null) {
-            menu.setTitle2(menuDto.getTitle2());
+        if (eformDto.getTitle2() != null) {
+            eform.setTitle2(eformDto.getTitle2());
         }
         //menu.setActiveFlag(menuDto.getActiveFlag());
-        return this.menuMapper.MenuToMenuDto(this.menuRepository.save(menu));
+        return this.eformMapper.EformToEformDto(this.eformRepository.save(eform));
 
         /*
          * private String title; // Bed Cleansing private String description; // e.g "Request form" ,
@@ -97,7 +97,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void deleteById(Integer id) {
         try {
-            this.menuRepository.deleteById(id);
+            this.eformRepository.deleteById(id);
         } catch (Exception e) {
             throw new ResourceNotFoundException("Menu not found");
         }

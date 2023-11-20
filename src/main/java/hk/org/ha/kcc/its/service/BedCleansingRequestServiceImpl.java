@@ -1,8 +1,7 @@
 package hk.org.ha.kcc.its.service;
 
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
-import hk.org.ha.kcc.its.model.Menu;
-import hk.org.ha.kcc.its.repository.MenuRepository;
+import hk.org.ha.kcc.its.repository.EformRepository;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
@@ -22,14 +21,14 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
 
     private final BedCleansingServiceRepository bedCleansingServiceRepository;
     private final BedCleansingRequestMapper bedCleansingRequestMapper;
-    private final MenuRepository menuRepository;
+    private final EformRepository eformRepository;
 
     public BedCleansingRequestServiceImpl(BedCleansingServiceRepository bedCleansingServiceRepository
             , BedCleansingRequestMapper bedCleansingRequestMapper
-            , MenuRepository menuRepository) {
+            , EformRepository eformRepository) {
         this.bedCleansingServiceRepository = bedCleansingServiceRepository;
         this.bedCleansingRequestMapper = bedCleansingRequestMapper;
-        this.menuRepository = menuRepository;
+        this.eformRepository = eformRepository;
     }
 
     @Override
@@ -37,11 +36,11 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         BedCleansingRequest bedCleansingRequest = this.bedCleansingRequestMapper
                 .BedCleansingRequestDtoToBedCleansingRequest(bedCleansingRequestDto);
         // check menu id is correct or not
-        if (bedCleansingRequestDto.getMenuId() != null) {
-            Menu menu = this.menuRepository.findById(bedCleansingRequestDto.getMenuId())
+        /*if (bedCleansingRequestDto.getMenuId() != null) {
+            Eform eform = this.menuRepository.findById(bedCleansingRequestDto.getMenuId())
                     .orElseThrow(() -> new ResourceNotFoundException("Id" + bedCleansingRequestDto.getMenuId() + "Menu not found"));
-            bedCleansingRequest.assignMenu(menu);
-        } // this id can check menu table and get the bed cleansing , id and insert to the bed cleansing table menu id?
+            bedCleansingRequest.assignMenu(eform);
+        } // this id can check menu table and get the bed cleansing , id and insert to the bed cleansing table menu id?*/
 
         // the status should be "PENDING" when create the request
         bedCleansingRequest.setStatus("PENDING");

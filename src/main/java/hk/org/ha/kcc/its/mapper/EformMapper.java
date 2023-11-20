@@ -1,16 +1,16 @@
 package hk.org.ha.kcc.its.mapper;
 
-import hk.org.ha.kcc.its.dto.MenuDto;
-import hk.org.ha.kcc.its.model.Menu;
+import hk.org.ha.kcc.its.dto.EformDto;
+import hk.org.ha.kcc.its.model.Eform;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
 @Mapper(builder = @Builder(disableBuilder = true))
-public interface MenuMapper {
+public interface EformMapper {
 
-  MenuDto MenuToMenuDto(Menu menu);
+  EformDto EformToEformDto(Eform eform);
 
-  Menu MenuDtoToMenu(MenuDto menuDto);
+  Eform EformDtoToEform(EformDto eformDto);
 }

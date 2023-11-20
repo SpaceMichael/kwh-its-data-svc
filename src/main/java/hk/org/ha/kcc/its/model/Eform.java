@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,8 @@ import java.util.List;
 @Builder
 @Entity
 //@Audited
-@Table(name = "menu")
-public class Menu extends Auditable {
+@Table(name = "eform")
+public class Eform extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +48,7 @@ public class Menu extends Auditable {
     @Column(name = "title2", length = Integer.MAX_VALUE)
     private String title2; // e.g "Bed Cleansing status" may be not use
 
-    @ToString.Exclude
+   /* @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
     @JsonIgnore
@@ -58,11 +57,11 @@ public class Menu extends Auditable {
 
     public void addBedCleansingRequest(BedCleansingRequest bedCleansingRequest) {
         bedCleansingRequestList.add(bedCleansingRequest);
-        bedCleansingRequest.setMenu(this);
+        bedCleansingRequest.setEform(this);
     }
 
     public void removeBedCleansingRequest(BedCleansingRequest bedCleansingRequest) {
         bedCleansingRequestList.remove(bedCleansingRequest);
-        bedCleansingRequest.setMenu(null);
-    }
+        bedCleansingRequest.setEform(null);
+    }*/
 }

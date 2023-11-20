@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MenuDto {
+public class EformDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer id; // e.g 1? or use Prefixed?
