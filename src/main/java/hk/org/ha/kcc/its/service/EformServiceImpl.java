@@ -48,24 +48,12 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
-            // forms.add(FormDto.builder().title("Bed
-            // Cleansing").url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest").build());
-
             // get menuService by title= Bed Cleansing id =1 for hardcode test
-            //EformDto eformDto = this.menuService.getDtoById(1);
-            EformDto eformDto = this.getDtoById(1); // check qrcode get the qrcode type ="BED" , = eform id = 1? or seacrh it from db and return the eformdto
-            // use the menuServiceDto to fill the forms field with url
-            forms.add(FormDto.builder().title(eformDto.getTitle())
-                    .description(eformDto.getDescription())
-                    .url(eformDto.getUrl2())
-                    .icon(serverAddress + eformDto.getIcon()).build());
-
-            /*forms.add(FormDto.builder().title("Bed Cleansing")
+            /* forms.add(FormDto.builder().title("Bed Cleansing")
                     .description("Request form")
                     .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
                     .icon(iconBedCleansing).build());
              */
-
             // get the value of qrcode eg = "BED|KWH|12BG|7|7-02" for test
             // splite it "|" to  detail field TYPE|WARD|CUBICLE|BEDNO
             DetailDto details = new DetailDto();
@@ -75,9 +63,20 @@ public class EformServiceImpl implements EformService {
             if (qrcode.contains("|")) {
                 qrcodeArray = qrcode.split("\\|");
             } else {
-                log.debug("qrcode no splite " + qrcode);
-                throw new IllegalArgumentException("qrcode no splite " + qrcode);
+                log.debug("qrcode NOT CORRECT " + qrcode);
+                //throw new IllegalArgumentException("qrcode NOT CORRECT" + qrcode);
+                throw new ResourceNotFoundException("qrcode NOT CORRECT" + qrcode);
             }
+
+
+            // EformDto eformDto = this.menuService.getDtoById(1);  ---> read the qr code type value from qr code
+            EformDto eformDto = this.getDtoById(findByQrcodeType(qrcodeArray[0]));
+            // check qrcode get the qrcode type ="BED" , = eform id = 1? or seacrh it from db and return the eformdto
+            // use the menuServiceDto to fill the forms field with url
+            forms.add(FormDto.builder().title(eformDto.getTitle())
+                    .description(eformDto.getDescription())
+                    .url(eformDto.getUrl())
+                    .icon(serverAddress + eformDto.getIcon()).build());
 
             details.setType(qrcodeArray[0]);
             details.setData(DetailDataDto.builder()
@@ -85,10 +84,7 @@ public class EformServiceImpl implements EformService {
                     .cubicle(qrcodeArray[3])
                     .bedNo(qrcodeArray[4])
                     .build());
-            /*details.setType("bed");
-            // details.setData(DetailDataDto.builder().dept("M&G").ward("16A1").bedNo("10").build());
-            details.setData(DetailDataDto.builder().ward("12BM").cubicle("1").bedNo("1-02")
-                    .bedChecked(false).build());*/
+
             eformResponseDto.setData(DataDto.builder().forms(forms).details(details).build());
             return ResponseEntity.ok(eformResponseDto);
         } else {
@@ -172,7 +168,9 @@ public class EformServiceImpl implements EformService {
         if (eformDto.getTitle2() != null) {
             eform.setTitle2(eformDto.getTitle2());
         }
-        //menu.setActiveFlag(menuDto.getActiveFlag());
+        if (eformDto.getQrcodeType() != null) {
+            eform.setQrcodeType(eformDto.getQrcodeType());
+        }
         return this.eformMapper.EformToEformDto(this.eformRepository.save(eform));
     }
 
@@ -181,6 +179,23 @@ public class EformServiceImpl implements EformService {
         try {
             this.eformRepository.deleteById(id);
         } catch (Exception e) {
+            throw new ResourceNotFoundException("Eform not found");
+        }
+    }
+
+    @Override
+    public Integer findByQrcodeType(String qrcodeType) {
+
+        Eform matchingEform = this.eformRepository.findAll()
+                .stream()
+                .filter(eform -> eform.getQrcodeType().equals(qrcodeType))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
+
+        // if matchingEform is null, throw the exception ResourceNotFoundException
+        if (matchingEform != null) {
+            return matchingEform.getId();
+        } else {
             throw new ResourceNotFoundException("Eform not found");
         }
     }

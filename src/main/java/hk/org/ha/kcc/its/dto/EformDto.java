@@ -33,6 +33,7 @@ public class EformDto {
     private String url2; // e.g service url for cleaner use
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String title2; // e.g "Bed Cleansing status" may be not use
+    private String qrcodeType; // e.g "BED"
 }
 
 /*
