@@ -33,7 +33,7 @@ class WebSecurityConfig {
   }
 
 
-  @Bean
+/*  @Bean
   @Order(1)
   public SecurityFilterChain filterChain1(HttpSecurity http) throws Exception {
     http.antMatcher("/api/v2/**")
@@ -43,10 +43,10 @@ class WebSecurityConfig {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.cors().and().csrf().disable();
     return http.build();
-  }
+  }*/
 
   @Bean
-  @Order(2)
+  //@Order(2)
   public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
     http.antMatcher("/api/v1/**")
         .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());

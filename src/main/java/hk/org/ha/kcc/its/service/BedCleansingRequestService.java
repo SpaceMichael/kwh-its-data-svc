@@ -16,7 +16,7 @@ public interface BedCleansingRequestService {
   BedCleansingRequestDto updateById(String id, BedCleansingRequestDto bedCleansingRequestDto);
 
   void deleteById(String id);
-
+  // get the detail of BedCleansing request by ID
   List<BedCleansingRequestAuditDto> getDtlByBCId(String Id);
 
 }

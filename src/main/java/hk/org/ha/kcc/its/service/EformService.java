@@ -23,6 +23,6 @@ public interface EformService {
 
   // delete by ID
   void deleteById(Integer id);
-
+  // get the ID by qrcodeType
   Integer findByQrcodeType(String qrcodeType);
 }

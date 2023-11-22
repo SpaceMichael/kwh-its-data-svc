@@ -66,7 +66,6 @@ public class EformController {
         return this.eformService.updateById(id, eformDto);
     }
 
-
     // get eform service by all
     @Operation(summary = "Get all eform service")
     @GetMapping("/list")
@@ -86,7 +85,6 @@ public class EformController {
         log.debug("getEformById id:" + id + " by : " + currentAuditor);
         return this.eformService.getDtoById(id);
     }
-
 
     // delete eform service by id
     @Operation(summary = "delete eform service by ID")

@@ -15,9 +15,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserAccessServiceImpl implements UserAccessService {
 
-
     private final UserAcessRespository userAcessRespository;
-
 
     private final UserAccessMapper userAccessMapper;
 

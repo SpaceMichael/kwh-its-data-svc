@@ -42,43 +42,4 @@ public interface BedCleansingServiceRepository extends JpaRepository<BedCleansin
             "        where bed_cleansing_request_audit_log.id=?1 order by rev_detail_id", nativeQuery = true)
     List<Object[]> getAllDtoByBCId(String Id);
 
-    /*
-        bed_cleansing_request_audit_log.id as bc_id,
-        bed_cleansing_request_audit_log.rev_id,
-        bed_cleansing_request_audit_log.rev_type,
-        bed_cleansing_request_audit_log.cleaner,
-        bed_cleansing_request_audit_log.active_flag,
-        bed_cleansing_request_audit_log.bed_no,
-        bed_cleansing_request_audit_log.bed_type,
-        bed_cleansing_request_audit_log.cleaning_process,
-        bed_cleansing_request_audit_log.cubicle_no,
-        bed_cleansing_request_audit_log.dept_code,
-        bed_cleansing_request_audit_log.detergent,
-        bed_cleansing_request_audit_log.hospital_code,
-        bed_cleansing_request_audit_log.menu_id,
-        bed_cleansing_request_audit_log.remarks,
-        bed_cleansing_request_audit_log.requestor_contact_no,
-        bed_cleansing_request_audit_log.status,
-        bed_cleansing_request_audit_log.ward_code,
-        bed_cleansing_request_audit_log.whole_bed_cleansing,
-        bed_cleansing_request_audit_log.requestor_id,
-        rev_details.id as rev_detail_id,
-        rev_details.action,
-        rev_details.action_date_time,
-        rev_details.record_id,
-        rev_details.table_name,
-        rev_details.username,
-        rev_details.revision_id
-
-
-        SELECT TOP (1000) [id]
-              ,[action]
-              ,[action_date_time]
-              ,[record_id]
-              ,[table_name]
-              ,[username]
-              ,[revision_id]
-          FROM [kwh_its].[dbo].[rev_details]
-     */
-
 }

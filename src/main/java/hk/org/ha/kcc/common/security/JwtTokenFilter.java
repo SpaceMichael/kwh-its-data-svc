@@ -36,7 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        //return pathMatcher.match("/api/v1/**", path);
+        //return pathMatcher.match("/actuator/**", path);
         return pathMatcher.match("/api/v1/**", path) || pathMatcher.match("/actuator/**", path);
     }
 

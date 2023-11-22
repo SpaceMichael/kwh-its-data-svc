@@ -189,7 +189,7 @@ public class EformServiceImpl implements EformService {
         Eform matchingEform = this.eformRepository.findAll()
                 .stream()
                 .filter(eform -> eform.getQrcodeType().equals(qrcodeType))
-                .filter(eform -> eform.getActiveFlag())
+                .filter(Eform::getActiveFlag)
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
 

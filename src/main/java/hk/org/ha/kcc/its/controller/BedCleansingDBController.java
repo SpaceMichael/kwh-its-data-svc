@@ -26,7 +26,7 @@ public class BedCleansingDBController {
             AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
     public static final String BASE_URL = "/api/v2/bed-cleansing/requests";
 
-    private final BedCleansingRequestService bedCleansingRequestService;
+/*    private final BedCleansingRequestService bedCleansingRequestService;
 
     public BedCleansingDBController(BedCleansingRequestService bedCleansingRequestService) {
         this.bedCleansingRequestService = bedCleansingRequestService;
@@ -46,5 +46,5 @@ public class BedCleansingDBController {
         String currentAuditor = authentication.getName();
         log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
         return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
-    }
+    }*/
 }
