@@ -7,16 +7,17 @@ import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
 
 public interface BedCleansingRequestService {
 
-  BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto);
+    BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto);
 
-  List<BedCleansingRequestDto> getAllDto(String ward, String cubicle, String bed, Integer period, Boolean completedStatus);
+    List<BedCleansingRequestDto> getAllDto(String ward, String cubicle, String bed, Integer period, Boolean completedStatus);
 
-  BedCleansingRequestDto getDtoById(String id);
+    BedCleansingRequestDto getDtoById(String id);
 
-  BedCleansingRequestDto updateById(String id, BedCleansingRequestDto bedCleansingRequestDto);
+    BedCleansingRequestDto updateById(String id, BedCleansingRequestDto bedCleansingRequestDto);
 
-  void deleteById(String id);
-  // get the detail of BedCleansing request by ID
-  List<BedCleansingRequestAuditDto> getDtlByBCId(String Id);
+    void deleteById(String id);
+
+    // get the detail of BedCleansing request by ID
+    List<BedCleansingRequestAuditDto> getDtlByBCId(String Id);
 
 }

@@ -22,13 +22,8 @@ public class EformDto {
     private String icon; // e.g // "https://kwh-its-data-svc-kccclinical-dev.tstcld61.server.ha.org.hk/iconBedCleansing.png"
     private String url; // e.g // "https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest
     private Boolean activeFlag;
-
-  /*@JsonInclude(JsonInclude.Include.NON_NULL)
-  private BarcodeDto barcode;*/
-
     private Boolean enable;
     private String barcodeKey;
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String url2; // e.g service url for cleaner use
     @JsonInclude(JsonInclude.Include.NON_NULL)

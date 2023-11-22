@@ -20,17 +20,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 class WebSecurityConfig {
 
-  private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-  private final JwtTokenUtil jwtTokenUtil;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtTokenUtil jwtTokenUtil;
 
-  @Autowired
-  private JwtTokenFilter jwtTokenFilter;
+    @Autowired
+    private JwtTokenFilter jwtTokenFilter;
 
-  public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-      JwtTokenUtil jwtTokenUtil) {
-    this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-    this.jwtTokenUtil = jwtTokenUtil;
-  }
+    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                             JwtTokenUtil jwtTokenUtil) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 
 
 /*  @Bean
@@ -45,18 +45,18 @@ class WebSecurityConfig {
     return http.build();
   }*/
 
-  @Bean
-  //@Order(2)
-  public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
-    http.antMatcher("/api/v1/**")
-        .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());
-    http.sessionManagement(
-        management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-    http.cors().and().csrf().disable();
-    http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtTokenUtil::convert).and()
-        .authenticationEntryPoint(jwtAuthenticationEntryPoint);
-    return http.build();
-  }
-
+    //@Bean
+    //@Order(2)
+    @Bean
+    public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
+        http.antMatcher("/api/v1/**")
+                .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());
+        http.sessionManagement(
+                management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.cors().and().csrf().disable();
+        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtTokenUtil::convert).and()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint);
+        return http.build();
+    }
 
 }

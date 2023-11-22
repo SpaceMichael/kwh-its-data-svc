@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Mapper(builder = @Builder(disableBuilder = true))
 public interface EformMapper {
 
-  EformDto EformToEformDto(Eform eform);
+    EformDto EformToEformDto(Eform eform);
 
-  Eform EformDtoToEform(EformDto eformDto);
+    Eform EformDtoToEform(EformDto eformDto);
 }

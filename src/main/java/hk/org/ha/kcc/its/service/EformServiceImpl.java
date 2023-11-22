@@ -40,9 +40,6 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
-       /*   log.debug("serverAddress: " + serverAddress);
-            log.debug("serverEnv: " + serverEnv);*/
-
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
             EformResponseDto eformResponseDto = new EformResponseDto();
@@ -68,15 +65,14 @@ public class EformServiceImpl implements EformService {
                 throw new ResourceNotFoundException("qrcode NOT CORRECT" + qrcode);
             }
 
-
-            // EformDto eformDto = this.menuService.getDtoById(1);  ---> read the qr code type value from qr code
+            // EformDto eformDto = this.menuService.getDtoById(1);  change---> read the qr code type value from qr code
             EformDto eformDto = this.getDtoById(findByQrcodeType(qrcodeArray[0]));
             // check qrcode get the qrcode type ="BED" , = eform id = 1? or seacrh it from db and return the eformdto
             // use the menuServiceDto to fill the forms field with url
             forms.add(FormDto.builder().title(eformDto.getTitle())
                     .description(eformDto.getDescription())
                     .url(eformDto.getUrl())
-                    .icon(serverAddress + eformDto.getIcon()).build());
+                    .icon(serverAddress + eformDto.getIcon()).build()); // how to set the barcode object? enable ? and key?
 
             details.setType(qrcodeArray[0]);
             details.setData(DetailDataDto.builder()
@@ -88,8 +84,6 @@ public class EformServiceImpl implements EformService {
             eformResponseDto.setData(DataDto.builder().forms(forms).details(details).build());
             return ResponseEntity.ok(eformResponseDto);
         } else {
-            /*log.debug("serverAddress: " + serverAddress);
-            log.debug("serverEnv: " + serverEnv);*/
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
@@ -100,7 +94,7 @@ public class EformServiceImpl implements EformService {
                         .description(eformDto.getDescription())
                         .url(eformDto.getUrl())
                         .icon(serverAddress + eformDto.getIcon()).build());
-                //log.debug("Icon: " + serverAddress + menuDto.getIcon());
+                //log.debug("Icon: " + serverAddress + menuDto.getIcon());  // how to set the barcode object? enable ? and key? no qrcode set enable is false? or no key?
             }
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
             return ResponseEntity.ok().body(eformResponseDto);

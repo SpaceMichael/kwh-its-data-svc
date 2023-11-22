@@ -12,18 +12,12 @@ import lombok.NoArgsConstructor;
 public class UserAccessDto {
 
     private String corpId; // ttk799
-    private Integer formId; // form Id is eform id
+    private Integer formId; // form Id is eform id e.g :1
     private Boolean activeFlag;
 
     /*
-     @Id
-    @Column(name = "corp_id", length = 50)
     private String corpId; // ttk799
-
-    @Column(name = "form_id")
-    private Integer formId; // form Id is eform id
-
-    @Column(name = "active_flag") // 1 & 0
+    private Integer formId; // form Id is eform id e.g:1
     private Boolean activeFlag;
      */
 }

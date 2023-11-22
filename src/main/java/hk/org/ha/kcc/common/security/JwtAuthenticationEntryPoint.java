@@ -18,16 +18,16 @@ import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-  private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+    private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
-  @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-      throws IOException, ServletException {
-    String message = authException.getMessage();
-    if (authException instanceof BadCredentialsException) {
-      message = "Wrong username or password";
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+            throws IOException, ServletException {
+        String message = authException.getMessage();
+        if (authException instanceof BadCredentialsException) {
+            message = "Wrong username or password";
+        }
+        log.warn("Unauthorized error: {}", message);
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, message);
     }
-    log.warn("Unauthorized error: {}", message);
-    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, message);
-  }
 }

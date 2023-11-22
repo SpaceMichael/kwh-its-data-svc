@@ -216,11 +216,9 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
             if (object[12] != null) { // if eform id is null, set it to false
                 bedCleansingRequestAuditDto.setEformId(Integer.parseInt(object[12].toString()));
             }
-            //bedCleansingRequestAuditDto.setMenuId(Integer.parseInt(object[12].toString()));
             if (object[13] != null) { // if remarks is null, set it to false
                 bedCleansingRequestAuditDto.setRemarks(object[13].toString());
             }
-            //bedCleansingRequestAuditDto.setRemarks(object[13].toString());
             if (object[14] != null) { // if requestorContactNo is null, set it to false
                 bedCleansingRequestAuditDto.setRequestorContactNo(Integer.parseInt(object[14].toString()));
             }
@@ -260,7 +258,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
             // add bedCleansingRequestAuditDtoList
             bedCleansingRequestAuditDtoList.add(bedCleansingRequestAuditDto);
         }
-        //return bedCleansingRequestAuditDtoList;
         return bedCleansingRequestAuditDtoList;
     }
 }

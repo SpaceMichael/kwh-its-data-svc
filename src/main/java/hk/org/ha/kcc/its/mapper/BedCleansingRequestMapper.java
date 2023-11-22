@@ -10,9 +10,9 @@ import hk.org.ha.kcc.its.model.BedCleansingRequest;
 @Mapper(builder = @Builder(disableBuilder = true))
 public interface BedCleansingRequestMapper {
 
-  BedCleansingRequestDto BedCleansingRequestToBedCleansingRequestDto(
-      BedCleansingRequest bedCleansingRequest);
+    BedCleansingRequestDto BedCleansingRequestToBedCleansingRequestDto(
+            BedCleansingRequest bedCleansingRequest);
 
-  BedCleansingRequest BedCleansingRequestDtoToBedCleansingRequest(
-      BedCleansingRequestDto bedCleansingRequestDto);
+    BedCleansingRequest BedCleansingRequestDtoToBedCleansingRequest(
+            BedCleansingRequestDto bedCleansingRequestDto);
 }
