@@ -81,11 +81,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
                 .filter(request -> completedStatus == null || (request.getStatus() != null && completedStatus && request.getStatus().equalsIgnoreCase("COMPLETED")) || (request.getStatus() != null && !completedStatus && !request.getStatus().equalsIgnoreCase("COMPLETED")))
                 .collect(Collectors.toList());
 
-        /*List<BedCleansingRequest> bedCleansingRequestList2 = bedCleansingRequestList.stream()
-                // if completedStatus is true , filter status = "COMPLETED", else filter status != "COMPLETED"
-                .filter(request -> completedStatus == null || (request.getStatus() != null && completedStatus && request.getStatus().equalsIgnoreCase("COMPLETED")) || (request.getStatus() != null && !completedStatus && !request.getStatus().equalsIgnoreCase("COMPLETED")))
-                .collect(Collectors.toList());*/
-
         // use stream and map and filter to get the list of BedCleansingRequestDto
         return bedCleansingRequestList.stream()
                 .map(bedCleansingRequestMapper::BedCleansingRequestToBedCleansingRequestDto)
@@ -261,10 +256,4 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         return bedCleansingRequestAuditDtoList;
     }
 
-/*    @Override
-    public Integer getTotal() {
-        return this.bedCleansingServiceRepository.findAll().stream()
-                .filter(BedCleansingRequest -> BedCleansingRequest.getActiveFlag() != null && BedCleansingRequest.getActiveFlag())
-                .collect(Collectors.toList()).size();
-    }*/
 }

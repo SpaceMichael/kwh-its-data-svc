@@ -23,8 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(BedCleansingController.BASE_URL)
 public class BedCleansingController {
 
-    private static final AlsXLogger log =
-            AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+    private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
     public static final String BASE_URL = "/api/v1/bed-cleansing/requests";
 
     private final BedCleansingRequestService bedCleansingRequestService;
@@ -61,8 +60,7 @@ public class BedCleansingController {
                                               @RequestParam(required = false) Integer period, // hour
                                               @RequestParam(required = false) Boolean completedStatus,
                                               @RequestParam(required = false) Boolean total) {
-        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
+        log.debug("get all by: " + auditorAware.getCurrentAuditor().orElse("Unknown") + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
         List<BedCleansingRequestDto> bedCleansingRequestDtoList = this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
         if (total != null && total) {
             return BedCleansingDashBoardDto.builder().total(bedCleansingRequestDtoList.size()).bedCleansingRequestList(bedCleansingRequestDtoList).build();
@@ -77,8 +75,8 @@ public class BedCleansingController {
     @ResponseStatus(HttpStatus.OK)
     public BedCleansingRequestDto getBCRById(@PathVariable String id) {
         //public ResponseEntity<Map<String, Object>> getBCRequestById(@PathVariable String id) {
-        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("get by id: " + id + " by: " + currentAuditor);
+        //String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("get by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.bedCleansingRequestService.getDtoById(id);
         /*Map<String, Object> response = new HashMap<>();
         response.put("data", this.bedCleansingRequestService.getDtoById(id));
@@ -91,13 +89,11 @@ public class BedCleansingController {
     @ResponseStatus(HttpStatus.OK)
     public BedCleansingRequestDto updateBCRById(@PathVariable String id,
                                                 @RequestBody BedCleansingRequestDto bedCleansingRequestDto) {
-        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("update by id: " + id + " by: " + currentAuditor);
-
+        log.debug("update by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         // if getStatus = Process || Completed , cleaner = currentAuditor
         if (bedCleansingRequestDto.getStatus() != null &&
                 (bedCleansingRequestDto.getStatus().equalsIgnoreCase("Process") || bedCleansingRequestDto.getStatus().equalsIgnoreCase("Completed"))) {
-            bedCleansingRequestDto.setCleaner(currentAuditor);
+            bedCleansingRequestDto.setCleaner(auditorAware.getCurrentAuditor().orElse("Unknown"));
         }
         return this.bedCleansingRequestService.updateById(id, bedCleansingRequestDto);
     }
@@ -107,8 +103,7 @@ public class BedCleansingController {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBCRById(@PathVariable String id) {
-        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("delete by id: " + id + " by: " + currentAuditor);
+        log.debug("delete by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         this.bedCleansingRequestService.deleteById(id);
     }
 
@@ -117,8 +112,7 @@ public class BedCleansingController {
     @GetMapping(value = "/dtl/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<BedCleansingRequestAuditDto> getBCRDtlById(@PathVariable String id) {
-        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("get detail by id: " + id + " by: " + currentAuditor);
+        log.debug("get detail by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.bedCleansingRequestService.getDtlByBCId(id);
     }
 

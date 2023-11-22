@@ -46,11 +46,6 @@ public class EformServiceImpl implements EformService {
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
             // get menuService by title= Bed Cleansing id =1 for hardcode test
-            /* forms.add(FormDto.builder().title("Bed Cleansing")
-                    .description("Request form")
-                    .url("https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest")
-                    .icon(iconBedCleansing).build());
-             */
             // get the value of qrcode eg = "BED|KWH|12BG|7|7-02" for test
             // splite it "|" to  detail field TYPE|WARD|CUBICLE|BEDNO
             DetailDto details = new DetailDto();
@@ -94,7 +89,7 @@ public class EformServiceImpl implements EformService {
                         .description(eformDto.getDescription())
                         .url(eformDto.getUrl())
                         .icon(serverAddress + eformDto.getIcon()).build());
-                //log.debug("Icon: " + serverAddress + menuDto.getIcon());  // how to set the barcode object? enable ? and key? no qrcode set enable is false? or no key?
+                // how to set the barcode object? enable ? and key? no qrcode set enable is false? or no key?
             }
             eformResponseDto.setData(DataDto.builder().forms(forms).build());
             return ResponseEntity.ok().body(eformResponseDto);
