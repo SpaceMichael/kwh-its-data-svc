@@ -260,4 +260,11 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         }
         return bedCleansingRequestAuditDtoList;
     }
+
+/*    @Override
+    public Integer getTotal() {
+        return this.bedCleansingServiceRepository.findAll().stream()
+                .filter(BedCleansingRequest -> BedCleansingRequest.getActiveFlag() != null && BedCleansingRequest.getActiveFlag())
+                .collect(Collectors.toList()).size();
+    }*/
 }

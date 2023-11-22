@@ -20,4 +20,6 @@ public interface BedCleansingRequestService {
     // get the detail of BedCleansing request by ID
     List<BedCleansingRequestAuditDto> getDtlByBCId(String Id);
 
+    //Integer getTotal();
+
 }

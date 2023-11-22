@@ -3,6 +3,7 @@ package hk.org.ha.kcc.its.controller;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+import hk.org.ha.kcc.its.dto.BedCleansingDashBoardDto;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
@@ -50,18 +51,24 @@ public class BedCleansingController {
         return this.bedCleansingRequestService.create(bedCleansingRequestDto);
     }
 
-    // get all
+    // get all BedCleansing
     @Operation(summary = "Get list of BedCleansingRequest")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<BedCleansingRequestDto> getAllBCR(@RequestParam(required = false) String ward,
-                                                      @RequestParam(required = false) String cubicle,
-                                                      @RequestParam(required = false) String bed,
-                                                      @RequestParam(required = false) Integer period,
-                                                      @RequestParam(required = false) Boolean completedStatus) {
+    public BedCleansingDashBoardDto getAllBCR(@RequestParam(required = false) String ward,
+                                              @RequestParam(required = false) String cubicle,
+                                              @RequestParam(required = false) String bed,
+                                              @RequestParam(required = false) Integer period, // hour
+                                              @RequestParam(required = false) Boolean completedStatus,
+                                              @RequestParam(required = false) Boolean total) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get all by: " + currentAuditor + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
-        return this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
+        List<BedCleansingRequestDto> bedCleansingRequestDtoList = this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
+        if (total != null && total) {
+            return BedCleansingDashBoardDto.builder().total(bedCleansingRequestDtoList.size()).bedCleansingRequestList(bedCleansingRequestDtoList).build();
+        } else {
+            return BedCleansingDashBoardDto.builder().total(null).bedCleansingRequestList(bedCleansingRequestDtoList).build();
+        }
     }
 
     // get by id
