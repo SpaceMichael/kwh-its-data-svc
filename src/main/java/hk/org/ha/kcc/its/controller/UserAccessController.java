@@ -37,4 +37,45 @@ public class UserAccessController {
         log.debug("get all user access by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.userAccessService.getAllDto();
     }
+
+    // post user access
+    @Operation(summary = "Create new UserAccess")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserAccessDto createUserAccess(@RequestBody UserAccessDto userAccessDto) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("create user access by: " + currentAuditor);
+        //userAccessDto.(currentAuditor);
+        return this.userAccessService.create(userAccessDto);
+    }
+
+    // patch user access by id
+    @Operation(summary = "Update UserAccess by id")
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserAccessDto updateUserAccess(@PathVariable String id,
+                                          @RequestBody UserAccessDto userAccessDto) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("update user access by: " + currentAuditor);
+        return this.userAccessService.updateById(id, userAccessDto);
+    }
+
+    // get user access by id
+    @Operation(summary = "Get UserAccess by id")
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserAccessDto getUserAccessById(@PathVariable String id) {
+        log.debug("get user access by id: " + id);
+        return this.userAccessService.getDtoById(id);
+    }
+
+    // delete user by id
+    @Operation(summary = "Delete UserAccess by id")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUserAccessById(@PathVariable String id) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("delete user access by: " + currentAuditor);
+        this.userAccessService.deleteById(id);
+    }
 }
