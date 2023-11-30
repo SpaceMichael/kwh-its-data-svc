@@ -17,10 +17,10 @@ public class BedCleansingDashBoardDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer total;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer Pending;
+    private Long Pending;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer Process;
+    private Long Process;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer Completed;
+    private Long Completed;
     private List<BedCleansingRequestDto> bedCleansingRequestList;
 }

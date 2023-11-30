@@ -2,6 +2,7 @@ package hk.org.ha.kcc.its.controller;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import hk.org.ha.kcc.its.dto.BedCleansingDashBoardDto;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
@@ -61,9 +62,16 @@ public class BedCleansingController {
                                               @RequestParam(required = false) Boolean completedStatus,
                                               @RequestParam(required = false) Boolean total) {
         log.debug("get all by: " + auditorAware.getCurrentAuditor().orElse("Unknown") + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
-        List<BedCleansingRequestDto> bedCleansingRequestDtoList = this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus);
+        // filter status not null
+        List<BedCleansingRequestDto> bedCleansingRequestDtoList = this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus)
+                .stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus() != null)
+                .collect(Collectors.toList());
         if (total != null && total) {
-            return BedCleansingDashBoardDto.builder().total(bedCleansingRequestDtoList.size()).bedCleansingRequestList(bedCleansingRequestDtoList).build();
+            return BedCleansingDashBoardDto.builder().total(bedCleansingRequestDtoList.size())
+                    .Pending(bedCleansingRequestDtoList.stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus().equalsIgnoreCase("Pending")).count())
+                    .Process(bedCleansingRequestDtoList.stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus().equalsIgnoreCase("Process")).count())
+                    .Completed(bedCleansingRequestDtoList.stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus().equalsIgnoreCase("Completed")).count())
+                    .bedCleansingRequestList(bedCleansingRequestDtoList).build();
         } else {
             return BedCleansingDashBoardDto.builder().total(null).bedCleansingRequestList(bedCleansingRequestDtoList).build();
         }
