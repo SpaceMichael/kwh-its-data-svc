@@ -24,7 +24,7 @@ public class UserAccess extends Auditable {
     private String corpId; // ttk799
 
     @Column(name = "form_id")
-    private Integer formId; // form Id is eform id e.g 1, 2, 3
+    private String formId; // formId is array contain eform.id e.g  1, 2, 3
 
     @Column(name = "active_flag") // 1 & 0
     private Boolean activeFlag;

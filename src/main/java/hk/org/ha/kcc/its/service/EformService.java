@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface EformService {
-    ResponseEntity<EformResponseDto> getEformList(String qrcode) throws IOException;
+    ResponseEntity<EformResponseDto> getEformList(String qrcode, String currentAuditor) throws IOException;
 
     EformDto create(EformDto eformDto);
 

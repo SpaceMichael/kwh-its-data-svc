@@ -37,9 +37,10 @@ public class EformController {
     @GetMapping
     public ResponseEntity<EformResponseDto> getEformList(
             @RequestParam(required = false) String qrcode) throws IOException {
-        log.debug("getEformList qrcode: " + qrcode);
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("getEformList qrcode: " + qrcode + " user " + currentAuditor);
         //System.out.println("getEformList qrcode: " + qrcode);
-        return eformService.getEformList(qrcode);
+        return eformService.getEformList(qrcode,currentAuditor);
     }
 
     /*

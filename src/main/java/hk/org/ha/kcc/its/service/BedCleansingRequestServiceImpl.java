@@ -22,7 +22,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
 
     private final BedCleansingServiceRepository bedCleansingServiceRepository;
     private final BedCleansingRequestMapper bedCleansingRequestMapper;
-
     private final EformRepository eformRepository;
 
 

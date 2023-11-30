@@ -23,13 +23,14 @@ public class EformServiceImpl implements EformService {
     private final EformRepository eformRepository;
 
     private final EformMapper eformMapper;
-
     private final BedCleansingRequestService bedCleansingRequestService;
 
-    public EformServiceImpl(EformRepository eformRepository, EformMapper eformMapper, BedCleansingRequestService bedCleansingRequestService) {
+    private final UserAccessService userAccessService;
+    public EformServiceImpl(EformRepository eformRepository, EformMapper eformMapper, BedCleansingRequestService bedCleansingRequestService, UserAccessService userAccessService) {
         this.eformRepository = eformRepository;
         this.eformMapper = eformMapper;
         this.bedCleansingRequestService = bedCleansingRequestService;
+        this.userAccessService = userAccessService;
     }
 
     @Value("${server.path}")
@@ -39,7 +40,7 @@ public class EformServiceImpl implements EformService {
     private String serverEnv;
 
     @Override
-    public ResponseEntity<EformResponseDto> getEformList(String qrcode) {
+    public ResponseEntity<EformResponseDto> getEformList(String qrcode, String currentAuditor) {
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
             EformResponseDto eformResponseDto = new EformResponseDto();
@@ -79,11 +80,23 @@ public class EformServiceImpl implements EformService {
             eformResponseDto.setData(DataDto.builder().forms(forms).details(details).build());
             return ResponseEntity.ok(eformResponseDto);
         } else {
+
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
+            // get user access by corpId
+            UserAccessDto userAccessDto = this.userAccessService.getDtoById(currentAuditor); // cwk853 is for test
+            // Splite the userAccessDto.getFormId() by ',"  to list of formID
+            List<Integer> formIdList = new ArrayList<>();
+            if (userAccessDto.getFormId() != null && !userAccessDto.getFormId().isEmpty()) {
+                String[] formIdArray = userAccessDto.getFormId().split(",");
+                for (String formId : formIdArray) {
+                    formIdList.add(Integer.parseInt(formId));
+                }
+            }
+
             List<FormDto> forms = new ArrayList<>();
-            // get all the menu and fill the forms field
-            List<EformDto> eformDtoList = this.getAllDto();
+            // get all the menu and fill the forms field and  filter userAccessDto.form_id() =eform.id
+            List<EformDto> eformDtoList = this.getAllDto().stream().filter(eformDto -> formIdList.contains((eformDto.getId()))).collect(java.util.stream.Collectors.toList());
             for (EformDto eformDto : eformDtoList) {
                 forms.add(FormDto.builder().title(eformDto.getTitle())
                         .description(eformDto.getDescription())

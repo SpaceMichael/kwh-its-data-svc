@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class UserAccessDto {
 
     private String corpId; // ttk799
-    private Integer formId; // form Id is eform id e.g :1
+    private String formId; //
     private Boolean activeFlag;
 
     /*
