@@ -1,6 +1,7 @@
 package hk.org.ha.kcc.its.service;
 
 import hk.org.ha.kcc.its.dto.EformDto;
+import hk.org.ha.kcc.its.model.Eform;
 import org.springframework.http.ResponseEntity;
 import hk.org.ha.kcc.its.dto.EformResponseDto;
 
@@ -25,5 +26,5 @@ public interface EformService {
     void deleteById(Integer id);
 
     // get the ID by qrcodeType
-    Integer findByQrcodeType(String qrcodeType);
+    List<EformDto> findByQrcodeType(String qrcodeType);
 }

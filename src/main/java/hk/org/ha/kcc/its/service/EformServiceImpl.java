@@ -3,6 +3,7 @@ package hk.org.ha.kcc.its.service;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
@@ -71,20 +72,33 @@ public class EformServiceImpl implements EformService {
                 //throw new IllegalArgumentException("qrcode NOT CORRECT" + qrcode);
                 throw new ResourceNotFoundException("qrcode NOT CORRECT" + qrcode);
             }
-            Integer IdFromQrCode = findByQrcodeType(qrcodeArray[0]);
-            // check the ID from qrcode is contain UserAcess formID List
-            if (!formIdList.contains(IdFromQrCode)) {
+            //Integer IdFromQrCode = findByQrcodeType(qrcodeArray[0]);
+            List<EformDto> eformDtoList = this.findByQrcodeType(qrcodeArray[0]);
+
+
+            // check eformDtoList contain UserAcess formID List
+            if (eformDtoList != null && !eformDtoList.isEmpty()) {
+                for (EformDto eformDto : eformDtoList) {
+                    if (formIdList.contains(eformDto.getId())) {
+                        forms.add(FormDto.builder().title(eformDto.getTitle())
+                                .description(eformDto.getDescription())
+                                .url(serverFrontEndAddress + eformDto.getUrl())
+                                .icon(serverAddress + eformDto.getIcon()).build());
+                    }
+                }
+            }
+      /*      if (!formIdList.contains(IdFromQrCode)) {
                 log.debug("Invalid user" + qrcode);
                 throw new ResourceNotFoundException("Invalid user for " + qrcode);
-            }
+            }*/
 
-            EformDto eformDto = this.getDtoById(IdFromQrCode);
+            //EformDto eformDto = this.getDtoById(IdFromQrCode);
             // check qrcode get the qrcode type ="BED" , = eform id = 1? or seacrh it from db and return the eformdto
             // use the menuServiceDto to fill the forms field with url
-            forms.add(FormDto.builder().title(eformDto.getTitle())
+/*            forms.add(FormDto.builder().title(eformDto.getTitle())
                     .description(eformDto.getDescription())
                     .url(serverFrontEndAddress + eformDto.getUrl())
-                    .icon(serverAddress + eformDto.getIcon()).build()); // how to set the barcode object? enable ? and key?
+                    .icon(serverAddress + eformDto.getIcon()).build()); // how to set the barcode object? enable ? and key?*/
 
             details.setType(qrcodeArray[0]);
             details.setData(DetailDataDto.builder()
@@ -202,18 +216,20 @@ public class EformServiceImpl implements EformService {
     }
 
     @Override
-    public Integer findByQrcodeType(String qrcodeType) {
+    public List<EformDto> findByQrcodeType(String qrcodeType) {
 
-        Eform matchingEform = this.eformRepository.findAll()
+        List<EformDto> matchingEform = this.eformRepository.findAll()
                 .stream()
                 .filter(eform -> eform.getQrcodeType().equals(qrcodeType))
                 .filter(Eform::getActiveFlag)
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
+                .map(eformMapper::EformToEformDto)
+                .collect(Collectors.toList());
+                //.findFirst()
+                //.orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
 
         // if matchingEform is null, throw the exception ResourceNotFoundException
         if (matchingEform != null) {
-            return matchingEform.getId();
+            return matchingEform;
         } else {
             throw new ResourceNotFoundException("Eform not found");
         }
