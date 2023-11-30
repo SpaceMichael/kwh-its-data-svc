@@ -2,6 +2,7 @@ package hk.org.ha.kcc.its.service;
 
 import java.util.List;
 
+import hk.org.ha.kcc.its.dto.BedCleansingDashBoardDto;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
 
@@ -19,5 +20,7 @@ public interface BedCleansingRequestService {
 
     // get the detail of BedCleansing request by ID
     List<BedCleansingRequestAuditDto> getDtlByBCId(String Id);
+
+    BedCleansingDashBoardDto getBedCleansingDashBoardDto(String ward, String cubicle, String bed, Integer period, Boolean completedStatus, Boolean total);
 
 }

@@ -23,32 +23,43 @@ public class EformServiceImpl implements EformService {
     private final EformRepository eformRepository;
 
     private final EformMapper eformMapper;
-    private final BedCleansingRequestService bedCleansingRequestService;
 
     private final UserAccessService userAccessService;
-    public EformServiceImpl(EformRepository eformRepository, EformMapper eformMapper, BedCleansingRequestService bedCleansingRequestService, UserAccessService userAccessService) {
+
+    public EformServiceImpl(EformRepository eformRepository, EformMapper eformMapper, UserAccessService userAccessService) {
         this.eformRepository = eformRepository;
         this.eformMapper = eformMapper;
-        this.bedCleansingRequestService = bedCleansingRequestService;
         this.userAccessService = userAccessService;
     }
 
     @Value("${server.path}")
     private String serverAddress;
+    @Value("${server.frontend.path}")
+    private String serverFrontEndAddress;
 
     @Value("${server.env}")
     private String serverEnv;
 
     @Override
     public ResponseEntity<EformResponseDto> getEformList(String qrcode, String currentAuditor) {
+        // get user access by corpId && Split the userAccessDto.getFormId() by ',"  to list of formID
+        UserAccessDto userAccessDto = this.userAccessService.getDtoById(currentAuditor);
+        //UserAccessDto userAccessDto = this.userAccessService.getDtoById("lh315"); // cwk853 is for test
+        List<Integer> formIdList = new ArrayList<>();
+        if (userAccessDto.getFormId() != null && !userAccessDto.getFormId().isEmpty()) {
+            String[] formIdArray = userAccessDto.getFormId().split(",");
+            for (String formId : formIdArray) {
+                formIdList.add(Integer.parseInt(formId));
+            }
+        }
         // qrcode not null and not empty
         if (qrcode != null && !qrcode.isEmpty()) {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             List<FormDto> forms = new ArrayList<>();
             // get menuService by title= Bed Cleansing id =1 for hardcode test
-            // get the value of qrcode eg = "BED|KWH|12BG|7|7-02" for test
-            // splite it "|" to  detail field TYPE|WARD|CUBICLE|BEDNO
+            // get the value of qrcode eg = "BED|KWH|12BG|9|7-02" for test
+            // split it "|" to  detail field TYPE|WARD|CUBICLE|BEDNO
             DetailDto details = new DetailDto();
             String[] qrcodeArray;
 
@@ -60,14 +71,19 @@ public class EformServiceImpl implements EformService {
                 //throw new IllegalArgumentException("qrcode NOT CORRECT" + qrcode);
                 throw new ResourceNotFoundException("qrcode NOT CORRECT" + qrcode);
             }
+            Integer IdFromQrCode = findByQrcodeType(qrcodeArray[0]);
+            // check the ID from qrcode is contain UserAcess formID List
+            if (!formIdList.contains(IdFromQrCode)) {
+                log.debug("Invalid user" + qrcode);
+                throw new ResourceNotFoundException("Invalid user for " + qrcode);
+            }
 
-            // EformDto eformDto = this.menuService.getDtoById(1);  change---> read the qr code type value from qr code
-            EformDto eformDto = this.getDtoById(findByQrcodeType(qrcodeArray[0]));
+            EformDto eformDto = this.getDtoById(IdFromQrCode);
             // check qrcode get the qrcode type ="BED" , = eform id = 1? or seacrh it from db and return the eformdto
             // use the menuServiceDto to fill the forms field with url
             forms.add(FormDto.builder().title(eformDto.getTitle())
                     .description(eformDto.getDescription())
-                    .url(eformDto.getUrl())
+                    .url(serverFrontEndAddress + eformDto.getUrl())
                     .icon(serverAddress + eformDto.getIcon()).build()); // how to set the barcode object? enable ? and key?
 
             details.setType(qrcodeArray[0]);
@@ -84,15 +100,15 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             // get user access by corpId
-            UserAccessDto userAccessDto = this.userAccessService.getDtoById(currentAuditor); // cwk853 is for test
-            // Splite the userAccessDto.getFormId() by ',"  to list of formID
-            List<Integer> formIdList = new ArrayList<>();
+            // UserAccessDto userAccessDto = this.userAccessService.getDtoById(currentAuditor); // cwk853 is for test
+            // Split the userAccessDto.getFormId() by ',"  to list of formID
+            /*List<Integer> formIdList = new ArrayList<>();
             if (userAccessDto.getFormId() != null && !userAccessDto.getFormId().isEmpty()) {
                 String[] formIdArray = userAccessDto.getFormId().split(",");
                 for (String formId : formIdArray) {
                     formIdList.add(Integer.parseInt(formId));
                 }
-            }
+            }*/
 
             List<FormDto> forms = new ArrayList<>();
             // get all the menu and fill the forms field and  filter userAccessDto.form_id() =eform.id
@@ -100,7 +116,7 @@ public class EformServiceImpl implements EformService {
             for (EformDto eformDto : eformDtoList) {
                 forms.add(FormDto.builder().title(eformDto.getTitle())
                         .description(eformDto.getDescription())
-                        .url(eformDto.getUrl())
+                        .url(serverFrontEndAddress + eformDto.getUrl())
                         .icon(serverAddress + eformDto.getIcon()).build());
                 // how to set the barcode object? enable ? and key? no qrcode set enable is false? or no key?
             }

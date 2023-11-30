@@ -15,7 +15,7 @@ import java.util.List;
 public class BedCleansingDashBoardDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer total;
+    private Long total;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long Pending;
     @JsonInclude(JsonInclude.Include.NON_NULL)

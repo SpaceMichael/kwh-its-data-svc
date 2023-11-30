@@ -63,32 +63,37 @@ public class BedCleansingController {
                                               @RequestParam(required = false) Boolean total) {
         log.debug("get all by: " + auditorAware.getCurrentAuditor().orElse("Unknown") + " ward: " + ward + " cubicle: " + cubicle + "bed No: " + bed + " period: " + period + " status: " + completedStatus);
         // filter status not null
+        return bedCleansingRequestService.getBedCleansingDashBoardDto(ward, cubicle, bed, period, completedStatus, total);
+    }
+
+/*    private BedCleansingDashBoardDto getBedCleansingDashBoardDto(String ward, String cubicle, String bed, Integer period, Boolean completedStatus, Boolean total) {
         List<BedCleansingRequestDto> bedCleansingRequestDtoList = this.bedCleansingRequestService.getAllDto(ward, cubicle, bed, period, completedStatus)
                 .stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus() != null)
                 .collect(Collectors.toList());
+        long count = bedCleansingRequestDtoList.size();
+        long pending = bedCleansingRequestDtoList.stream().filter(dto -> dto.getStatus().equalsIgnoreCase("Pending")).count();
+        long process = bedCleansingRequestDtoList.stream().filter(dto -> dto.getStatus().equalsIgnoreCase("Process")).count();
+        long completed = bedCleansingRequestDtoList.stream().filter(dto -> dto.getStatus().equalsIgnoreCase("Completed")).count();
+
         if (total != null && total) {
-            return BedCleansingDashBoardDto.builder().total(bedCleansingRequestDtoList.size())
-                    .Pending(bedCleansingRequestDtoList.stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus().equalsIgnoreCase("Pending")).count())
-                    .Process(bedCleansingRequestDtoList.stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus().equalsIgnoreCase("Process")).count())
-                    .Completed(bedCleansingRequestDtoList.stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus().equalsIgnoreCase("Completed")).count())
-                    .bedCleansingRequestList(bedCleansingRequestDtoList).build();
+            return BedCleansingDashBoardDto.builder().total(count)
+                    .Pending(pending)
+                    .Process(process)
+                    .Completed(completed)
+                    .bedCleansingRequestList(bedCleansingRequestDtoList)
+                    .build();
         } else {
             return BedCleansingDashBoardDto.builder().total(null).bedCleansingRequestList(bedCleansingRequestDtoList).build();
         }
-    }
+    }*/
 
     // get by id
     @Operation(summary = "Get the BedCleansingRequest by id")
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BedCleansingRequestDto getBCRById(@PathVariable String id) {
-        //public ResponseEntity<Map<String, Object>> getBCRequestById(@PathVariable String id) {
-        //String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("get by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.bedCleansingRequestService.getDtoById(id);
-        /*Map<String, Object> response = new HashMap<>();
-        response.put("data", this.bedCleansingRequestService.getDtoById(id));
-        return new ResponseEntity<>(response, HttpStatus.OK);*/
     }
 
     // patch by id

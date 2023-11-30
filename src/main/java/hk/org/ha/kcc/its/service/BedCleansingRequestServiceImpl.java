@@ -1,5 +1,6 @@
 package hk.org.ha.kcc.its.service;
 
+import hk.org.ha.kcc.its.dto.BedCleansingDashBoardDto;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
 import hk.org.ha.kcc.its.model.Eform;
 import hk.org.ha.kcc.its.repository.EformRepository;
@@ -255,4 +256,25 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         return bedCleansingRequestAuditDtoList;
     }
 
+    @Override
+    public BedCleansingDashBoardDto getBedCleansingDashBoardDto(String ward, String cubicle, String bed, Integer period, Boolean completedStatus, Boolean total) {
+        List<BedCleansingRequestDto> bedCleansingRequestDtoList = this.getAllDto(ward, cubicle, bed, period, completedStatus)
+                .stream().filter(bedCleansingRequestDto -> bedCleansingRequestDto.getStatus() != null)
+                .collect(Collectors.toList());
+        long count = bedCleansingRequestDtoList.size();
+        long pending = bedCleansingRequestDtoList.stream().filter(dto -> dto.getStatus().equalsIgnoreCase("Pending")).count();
+        long process = bedCleansingRequestDtoList.stream().filter(dto -> dto.getStatus().equalsIgnoreCase("Process")).count();
+        long completed = bedCleansingRequestDtoList.stream().filter(dto -> dto.getStatus().equalsIgnoreCase("Completed")).count();
+
+        if (total != null && total) {
+            return BedCleansingDashBoardDto.builder().total(count)
+                    .Pending(pending)
+                    .Process(process)
+                    .Completed(completed)
+                    .bedCleansingRequestList(bedCleansingRequestDtoList)
+                    .build();
+        } else {
+            return BedCleansingDashBoardDto.builder().total(null).bedCleansingRequestList(bedCleansingRequestDtoList).build();
+        }
+    }
 }
