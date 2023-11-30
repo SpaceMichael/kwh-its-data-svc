@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-//@Audited
+@Audited
 @Table(name = "eform")
 public class Eform extends Auditable {
 
