@@ -9,11 +9,13 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 public class AuditorAwareImpl implements AuditorAware<String> {
 
-  @Override
-  public Optional<String> getCurrentAuditor() {
-    return Optional.ofNullable(SecurityContextHolder.getContext())
-        .map(context -> (JwtAuthenticationToken) context.getAuthentication())
-        .filter(Authentication::isAuthenticated)
-        .map(authentication -> authentication.getTokenAttributes().get("preferred_username").toString());
-  }
+    @Override
+    public Optional<String> getCurrentAuditor() {
+        return Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(context -> (JwtAuthenticationToken) context.getAuthentication())
+                .filter(Authentication::isAuthenticated)
+                .map(authentication -> authentication.getTokenAttributes().get("preferred_username").toString());
+
+    }
+
 }

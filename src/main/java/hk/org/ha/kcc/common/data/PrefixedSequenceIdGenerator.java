@@ -22,7 +22,7 @@ public class PrefixedSequenceIdGenerator extends SequenceStyleGenerator {
     public static final String DATE_FORMAT_DEFAULT = "%ty";
 
     public static final String NUMBER_FORMAT_PARAM = "numberFormat";
-    public static final String NUMBER_FORMAT_DEFAULT = "%05d";
+    public static final String NUMBER_FORMAT_DEFAULT = "%07d";
 
     private String format;
 
