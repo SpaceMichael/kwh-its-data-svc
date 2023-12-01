@@ -39,6 +39,8 @@ public class EquipUsageRequest extends Auditable {
     private String CaseNo; // e.g. HN123454677 patient strap
     @Column(name = "patient_name", length = 100)
     private String PatientName; // KC
+    @Column(name = "active_flag")
+    private Boolean activeFlag;
 
     /*
     private String hospitalCode; // e.g KWH

@@ -25,6 +25,7 @@ public class EquipUsageRequestDto {
     private LocalDateTime createdDate;
     private String modifiedBy;
     private LocalDateTime modifiedDate;
+    private Boolean activeFlag;
 
     /*
     @Id
@@ -49,5 +50,7 @@ public class EquipUsageRequestDto {
     private String CaseNo; // e.g. HN123454677 patient strap
     @Column(name = "patient_name", length = 100)
     private String PatientName; // KC
+      @Column(name = "active_flag")
+    private Boolean activeFlag;
      */
 }
