@@ -128,6 +128,9 @@
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
   ```shell
+  $ oc create secret generic mysql-db-secret --from-literal=mysql.db.user=[db_user] --from-literal=mysql.db.password=[db_password]
+  $ oc get secret mysql-db-secret
+  
   $ oc apply -f openshift-dev\kwh-its-data-svc.yaml
   $ oc get pod
   $ oc logs -f kwh-its-data-svc-845d67f8f5-t79dt
@@ -154,6 +157,9 @@
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
   ```shell
+  $ oc create secret generic mysql-db-secret --from-literal=mysql.db.user=[db_user] --from-literal=mysql.db.password=[db_password]
+  $ oc get secret mysql-db-secret
+
   $ oc apply -f openshift-stg\kwh-its-data-svc.yaml
   $ oc get pod
   $ oc logs -f kwh-its-data-svc-57cb8ff78f-qctht
@@ -180,6 +186,9 @@
   ```
 * Deploy `kwh-its-data-svc` service with OC commands:
   ```shell
+  $ oc create secret generic mysql-db-secret --from-literal=mysql.db.user=[db_user] --from-literal=mysql.db.password=[db_password]
+  $ oc get secret mysql-db-secret
+
   $ oc apply -f openshift\kwh-its-data-svc.yaml
   $ oc get pod
   $ oc logs -f kwh-its-data-svc-57cb8ff78f-qctht

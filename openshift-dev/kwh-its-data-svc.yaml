@@ -65,13 +65,13 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: mssql-db-secret
-                  key: mssql.db.user
+                  name: mysql-db-secret
+                  key: mysql.db.user
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: mssql-db-secret
-                  key: mssql.db.password
+                  name: mysql-db-secret
+                  key: mysql.db.password
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
