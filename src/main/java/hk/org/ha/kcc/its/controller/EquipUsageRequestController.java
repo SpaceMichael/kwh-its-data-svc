@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-@Tag(name = "equip-use", description = "equip-use API")
+@Tag(name = "equip-usage", description = "Equipment Usage API")
 @SecurityRequirement(name = "JWT")
 @CrossOrigin
 @RestController
@@ -24,7 +24,7 @@ import java.util.List;
 public class EquipUsageRequestController {
     private static final AlsXLogger log =
             AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
-    public static final String BASE_URL = "/api/v1/quip_usage_requests";
+    public static final String BASE_URL = "/api/v1/equip-usagee/requests";
 
     private final AuditorAware<String> auditorAware;
 
@@ -35,7 +35,8 @@ public class EquipUsageRequestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EquipUsageRequestDto> getAllEquipUsageRequest() {
-        log.debug("get all equip usage request by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
+        log.debug("get all equip usage request by: "
+                + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.equipUsageRequestService.getAllDto();
     }
 
@@ -44,7 +45,8 @@ public class EquipUsageRequestController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EquipUsageRequestDto getEquipUsageRequestById(@PathVariable String id) {
-        log.debug("get equip usage request by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
+        log.debug("get equip usage request by id: " + id + " by: "
+                + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.equipUsageRequestService.getDtoById(id);
     }
 
@@ -52,10 +54,11 @@ public class EquipUsageRequestController {
     @Operation(summary = "Create new EquipUsageRequestDto")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EquipUsageRequestDto createEquipUsageRequest(@RequestBody EquipUsageRequestDto equipUsageRequestDto) {
+    public EquipUsageRequestDto createEquipUsageRequest(
+            @RequestBody EquipUsageRequestDto equipUsageRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("create equip usage request by: " + currentAuditor);
-        //equipUsageRequestDto.(currentAuditor);
+        // equipUsageRequestDto.(currentAuditor);
         return this.equipUsageRequestService.create(equipUsageRequestDto);
     }
 
@@ -64,7 +67,7 @@ public class EquipUsageRequestController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EquipUsageRequestDto updateEquipUsageRequest(@PathVariable String id,
-                                                        @RequestBody EquipUsageRequestDto equipUsageRequestDto) {
+            @RequestBody EquipUsageRequestDto equipUsageRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update equip usage request by: " + currentAuditor);
         return this.equipUsageRequestService.updateById(id, equipUsageRequestDto);
@@ -75,7 +78,8 @@ public class EquipUsageRequestController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteEquipUsageRequestById(@PathVariable String id) {
-        log.debug("delete equip usage request by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
+        log.debug("delete equip usage request by id: " + id + " by: "
+                + auditorAware.getCurrentAuditor().orElse("Unknown"));
         this.equipUsageRequestService.deleteById(id);
     }
 

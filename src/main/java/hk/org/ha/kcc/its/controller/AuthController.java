@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
-@Tag(name = "auth", description = "auth API")
+@Tag(name = "auth", description = "Authentication API")
 @SecurityRequirement(name = "JWT")
 @CrossOrigin
 @RestController

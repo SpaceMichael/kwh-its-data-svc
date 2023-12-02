@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-@Tag(name = "user-access", description = "user-access API")
+@Tag(name = "user-access", description = "User Access API")
 @SecurityRequirement(name = "JWT")
 @CrossOrigin
 @RestController
@@ -45,7 +45,7 @@ public class UserAccessController {
     public UserAccessDto createUserAccess(@RequestBody UserAccessDto userAccessDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("create user access by: " + currentAuditor);
-        //userAccessDto.(currentAuditor);
+        // userAccessDto.(currentAuditor);
         return this.userAccessService.create(userAccessDto);
     }
 
@@ -54,7 +54,7 @@ public class UserAccessController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserAccessDto updateUserAccess(@PathVariable String id,
-                                          @RequestBody UserAccessDto userAccessDto) {
+            @RequestBody UserAccessDto userAccessDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update user access by: " + currentAuditor);
         return this.userAccessService.updateById(id, userAccessDto);
