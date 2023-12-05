@@ -24,7 +24,7 @@ import java.util.List;
 public class EquipUsageRequestController {
     private static final AlsXLogger log =
             AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
-    public static final String BASE_URL = "/api/v1/equip-usagee/requests";
+    public static final String BASE_URL = "/api/v1/equip-usage/requests";
 
     private final AuditorAware<String> auditorAware;
 
