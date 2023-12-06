@@ -27,7 +27,7 @@ public class BedCleansingRequest extends Auditable {
 
   @Id
   @Column(length = 12)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bed_cleansing_request_generator")
+  @GeneratedValue(generator = "bed_cleansing_request_generator")
   @GenericGenerator(name = "bed_cleansing_request_generator",
       strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
       parameters = {@Parameter(name = "sequence_name", value = "bed_cleansing_request_seq"),

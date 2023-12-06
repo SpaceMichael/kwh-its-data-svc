@@ -19,7 +19,7 @@ public class EquipUsageRequest extends Auditable {
 
   @Id
   @Column(length = 12)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "equip_usage_request_generator")
+  @GeneratedValue(generator = "equip_usage_request_generator")
   @GenericGenerator(name = "equip_usage_request_generator",
       strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
       parameters = {@Parameter(name = "sequence_name", value = "equip_usage_request_seq"),
