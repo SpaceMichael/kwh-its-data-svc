@@ -1,17 +1,26 @@
 package hk.org.ha.kcc.its.model;
 
-import javax.persistence.*;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 
 @Data
@@ -30,8 +39,10 @@ public class BedCleansingRequest extends Auditable {
   @GeneratedValue(generator = "bed_cleansing_request_generator")
   @GenericGenerator(name = "bed_cleansing_request_generator",
       strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
-      parameters = {@Parameter(name = "sequence_name", value = "bed_cleansing_request_seq"),
-          @Parameter(name = "prefix", value = "BC-")})
+      parameters = {
+          @Parameter(name = PrefixedSequenceIdGenerator.SEQUENCE_PARAM,
+              value = "bed_cleansing_request_seq"),
+          @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "BC-")})
   private String id;
   @Column(name = "hospital_code", length = 3)
   private String hospitalCode; // e.g KWH
