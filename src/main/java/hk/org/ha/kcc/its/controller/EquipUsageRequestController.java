@@ -67,7 +67,7 @@ public class EquipUsageRequestController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EquipUsageRequestDto updateEquipUsageRequest(@PathVariable String id,
-            @RequestBody EquipUsageRequestDto equipUsageRequestDto) {
+                                                        @RequestBody EquipUsageRequestDto equipUsageRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update equip usage request by: " + currentAuditor);
         return this.equipUsageRequestService.updateById(id, equipUsageRequestDto);
