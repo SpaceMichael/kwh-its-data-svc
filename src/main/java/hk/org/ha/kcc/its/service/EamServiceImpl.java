@@ -27,7 +27,7 @@ public class EamServiceImpl implements EamService {
     }
 
     @Override
-    public EamDto getDtoById(Long id) {
+    public EamDto getDtoById(Integer id) {
         Eam eam = eamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
         return eamMapper.EamToEamDto(eam);
     }
@@ -44,7 +44,7 @@ public class EamServiceImpl implements EamService {
     }
 
     @Override
-    public EamDto updateById(Long id, EamDto eamDto) {
+    public EamDto updateById(Integer id, EamDto eamDto) {
         Eam eam = new Eam();
         // set value if not null
         if (eamDto.getSerNo() != null) {
@@ -77,7 +77,7 @@ public class EamServiceImpl implements EamService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         try {
             this.eamRepository.deleteById(id);
         } catch (Exception e) {

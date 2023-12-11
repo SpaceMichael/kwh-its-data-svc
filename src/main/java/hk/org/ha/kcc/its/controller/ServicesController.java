@@ -42,7 +42,7 @@ public class ServicesController {
     @Operation(summary = "Get ServiceDto by id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ServiceDto getServiceById(@PathVariable Long id) {
+    public ServiceDto getServiceById(@PathVariable Integer id) {
         log.debug("get service by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.serviceService.getDtoById(id);
     }
@@ -60,7 +60,7 @@ public class ServicesController {
     @Operation(summary = "Update ServiceDto")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ServiceDto updateService(@PathVariable Long id, @RequestBody ServiceDto serviceDto) {
+    public ServiceDto updateService(@PathVariable Integer id, @RequestBody ServiceDto serviceDto) {
         log.debug("update service by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.serviceService.updateById(id, serviceDto);
     }
@@ -69,7 +69,7 @@ public class ServicesController {
     @Operation(summary = "Delete ServiceDto")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteService(@PathVariable Long id) {
+    public void deleteService(@PathVariable Integer id) {
         log.debug("delete service by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         this.serviceService.deleteById(id);
     }

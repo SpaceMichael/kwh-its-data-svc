@@ -76,7 +76,7 @@ public class BedCleansingRequest extends Auditable {
   @Column(name = "remarks", length = Integer.MAX_VALUE)
   private String remarks;
   @Column(name = "eform_id", length = 20, insertable = false, updatable = false)
-  private Long eformId;
+  private Integer eformId;
 
   @NotAudited
   @ToString.Exclude

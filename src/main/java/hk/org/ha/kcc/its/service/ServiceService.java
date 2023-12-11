@@ -9,14 +9,14 @@ public interface ServiceService {
     List<ServiceDto> getAllDto();
 
     // get dto by id
-    ServiceDto getDtoById(Long id);
+    ServiceDto getDtoById(Integer id);
 
     // create dto
     ServiceDto create(ServiceDto serviceDto);
 
     // update dto by id
-    ServiceDto updateById(Long id, ServiceDto serviceDto);
+    ServiceDto updateById(Integer id, ServiceDto serviceDto);
 
     // delete by id
-    void deleteById(Long id);
+    void deleteById(Integer id);
 }

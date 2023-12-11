@@ -61,7 +61,7 @@ public class EformController {
     @Operation(summary = "Update eform service by ID")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EformDto updateEform(@PathVariable Long id, @RequestBody EformDto eformDto) {
+    public EformDto updateEform(@PathVariable Integer id, @RequestBody EformDto eformDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("updateEform id: " + id + " by : " + currentAuditor);
         return this.eformService.updateById(id, eformDto);
@@ -81,7 +81,7 @@ public class EformController {
     @Operation(summary = "Get eform service by ID")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EformDto getEformById(@PathVariable Long id) {
+    public EformDto getEformById(@PathVariable Integer id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("getEformById id:" + id + " by : " + currentAuditor);
         return this.eformService.getDtoById(id);
@@ -91,7 +91,7 @@ public class EformController {
     @Operation(summary = "delete eform service by ID")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteEform(@PathVariable Long id) {
+    public void deleteEform(@PathVariable Integer id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("deleteEform id: " + id + " by : " + currentAuditor);
         this.eformService.deleteById(id);

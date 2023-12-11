@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class EformDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long id; // e.g 1? or use Prefixed?
+    private Integer id; // e.g 1? or use Prefixed?
     private String title; // Bed Cleansing
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description; // e.g "Request form" , "Request form, Tracker" etc

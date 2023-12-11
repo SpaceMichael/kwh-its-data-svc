@@ -27,7 +27,7 @@ public class Eform extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // e.g 1? or use Prefixed?
+    private Integer id; // e.g 1? or use Prefixed?
     @Column(name = "title", length = Integer.MAX_VALUE)
     private String title; // Bed Cleansing
     @Column(name = "description", length = Integer.MAX_VALUE)

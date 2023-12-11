@@ -9,15 +9,15 @@ public interface EamService {
     List<EamDto> getAllDto();
 
     // get dto by Id
-    EamDto getDtoById(Long id);
+    EamDto getDtoById(Integer id);
 
     // create dto
     EamDto create(EamDto eamDto);
 
     // update by Id
-    EamDto updateById(Long id, EamDto eamDto);
+    EamDto updateById(Integer id, EamDto eamDto);
 
     // delete by Id
-    void deleteById(Long id);
+    void deleteById(Integer id);
 
 }

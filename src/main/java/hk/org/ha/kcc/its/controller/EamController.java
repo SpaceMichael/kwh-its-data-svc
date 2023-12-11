@@ -48,7 +48,7 @@ public class EamController {
     @Operation(summary = "Get Eam by id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EamDto getEamById(@PathVariable Long id) {
+    public EamDto getEamById(@PathVariable Integer id) {
         log.debug("get eam by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.eamService.getDtoById(id);
     }
@@ -66,7 +66,7 @@ public class EamController {
     @Operation(summary = "Update Eam")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EamDto updateEam(@PathVariable Long id, @RequestBody EamDto eamDto) {
+    public EamDto updateEam(@PathVariable Integer id, @RequestBody EamDto eamDto) {
         log.debug("update eam: " + eamDto + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.eamService.updateById(id, eamDto);
     }
@@ -75,7 +75,7 @@ public class EamController {
     @Operation(summary = "Delete Eam")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteEam(@PathVariable Long id) {
+    public void deleteEam(@PathVariable Integer id) {
         log.debug("delete eam by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         this.eamService.deleteById(id);
     }

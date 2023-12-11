@@ -17,7 +17,7 @@ public class Eam extends Auditable {
 
     @Id
     @Column(name = "eam_no", length = 12)
-    private Long eamNo; // 1824496  ~1800222
+    private int eamNo; // 1824496  ~1800222
     @Column(name = "ser_no", length = 50)
     private String serNo;// E09-123567890123  5CD0522TB4
     @Column(name = "model", length = 50)

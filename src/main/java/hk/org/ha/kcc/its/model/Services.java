@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Services extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // e.g 1? or use Prefixed?
+    private int id; // e.g 1? or use Prefixed?
     @Column(name = "service_name", length = 50)
     private String serviceName; //
     @Column(name = "active_flag")
