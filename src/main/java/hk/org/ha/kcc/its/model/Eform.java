@@ -50,6 +50,39 @@ public class Eform extends Auditable {
     private String title2; // e.g "Bed Cleansing status" may be not use
     @Column(name = "qrcode_type", length = 50)
     private String qrcodeType; // e.g BED on the QRcode
+    @Column(name = "alarm_code",  length = 50)
+    private String alarmCode; // Houseman
+    @Column(name = "alarm_location_code",  length = 50)
+    private String alarmLocationCode; // IT
+    @Column(name = "alarm_severity",  length = 50)
+    private String alarmSeverity; // normal
+    @Column(name = "alarm_type",  length = 50)
+    private String alarmType; // Test alarm type 2
+    @Column(name = "alarm_title",  length = 50)
+    private String alarmTitle; // Test alarm title 2
+    @Column(name = "alarm_message",  length = 50)
+    private String alarmMessage; // Test alarm message 2
+    @Column(name = "alarm_ack_threshold")
+    private Integer alarmAckThreshold; // 1
+    @Column(name = "alarm_webhook")
+    private Boolean alarmWebhook; // true
+    @Column(name = "alarm_notification_required")
+    private Boolean alarmNotificationRequired; // true
+
+
+    /*
+
+         alarmDto1.setRequestId("SR-2300002"); // get the service-request Id
+        alarmDto1.setAlarmCode("Testing");    // set the alarm code set in Alarm code ward 12XX?
+        alarmDto1.setLocationCode("IT");      // location
+        alarmDto1.setSeverity("normal");      //
+        alarmDto1.setType("Test alarm type 2");
+        alarmDto1.setTitle("Test alarm title 2");
+        alarmDto1.setMessage("Test alarm message 2");
+        alarmDto1.setAckThreshold(1);
+        alarmDto1.setWebhook(true);
+        alarmDto1.setNotificationRequired(true);
+     */
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

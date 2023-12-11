@@ -59,9 +59,7 @@ public class EamServiceImpl implements EamService {
         if (eamDto.getType() != null) {
             eam.setType(eamDto.getType());
         }
-        if (eamDto.getCaseNo() != null) {
-            eam.setCaseNo(eamDto.getCaseNo());
-        }
+
 
         /*
             private Integer eamNo; // 1824496
@@ -69,7 +67,6 @@ public class EamServiceImpl implements EamService {
             private String Model; // ELITDESK PU 8000G5 SFF
             private String BelongTo;// KWH Ward 8A
             private String Type; // MED
-            private String CaseNo; // e.g. HN123454677 patient strap
          */
         // save and return
         return eamMapper.EamToEamDto(eamRepository.save(eam));

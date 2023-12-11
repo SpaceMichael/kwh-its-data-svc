@@ -26,7 +26,7 @@ public class AlarmServiceImpl implements AlarmService {
     private String alarmPath;
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
-    private JwtTokenUtil jwtTokenUtil;
+    //private JwtTokenUtil jwtTokenUtil;
 
     @Override
     public AlarmResponseDto create(AlarmDto alarmDto) {
@@ -59,5 +59,19 @@ public class AlarmServiceImpl implements AlarmService {
                 .block();
         System.out.println("alarmResponseDto: " + alarmResponseDto);
         return alarmResponseDto;
+    }
+
+    @Override
+    public AlarmResponseDto createAlram(String id,
+                                        String alarmCode,
+                                        String locationCode,
+                                        String severity,
+                                        String type,
+                                        String title,
+                                        String message,
+                                        Integer ackThreshold,
+                                        Boolean webhook,
+                                        Boolean notificationRequired) {
+        return null;
     }
 }

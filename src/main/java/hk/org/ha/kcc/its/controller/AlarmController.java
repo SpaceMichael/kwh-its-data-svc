@@ -6,13 +6,19 @@ import hk.org.ha.kcc.its.dto.AlarmDto;
 import hk.org.ha.kcc.its.service.AlarmService;
 import hk.org.ha.kcc.its.service.BedCleansingRequestService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
 
+@Tag(name = "alarm", description = "alarm API")
+@SecurityRequirement(name = "JWT")
+@CrossOrigin
+@RestController
+@RequestMapping(AlarmController.BASE_URL)
 public class AlarmController {
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
     public static final String BASE_URL = "/api/v1/alarms";
@@ -27,7 +33,7 @@ public class AlarmController {
     }
 
     // create alarm
-    @Operation(summary = "Create new Alarm")
+    @Operation(summary = "Create new Alarm test ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createAlarm() {
