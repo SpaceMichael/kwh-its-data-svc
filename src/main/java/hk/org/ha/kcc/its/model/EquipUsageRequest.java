@@ -43,6 +43,10 @@ public class EquipUsageRequest extends Auditable {
   private String PatientName; // KC
   @Column(name = "active_flag")
   private Boolean activeFlag;
+  @Column(name = "date", length = 50)
+  private String date; // date from user input 2023/12/11 YYYY/MM/DD
+  @Column(name = "time", length = 50)
+  private String time; // time from user input 01:00 - 23:59
 
   /*
    * private String hospitalCode; // e.g KWH private String dept; // e.g. M&G private String ward;

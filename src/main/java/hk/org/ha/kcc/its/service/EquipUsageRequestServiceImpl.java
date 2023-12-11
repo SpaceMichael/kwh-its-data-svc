@@ -83,6 +83,16 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
         if (equipUsageRequestDto.getActiveFlag() != null) {
             equipUsageRequest.setActiveFlag(equipUsageRequestDto.getActiveFlag());
         }
+        if (equipUsageRequestDto.getDate()!=null) {
+            equipUsageRequest.setDate(equipUsageRequestDto.getDate());
+        }
+        if (equipUsageRequestDto.getTime()!=null) {
+            equipUsageRequest.setTime(equipUsageRequestDto.getTime());
+        }
+        /*
+            private String date; // date from user input
+            private String time; // time from user input
+         */
         // save
         equipUsageRequestRepository.save(equipUsageRequest);
         return equipUsageRequestMapper.EquipUsageRequestToEquipUsageRequestDto(equipUsageRequest);

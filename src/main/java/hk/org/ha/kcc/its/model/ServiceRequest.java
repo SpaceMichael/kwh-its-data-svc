@@ -20,15 +20,10 @@ public class ServiceRequest extends Auditable {
     @Id
     @Column(length = 12)
     @GeneratedValue(generator = "equip_usage_request_generator")
-    @GenericGenerator(name = "equip_usage_request_generator",
-            strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
-            parameters = {
-                    @Parameter(name = PrefixedSequenceIdGenerator.SEQUENCE_PARAM,
-                            value = "equip_usage_request_seq"),
-                    @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "SR-")})
+    @GenericGenerator(name = "equip_usage_request_generator", strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
+            parameters = {@Parameter(name = PrefixedSequenceIdGenerator.SEQUENCE_PARAM, value = "equip_usage_request_seq"), @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "SR-")})
     private String id;
     @Column(name = "case_no", length = 12)
-    @NonNull
     private String caseNo; // e.g. HN123454677 patient strap
     @Column(name = "location", length = 20)
     private String location; // e.g. KWH

@@ -18,9 +18,12 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     private final ServiceRequestMapper serviceRequestMapper;
 
-    public ServiceRequestServiceImpl(ServiceRequestRepository serviceRequestRepository, ServiceRequestMapper serviceRequestMapper) {
+    private final AlarmService alarmService;
+
+    public ServiceRequestServiceImpl(ServiceRequestRepository serviceRequestRepository, ServiceRequestMapper serviceRequestMapper, AlarmService alarmService) {
         this.serviceRequestRepository = serviceRequestRepository;
         this.serviceRequestMapper = serviceRequestMapper;
+        this.alarmService = alarmService;
     }
 
 
@@ -30,7 +33,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         List<ServiceRequest> serviceRequestList = serviceRequestRepository.findAll().stream()
                 .filter(ServiceRequest::getActiveFlag)
                 .collect(Collectors.toList());
-        //return null;
         return serviceRequestList.stream().map(serviceRequestMapper::ServiceRequestToServiceRequestDto).collect(Collectors.toList());
     }
 
