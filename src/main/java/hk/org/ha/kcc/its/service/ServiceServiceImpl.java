@@ -32,7 +32,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public ServiceDto getDtoById(String id) {
+    public ServiceDto getDtoById(Long id) {
         Services services = serviceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         return serviceMapper.ServiceToServiceDto(services);
     }
@@ -50,7 +50,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public ServiceDto updateById(String id, ServiceDto serviceDto) {
+    public ServiceDto updateById(Long id, ServiceDto serviceDto) {
         Services services = serviceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         // update the dto if not null
         if (serviceDto.getServiceName() != null) {
@@ -64,7 +64,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         try {
             serviceRepository.deleteById(id);
         } catch (Exception e) {

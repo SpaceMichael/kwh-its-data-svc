@@ -28,7 +28,7 @@ public class BedCleansingRequestDto {
     private String cleaner; // e.g Mobile Device 008?
     private Boolean activeFlag; //
     private String remarks;
-    private Integer eformId;
+    private Long eformId;
     private String requestor;
     private String createdBy;
     private LocalDateTime createdDate;

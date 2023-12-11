@@ -9,14 +9,14 @@ public interface ServiceService {
     List<ServiceDto> getAllDto();
 
     // get dto by id
-    ServiceDto getDtoById(String id);
+    ServiceDto getDtoById(Long id);
 
     // create dto
     ServiceDto create(ServiceDto serviceDto);
 
     // update dto by id
-    ServiceDto updateById(String id, ServiceDto serviceDto);
+    ServiceDto updateById(Long id, ServiceDto serviceDto);
 
     // delete by id
-    void deleteById(String id);
+    void deleteById(Long id);
 }

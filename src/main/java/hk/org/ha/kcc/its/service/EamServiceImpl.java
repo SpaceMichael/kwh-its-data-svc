@@ -1,0 +1,87 @@
+package hk.org.ha.kcc.its.service;
+
+import hk.org.ha.kcc.its.dto.EamDto;
+import hk.org.ha.kcc.its.mapper.EamMapper;
+import hk.org.ha.kcc.its.model.Eam;
+import hk.org.ha.kcc.its.repository.EamRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class EamServiceImpl implements EamService {
+    private final EamRepository eamRepository;
+    private final EamMapper eamMapper;
+
+    public EamServiceImpl(EamRepository eamRepository, EamMapper eamMapper) {
+        this.eamRepository = eamRepository;
+        this.eamMapper = eamMapper;
+    }
+
+    @Override
+    public List<EamDto> getAllDto() {
+        List<Eam> eamList = eamRepository.findAll();
+        return eamList.stream().map(eamMapper::EamToEamDto).collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public EamDto getDtoById(Long id) {
+        Eam eam = eamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
+        return eamMapper.EamToEamDto(eam);
+    }
+
+    @Override
+    public EamDto create(EamDto eamDto) {
+        Eam eam = eamMapper.EamDtoToEam(eamDto);
+        // check activeFlag
+        if (eam.getActiveFlag() == null) {
+            eam.setActiveFlag(true);
+        }
+        //eamRepository.save(eam);
+        return eamMapper.EamToEamDto(eamRepository.save(eam));
+    }
+
+    @Override
+    public EamDto updateById(Long id, EamDto eamDto) {
+        Eam eam = new Eam();
+        // set value if not null
+        if (eamDto.getSerNo() != null) {
+            eam.setSerNo(eamDto.getSerNo());
+        }
+        if (eamDto.getModel() != null) {
+            eam.setModel(eamDto.getModel());
+        }
+        if (eamDto.getBelongTo() != null) {
+            eam.setBelongTo(eamDto.getBelongTo());
+        }
+        if (eamDto.getType() != null) {
+            eam.setType(eamDto.getType());
+        }
+        if (eamDto.getCaseNo() != null) {
+            eam.setCaseNo(eamDto.getCaseNo());
+        }
+
+        /*
+            private Integer eamNo; // 1824496
+            private String SerNo;// E09-123567890123
+            private String Model; // ELITDESK PU 8000G5 SFF
+            private String BelongTo;// KWH Ward 8A
+            private String Type; // MED
+            private String CaseNo; // e.g. HN123454677 patient strap
+         */
+        // save and return
+        return eamMapper.EamToEamDto(eamRepository.save(eam));
+
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try {
+            this.eamRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Eam not found");
+        }
+    }
+}

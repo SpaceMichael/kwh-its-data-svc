@@ -163,14 +163,14 @@ public class EformServiceImpl implements EformService {
   }
 
   @Override
-  public EformDto getDtoById(Integer id) {
+  public EformDto getDtoById(Long id) {
     Eform eform = this.eformRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
     return this.eformMapper.EformToEformDto(eform);
   }
 
   @Override
-  public EformDto updateById(Integer id, EformDto eformDto) {
+  public EformDto updateById(Long id, EformDto eformDto) {
     Eform eform = this.eformRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
     if (eformDto.getTitle() != null) {
@@ -210,7 +210,7 @@ public class EformServiceImpl implements EformService {
   }
 
   @Override
-  public void deleteById(Integer id) {
+  public void deleteById(Long id) {
     try {
       this.eformRepository.deleteById(id);
     } catch (Exception e) {

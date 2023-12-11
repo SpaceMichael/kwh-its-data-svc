@@ -28,6 +28,7 @@ public class ServiceRequest extends Auditable {
                     @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "SR-")})
     private String id;
     @Column(name = "case_no", length = 12)
+    @NonNull
     private String caseNo; // e.g. HN123454677 patient strap
     @Column(name = "location", length = 20)
     private String location; // e.g. KWH
@@ -37,7 +38,7 @@ public class ServiceRequest extends Auditable {
     private String bedNo; // e.g. 1
     @Column(name = "service_name", length = 50)
     private String serviceName; // e.g. 1
-    @Column(name = "remarks", length = Integer.MAX_VALUE)
+    @Column(name = "remarks", length = 1000)
     private String remarks; // e.g. 1
     @Column(name = "active_flag")
     private Boolean activeFlag;

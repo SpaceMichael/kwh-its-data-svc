@@ -17,13 +17,13 @@ public interface EformService {
     List<EformDto> getAllDto();
 
     // get by ID
-    EformDto getDtoById(Integer id);
+    EformDto getDtoById(Long id);
 
     // update by ID\
-    EformDto updateById(Integer id, EformDto eformDto);
+    EformDto updateById(Long id, EformDto eformDto);
 
     // delete by ID
-    void deleteById(Integer id);
+    void deleteById(Long id);
 
     // get the ID by qrcodeType
     List<EformDto> findByQrcodeType(String qrcodeType);

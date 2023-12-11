@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceDto {
-    private int id; // e.g 1? or use Prefixed?
+    private Long id; // e.g 1? or use Prefixed?
     private String serviceName; // ?
     private Boolean activeFlag;
     /*
