@@ -16,6 +16,6 @@ public class EamDto {
     private String Model; // ELITDESK PU 8000G5 SFF
     private String BelongTo;// KWH Ward 8A
     private String Type; // MED
-    private String CaseNo; // e.g. HN123454677 patient strap
+    //private String CaseNo; // e.g. HN123454677 patient strap
 
 }
