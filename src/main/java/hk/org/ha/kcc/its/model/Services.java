@@ -21,9 +21,24 @@ public class Services extends Auditable {
     private String serviceName; //
     @Column(name = "active_flag")
     private Boolean activeFlag;
-    /*
-    service_name
-     */
+/*    @Column(name = "alarm_code",  length = 50)
+    private String alarmCode; // Houseman  = service name ?
+    @Column(name = "alarm_location_code",  length = 50)
+    private String alarmLocationCode; // IT // from equipment location e.g 3A need add alarm location code
+    @Column(name = "alarm_severity",  length = 50)
+    private String alarmSeverity; // normal or critical?
+    @Column(name = "alarm_type",  length = 50)
+    private String alarmType; // Test alarm type 2 or hard code?
+    @Column(name = "alarm_title",  length = 50)
+    private String alarmTitle; // Test alarm title 2 or hard code?
+    @Column(name = "alarm_message",  length = 50)
+    private String alarmMessage; // Test alarm message 2 or hard code?
+    @Column(name = "alarm_ack_threshold")
+    private Integer alarmAckThreshold; // 1 or hard code?
+    @Column(name = "alarm_webhook")
+    private Boolean alarmWebhook; // true
+    @Column(name = "alarm_notification_required")
+    private Boolean alarmNotificationRequired; // true*/
 
 
 }

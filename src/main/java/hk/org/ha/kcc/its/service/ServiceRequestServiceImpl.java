@@ -50,6 +50,8 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         } else {
             serviceRequest.setActiveFlag(true);
         }
+        // call alarm api to create alarm
+
         //save and return
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequestRepository.save(serviceRequest));
     }

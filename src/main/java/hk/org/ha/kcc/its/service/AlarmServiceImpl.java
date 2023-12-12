@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.core.context.SecurityContextHolder;
-import hk.org.ha.kcc.common.security.JwtTokenUtil;
 
 import java.lang.invoke.MethodHandles;
 
@@ -62,16 +61,17 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public AlarmResponseDto createAlram(String id,
-                                        String alarmCode,
-                                        String locationCode,
-                                        String severity,
-                                        String type,
-                                        String title,
-                                        String message,
-                                        Integer ackThreshold,
-                                        Boolean webhook,
-                                        Boolean notificationRequired) {
+    public AlarmResponseDto createAlram(String id, // SR Id
+                                        String alarmCode, // get from SR in DB
+                                        String locationCode, // get from SR in DB e.g 3A
+                                        String severity,  // get from SR in DB
+                                        String type,// get from SR in DB
+                                        String title,// get from SR in DB
+                                        String message,// get from SR in DB
+                                        Integer ackThreshold,// get from SR in DB
+                                        Boolean webhook,// get from SR in DB
+                                        Boolean notificationRequired// get from SR in DB
+    ) {
         return null;
     }
 }

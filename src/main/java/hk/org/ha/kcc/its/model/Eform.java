@@ -49,25 +49,27 @@ public class Eform extends Auditable {
     @Column(name = "title2", length = Integer.MAX_VALUE)
     private String title2; // e.g "Bed Cleansing status" may be not use
     @Column(name = "qrcode_type", length = 50)
-    private String qrcodeType; // e.g BED on the QRcode
-    @Column(name = "alarm_code",  length = 50)
-    private String alarmCode; // Houseman
-    @Column(name = "alarm_location_code",  length = 50)
-    private String alarmLocationCode; // IT
-    @Column(name = "alarm_severity",  length = 50)
-    private String alarmSeverity; // normal
+    private String qrcodeType; // e.g BED , SR on the QRcode
+
+
+    //@Column(name = "alarm_code",  length = 50)
+    //private String alarmCode; // Houseman  = get from  service name ,
+    /*@Column(name = "alarm_location_code",  length = 50)
+    private String alarmLocationCode; // IT*/ // from equipment location e.g 3A need add alarm location code
+/*    @Column(name = "alarm_severity",  length = 50)
+    private String alarmSeverity; // normal or critical?
     @Column(name = "alarm_type",  length = 50)
-    private String alarmType; // Test alarm type 2
+    private String alarmType; // Test alarm type 2 or hard code?
     @Column(name = "alarm_title",  length = 50)
-    private String alarmTitle; // Test alarm title 2
+    private String alarmTitle; // Test alarm title 2 or hard code?
     @Column(name = "alarm_message",  length = 50)
-    private String alarmMessage; // Test alarm message 2
+    private String alarmMessage; // Test alarm message 2 or hard code?
     @Column(name = "alarm_ack_threshold")
-    private Integer alarmAckThreshold; // 1
+    private Integer alarmAckThreshold; // 1 or hard code?
     @Column(name = "alarm_webhook")
     private Boolean alarmWebhook; // true
     @Column(name = "alarm_notification_required")
-    private Boolean alarmNotificationRequired; // true
+    private Boolean alarmNotificationRequired; // true*/
 
 
     /*

@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlarmDto {
-    private String requestId;
+    private String requestId;// ->SR ID
     private String alarmCode;
     private String locationCode;
     private String severity;
