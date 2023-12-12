@@ -33,7 +33,7 @@ public class AlarmController {
     }
 
     // create alarm
-    @Operation(summary = "Create new Alarm test ")
+    @Operation(summary = "Create new Alarm call ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createAlarm() {
@@ -41,5 +41,15 @@ public class AlarmController {
         log.debug("test create alarm by: " + currentAuditor);
         AlarmDto alarmDto = new AlarmDto();
         alarmService.create(alarmDto);
+    }
+
+    // create alarm
+    @Operation(summary = "Create new Alarm in DB")
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createAlarm(@RequestBody AlarmDto alarmDto) {
+        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
+        log.debug("create alarm: " + alarmDto + " in db by: " + currentAuditor);
+        alarmService.createDto(alarmDto);
     }
 }

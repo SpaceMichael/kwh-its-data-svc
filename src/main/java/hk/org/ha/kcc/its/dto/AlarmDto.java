@@ -23,4 +23,6 @@ public class AlarmDto {
     private Boolean webhook;
     private Integer ackTimeout;
     private Boolean notificationRequired;
+    private Integer serviceId;
+    private Boolean activeFlag;
 }
