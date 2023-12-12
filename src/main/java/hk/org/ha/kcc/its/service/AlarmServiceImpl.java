@@ -47,9 +47,9 @@ public class AlarmServiceImpl implements AlarmService {
         // use get method
         // get the current user token
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("jwt: " + jwt);
+        //System.out.println("jwt: " + jwt);
 
-        AlarmDto alarmDto1 = new AlarmDto();
+       /* AlarmDto alarmDto1 = new AlarmDto();
         alarmDto1.setRequestId("SR-2300002"); // get the service-request Id
         alarmDto1.setAlarmCode("Testing");
         alarmDto1.setLocationCode("IT");
@@ -59,16 +59,17 @@ public class AlarmServiceImpl implements AlarmService {
         alarmDto1.setMessage("Test alarm message 2");
         alarmDto1.setAckThreshold(1);
         alarmDto1.setWebhook(true);
-        alarmDto1.setNotificationRequired(true);
+        alarmDto1.setNotificationRequired(true);*/
         // add the token and alarmDto1 to request body
         AlarmResponseDto alarmResponseDto = webClient.post()
                 .uri(path)
                 .headers(h -> h.setBearerAuth(jwt.getTokenValue()))
-                .bodyValue(alarmDto1)
+                .bodyValue(alarmDto)
                 .retrieve()
                 .bodyToMono(AlarmResponseDto.class)
                 .block();
-        System.out.println("alarmResponseDto: " + alarmResponseDto);
+        //System.out.println("alarmResponseDto: " + alarmResponseDto);
+        log.debug("alarmResponseDto: " + alarmResponseDto);
         return alarmResponseDto;
     }
 

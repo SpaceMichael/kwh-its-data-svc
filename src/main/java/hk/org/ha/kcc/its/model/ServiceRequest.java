@@ -33,10 +33,14 @@ public class ServiceRequest extends Auditable {
     private String bedNo; // e.g. 1
     @Column(name = "service_name", length = 50)
     private String serviceName; // e.g. 1
+    @Column(name = "service_id")
+    private Integer serviceId;
     @Column(name = "remarks", length = 1000)
     private String remarks; // e.g. 1
     @Column(name = "active_flag")
     private Boolean activeFlag;
+    @Column(name = "alarm_id")
+    private Long alarmId;
 
     /*
     case_no

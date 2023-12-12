@@ -1,18 +1,16 @@
 package hk.org.ha.kcc.its.service;
 
 import hk.org.ha.kcc.its.dto.AlarmDto;
+import hk.org.ha.kcc.its.dto.AlarmResponseDto;
 import hk.org.ha.kcc.its.dto.ServiceRequestDto;
 import hk.org.ha.kcc.its.mapper.ServiceRequestMapper;
 import hk.org.ha.kcc.its.model.ServiceRequest;
-import hk.org.ha.kcc.its.model.Services;
-import hk.org.ha.kcc.its.service.AlarmService;
 import hk.org.ha.kcc.its.repository.ServiceRepository;
 import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,24 +58,11 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         }
         // save
         ServiceRequest serviceRequest1 = serviceRequestRepository.save(serviceRequest);
-
-        // get the service id by service name
-        List<Services> servicesList = serviceRepository.findAll().stream()
-                .filter(services -> Objects.equals(services.getServiceName(), serviceRequestDto.getServiceName()))
-                .collect(Collectors.toList());
-
-        int serviceId;
-        if (servicesList.isEmpty()) {
-            throw new ResourceNotFoundException("Service not found");
-        } else {
-            // get id
-            serviceId = servicesList.get(0).getId();
-        }
-        System.out.println("serviceId" + serviceId);
         // get AlarmDto by SR id and location
-        AlarmDto alarmDto = alarmService.getDtoBySRId(serviceId, serviceRequestDto.getLocation());
-        alarmService.create(alarmDto);
-
+        AlarmDto alarmDto = alarmService.getDtoBySRId(serviceRequestDto.getServiceId(), serviceRequestDto.getLocation());
+        AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
+        // update the alarm id
+        serviceRequest1.setAlarmId(alarmResponseDto.getId());
         // return
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);
     }
@@ -100,14 +85,20 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         if (serviceRequestDto.getBedNo() != null) {
             serviceRequest.setBedNo(serviceRequestDto.getBedNo());
         }
-        if (serviceRequestDto.getServiceName() != null) {
-            serviceRequest.setServiceName(serviceRequestDto.getServiceName());
+        if (serviceRequestDto.getServiceId() != null) {
+            serviceRequest.setServiceId(serviceRequestDto.getServiceId());
         }
+        /*if (serviceRequestDto.getServiceName() != null) {
+            serviceRequest.setServiceName(serviceRequestDto.getServiceName());
+        }*/
         if (serviceRequestDto.getRemarks() != null) {
             serviceRequest.setRemarks(serviceRequestDto.getRemarks());
         }
         if (serviceRequestDto.getActiveFlag() != null) {
             serviceRequest.setActiveFlag(serviceRequestDto.getActiveFlag());
+        }
+        if (serviceRequestDto.getAlarmId() != null) {
+            serviceRequest.setAlarmId(serviceRequestDto.getAlarmId());
         }
         // save
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequestRepository.save(serviceRequest));

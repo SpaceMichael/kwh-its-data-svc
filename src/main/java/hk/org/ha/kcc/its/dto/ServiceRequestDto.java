@@ -15,9 +15,12 @@ public class ServiceRequestDto {
     private String location; // e.g. KWH
     private String cubicleNo; // e.g. 1
     private String bedNo; // e.g. 1
-    private String serviceName; // e.g. 1
+    //private String serviceName; // e.g.  Houseman
+    private Integer serviceId;  // e.g. 1
     private String remarks; // e.g. 1
     private Boolean activeFlag;
+    private Long alarmId;
+}
 
     /*
     private String id;
@@ -28,4 +31,4 @@ public class ServiceRequestDto {
     private String serviceName; // e.g. 1
     private String remarks; // e.g. 1
      */
-}
+

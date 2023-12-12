@@ -26,3 +26,4 @@ public class AlarmDto {
     private Integer serviceId;
     private Boolean activeFlag;
 }
+
