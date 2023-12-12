@@ -5,7 +5,6 @@ import hk.org.ha.kcc.its.dto.AlarmResponseDto;
 import hk.org.ha.kcc.its.dto.ServiceRequestDto;
 import hk.org.ha.kcc.its.mapper.ServiceRequestMapper;
 import hk.org.ha.kcc.its.model.ServiceRequest;
-import hk.org.ha.kcc.its.repository.ServiceRepository;
 import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +22,10 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     private final AlarmService alarmService;
 
-    private final ServiceRepository serviceRepository;
-
-    public ServiceRequestServiceImpl(ServiceRequestRepository serviceRequestRepository, ServiceRequestMapper serviceRequestMapper, AlarmService alarmService, ServiceRepository serviceRepository) {
+    public ServiceRequestServiceImpl(ServiceRequestRepository serviceRequestRepository, ServiceRequestMapper serviceRequestMapper, AlarmService alarmService) {
         this.serviceRequestRepository = serviceRequestRepository;
         this.serviceRequestMapper = serviceRequestMapper;
         this.alarmService = alarmService;
-        this.serviceRepository = serviceRepository;
     }
 
 

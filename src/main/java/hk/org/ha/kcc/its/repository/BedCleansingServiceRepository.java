@@ -1,7 +1,6 @@
 package hk.org.ha.kcc.its.repository;
 
-import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
-import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import hk.org.ha.kcc.its.model.BedCleansingRequest;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +11,7 @@ import java.util.List;
 @Repository
 public interface BedCleansingServiceRepository extends JpaRepository<BedCleansingRequest, String> {
 
-    //@Query(value = "SELECT *  FROM bed_cleansing_request_audit_log JOIN  rev_details On bed_cleansing_request_audit_log.rev_id =rev_details.revision_id where bed_cleansing_request_audit_log.id ='BC-2300041' order by bed_cleansing_request_audit_log.rev_id", nativeQuery = true)
-    @Query(value = "select bed_cleansing_request_audit_log.id as bc_id,\n" +
+   /* @Query(value = "select bed_cleansing_request_audit_log.id as bc_id,\n" +
             "        bed_cleansing_request_audit_log.rev_id,\n" +
             "        bed_cleansing_request_audit_log.rev_type,\n" +
             "        bed_cleansing_request_audit_log.cleaner,\n" +
@@ -40,6 +38,7 @@ public interface BedCleansingServiceRepository extends JpaRepository<BedCleansin
             "        rev_details.username,\n" +
             "        rev_details.revision_id  FROM bed_cleansing_request_audit_log  JOIN  rev_details On bed_cleansing_request_audit_log.rev_id =rev_details.revision_id " +
             "        where bed_cleansing_request_audit_log.id=?1 order by rev_detail_id", nativeQuery = true)
-    List<Object[]> getAllDtoByBCId(String Id);
+    List<Object[]> getAllDtoByBCId(String Id);*/
 
+    List<Object[]> getAllByBCId(String Id);
 }

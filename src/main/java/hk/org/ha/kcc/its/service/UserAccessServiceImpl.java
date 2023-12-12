@@ -26,7 +26,7 @@ public class UserAccessServiceImpl implements UserAccessService {
 
     @Override
     public List<UserAccessDto> getAllDto() {
-        // use findall() to get all user access
+        // use findAll() to get all user access
         List<UserAccess> userAccessList = userAcessRespository.findAll().stream()
                 .filter(UserAccess::getActiveFlag)
                 .collect(Collectors.toList());
