@@ -23,9 +23,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class AlarmServiceImpl implements AlarmService {
 
-    @Value("${app.its.api.path}")
-    private String serverAddress;
-
     @Value("${app.its.alarm.path}")
     private String alarmPath;
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
@@ -47,7 +44,6 @@ public class AlarmServiceImpl implements AlarmService {
         // use get method
         // get the current user token
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //System.out.println("jwt: " + jwt);
 
        /* AlarmDto alarmDto1 = new AlarmDto();
         alarmDto1.setRequestId("SR-2300002"); // get the service-request Id
@@ -68,7 +64,6 @@ public class AlarmServiceImpl implements AlarmService {
                 .retrieve()
                 .bodyToMono(AlarmResponseDto.class)
                 .block();
-        //System.out.println("alarmResponseDto: " + alarmResponseDto);
         log.debug("alarmResponseDto: " + alarmResponseDto);
         return alarmResponseDto;
     }
@@ -79,6 +74,10 @@ public class AlarmServiceImpl implements AlarmService {
                 .filter(alarm -> alarm.getServiceId().equals(id))
                 .filter(alarm -> alarm.getLocationCode().equals(location))
                 .collect(Collectors.toList());
+        // if list empty, return no resource
+        if (alarmList.isEmpty()) {
+            throw new ResourceNotFoundException("Alarm not found");
+        }
         AlarmDto alarmDto = alarmList.stream().findFirst().map(alarmMapper::AlarmToAlarmDto).orElseThrow(() -> new ResourceNotFoundException("Alarm not found"));
         return alarmDto;
     }
@@ -142,21 +141,6 @@ public class AlarmServiceImpl implements AlarmService {
         if (alarmDto.getActiveFlag() != null) {
             alarm.setActiveFlag(alarmDto.getActiveFlag());
         }
-        /*
-        private String alarmCode;
-        private String locationCode;
-        private String severity;
-        private String type;
-        private String title;
-        private String message;
-        private Integer escalationId;
-        private Integer ackThreshold;
-        private Boolean webhook;
-        private Integer ackTimeout;
-        private Boolean notificationRequired;
-        private Integer serviceId;
-        private Boolean activeFlag;
-         */
         // save and return
         return alarmMapper.AlarmToAlarmDto(alarmRepository.save(alarm));
     }

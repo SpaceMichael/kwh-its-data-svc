@@ -4,7 +4,6 @@ import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 import hk.org.ha.kcc.its.dto.AlarmDto;
 import hk.org.ha.kcc.its.service.AlarmService;
-import hk.org.ha.kcc.its.service.BedCleansingRequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,18 +30,6 @@ public class AlarmController {
         this.alarmService = alarmService;
         this.auditorAware = auditorAware;
     }
-
-    // create alarm
-    @Operation(summary = "Create new Alarm call ")
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createAlarm() {
-        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("test create alarm by: " + currentAuditor);
-        AlarmDto alarmDto = new AlarmDto();
-        alarmService.create(alarmDto);
-    }
-
     // create alarm
     @Operation(summary = "Create new Alarm in DB")
     @PostMapping("/create")

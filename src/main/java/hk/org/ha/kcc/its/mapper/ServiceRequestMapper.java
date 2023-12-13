@@ -4,9 +4,9 @@ import hk.org.ha.kcc.its.dto.ServiceRequestDto;
 import hk.org.ha.kcc.its.model.ServiceRequest;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 
-@Component
+
+
 @Mapper(builder = @Builder(disableBuilder = true))
 public interface ServiceRequestMapper {
 

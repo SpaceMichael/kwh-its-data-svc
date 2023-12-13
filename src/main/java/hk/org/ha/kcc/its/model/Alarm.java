@@ -1,6 +1,7 @@
 package hk.org.ha.kcc.its.model;
 
 import lombok.*;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 
@@ -40,9 +41,25 @@ public class Alarm extends Auditable {
     private Integer ackTimeout; // 1
     @Column(name = "notification_required")
     private Boolean notificationRequired; // true*/
-    // service Id
     @Column(name = "service_id", length = 50)
     private Integer serviceId; // e.g 1  mean houseman
     @Column(name = "active_flag")
     private Boolean activeFlag;
+
+  /*  @NotAudited
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "service_id", insertable = false, updatable = false)
+    private Services services;
+
+    public void assignServices(Services services) {
+        this.services = services;
+        this.serviceId = services.getId();
+    }
+
+    public void removeServices(Services services) {
+        this.services = null;
+        this.serviceId = null;
+    }*/
 }

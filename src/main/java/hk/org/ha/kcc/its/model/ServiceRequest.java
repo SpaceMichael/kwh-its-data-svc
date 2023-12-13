@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 
@@ -42,13 +43,21 @@ public class ServiceRequest extends Auditable {
     @Column(name = "alarm_id")
     private Long alarmId;
 
-    /*
-    case_no
-    location
-    cubicle_no
-    bed_no
-    service_name
-    remarks
-     */
+    /*@NotAudited
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "service_id", insertable = false, updatable = false)
+    private Services services;
+
+    public void assignServices(Services services) {
+        this.services = services;
+        this.serviceId = services.getId();
+    }
+
+    public void removeServices(Services services) {
+        this.services = null;
+        this.serviceId = null;
+    }*/
 
 }

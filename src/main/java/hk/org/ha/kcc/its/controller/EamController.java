@@ -30,11 +30,6 @@ public class EamController {
 
     private final EamService eamService;
 
-/*    public EamController(AuditorAware<String> auditorAware, EamService eamService) {
-        this.auditorAware = auditorAware;
-        this.eamService = eamService;
-    }*/
-
     // get all eam
     @Operation(summary = "Get list of Eam")
     @GetMapping
