@@ -7,6 +7,8 @@ metadata:
     app.kubernetes.io/name: spring-boot
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: kwh-its
+  annotations:
+    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"kwh-its-alarm-svc"}]'
 spec:
   replicas: 1
   selector:
