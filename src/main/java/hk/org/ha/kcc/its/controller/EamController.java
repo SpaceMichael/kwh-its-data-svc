@@ -57,7 +57,7 @@ public class EamController {
         return this.eamService.create(eamDto);
     }
 
-    // update eam
+/*    // update eam
     @Operation(summary = "Update Eam")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -73,5 +73,5 @@ public class EamController {
     public void deleteEam(@PathVariable Integer id) {
         log.debug("delete eam by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
         this.eamService.deleteById(id);
-    }
+    }*/
 }

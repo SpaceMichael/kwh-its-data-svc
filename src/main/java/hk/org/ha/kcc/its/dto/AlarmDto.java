@@ -12,18 +12,48 @@ import lombok.*;
 @AllArgsConstructor
 public class AlarmDto {
     private String requestId;// ->SR ID
-    private String alarmCode;
-    private String locationCode;
-    private String severity;
-    private String type;
+    private Integer ackEscalationId;
+    private Integer toEscalationId;
+    private String toCorpId;// no need use this time for future use
+    private String severity; // normal
+    private String type; // test alarm
     private String title;
     private String message;
-    private Integer escalationId;
-    private Integer ackThreshold;
-    private Boolean webhook;
-    private Integer ackTimeout;
-    private Boolean notificationRequired;
-    private Integer serviceId;
-    private Boolean activeFlag;
+    private Integer ackThreshold; //1
+    private Boolean webhook; // true
+    private Integer ackTimeout; // 1
+    private Boolean notificationRequired; // true
+    /*
+      "requestId": "string",
+      "ackEscalationId": 0,
+      "toEscalationId": 0,
+      "toCorpId": "string",
+      "severity": "string",
+      "type": "string",
+      "title": "string",
+      "message": "string",
+      "ackThreshold": 0,
+      "webhook": true,
+      "ackTimeout": 0,
+      "notificationRequired": true
+     */
+
+    /*
+    backup 20231218
+    private String requestId;// ->SR ID
+    private String alarmCode; // Testing
+    private String locationCode; //3A
+    private String severity; // normal
+    private String type; // test alarm
+    private String title;
+    private String message;
+    private Integer escalationId; // null
+    private Integer ackThreshold; //1
+    private Boolean webhook; // true
+    private Integer ackTimeout; // 1
+    private Boolean notificationRequired; // true
+    private Integer serviceId; // my use
+    private Boolean activeFlag;// my use
+     */
 }
 

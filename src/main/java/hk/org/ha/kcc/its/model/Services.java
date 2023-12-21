@@ -20,8 +20,10 @@ public class Services extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; // e.g 1? or use Prefixed?
+    @Column(name = "service_code", length = 50)
+    private String serviceCode; // PAED_HOUSEMAN_T1,  PAED_HOUSEMAN_RESP_NEUR
     @Column(name = "service_name", length = 50)
-    private String serviceName; //
+    private String serviceName; // Houseman (Team 1), Houseman (Respi + Neuro)
     @Column(name = "active_flag")
     private Boolean activeFlag;
 

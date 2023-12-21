@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Tag(name = "equip-usage", description = "Equipment Usage API")
@@ -22,8 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping(EquipUsageRequestController.BASE_URL)
 public class EquipUsageRequestController {
-    private static final AlsXLogger log =
-            AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+    private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
     public static final String BASE_URL = "/api/v1/equip-usage/requests";
 
     private final AuditorAware<String> auditorAware;
@@ -34,8 +34,11 @@ public class EquipUsageRequestController {
     @Operation(summary = "Get list of EquipUsageRequestDto")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EquipUsageRequestDto> getAllEquipUsageRequest() {
-        log.debug("get all equip usage request by: "
+    public List<EquipUsageRequestDto> getAllEquipUsageRequest(@RequestParam(required = false) Integer eamNo,
+                                                              @RequestParam(required = false) String caseNo,
+                                                              @RequestParam(required = false) LocalDateTime dateStart,
+                                                              @RequestParam(required = false) LocalDateTime dateEnd) {
+        log.debug("get all equip usage request eamNo: " + eamNo + " caseNo: " + caseNo + " dateStart: " + dateStart + " dateEnd: " + dateEnd + " by: "
                 + auditorAware.getCurrentAuditor().orElse("Unknown"));
         return this.equipUsageRequestService.getAllDto();
     }

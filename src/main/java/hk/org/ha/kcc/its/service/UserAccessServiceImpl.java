@@ -27,7 +27,7 @@ public class UserAccessServiceImpl implements UserAccessService {
     @Override
     public List<UserAccessDto> getAllDto() {
         // use findAll() to get all user access
-        List<UserAccess> userAccessList = userAcessRespository.findAll().stream()
+       List<UserAccess> userAccessList = userAcessRespository.findAll().stream()
                 .filter(UserAccess::getActiveFlag)
                 .collect(Collectors.toList());
         // use UserAccess mapper to List<Dto>
@@ -69,8 +69,8 @@ public class UserAccessServiceImpl implements UserAccessService {
         } else {
             userAccess.setActiveFlag(true);
         }
-        // save
-        userAcessRespository.save(userAccess);
-        return userAccessMapper.UserAccessToUserAccessDto(userAccess);
+        // save and return
+        UserAccess userAccess1= userAcessRespository.save(userAccess);
+        return userAccessMapper.UserAccessToUserAccessDto(userAcessRespository.save(userAccess));
     }
 }

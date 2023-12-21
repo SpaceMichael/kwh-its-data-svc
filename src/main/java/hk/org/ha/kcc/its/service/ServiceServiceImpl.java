@@ -53,6 +53,9 @@ public class ServiceServiceImpl implements ServiceService {
     public ServiceDto updateById(Integer id, ServiceDto serviceDto) {
         Services services = serviceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         // update the dto if not null
+        if (serviceDto.getServiceCode() != null) {
+            services.setServiceCode(serviceDto.getServiceCode());
+        }
         if (serviceDto.getServiceName() != null) {
             services.setServiceName(serviceDto.getServiceName());
         }

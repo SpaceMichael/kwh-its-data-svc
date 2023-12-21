@@ -69,7 +69,7 @@ public class UserAccessController {
         return this.userAccessService.getDtoById(id);
     }
 
-    // delete user by id
+/*    // delete user by id
     @Operation(summary = "Delete UserAccess by id")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -77,5 +77,5 @@ public class UserAccessController {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("delete user access by: " + currentAuditor);
         this.userAccessService.deleteById(id);
-    }
+    }*/
 }

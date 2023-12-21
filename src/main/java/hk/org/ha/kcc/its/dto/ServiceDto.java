@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ServiceDto {
     private Integer id; // e.g 1? or use Prefixed?
+    private String serviceCode; //
     private String serviceName; // ?
     private Boolean activeFlag;
     /*
