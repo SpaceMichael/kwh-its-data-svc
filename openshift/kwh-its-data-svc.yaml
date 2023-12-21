@@ -7,6 +7,8 @@ metadata:
     app.kubernetes.io/name: spring-boot
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: kwh-its
+  annotations:
+    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"kwh-its-alarm-svc"}]'
 spec:
   replicas: 1
   selector:
@@ -22,7 +24,8 @@ spec:
       volumes:
         - name: log-path
           persistentVolumeClaim:
-            claimName: hostpathcldlog-kccclinicalprd-pvc
+            # claimName: hostpathcldlog-kccclinicalprd-pvc
+            claimName: cldlog-kccclinicalprd-pvc
       containers:
         - name: kwh-its-data-svc
           image: image-registry.openshift-image-registry.svc:5000/kccclinical-prd/kwh-its-data-svc
@@ -57,11 +60,6 @@ spec:
           env:
             - name: TZ
               value: Asia/Hong_Kong
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: jwt-secret
-                  key: jwt.secret
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
