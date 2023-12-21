@@ -28,15 +28,15 @@ public class Eform extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; // e.g 1? or use Prefixed?
-    @Column(name = "title", length = Integer.MAX_VALUE)
+    @Column(name = "title", length =100)
     private String title; // Bed Cleansing
-    @Column(name = "description", length = Integer.MAX_VALUE)
+    @Column(name = "description", length = 100)
     private String description; // e.g "Request form" , "Request form, Tracker" etc
-    @Column(name = "remarks", length = Integer.MAX_VALUE)
+    @Column(name = "remarks", length = 100)
     private String remarks;
-    @Column(name = "icon", length = Integer.MAX_VALUE)
+    @Column(name = "icon", length = 100)
     private String icon; // e.g "https://kwh-its-data-svc-kccclinical-dev.tstcld61.server.ha.org.hk/iconBedCleansing.png"
-    @Column(name = "url", length = Integer.MAX_VALUE)
+    @Column(name = "url", length = 200)
     private String url; // e.g request url for requester use "https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest
     @Column(name = "active_flag")
     private Boolean activeFlag;
@@ -44,9 +44,9 @@ public class Eform extends Auditable {
     private Boolean enable;
     @Column(name = "barcode_key") // cannot use key keyword in mssql
     private String barcodeKey;
-    @Column(name = "url2", length = Integer.MAX_VALUE)
+    @Column(name = "url2", length =100)
     private String url2; // e.g service url for cleaner use
-    @Column(name = "title2", length = Integer.MAX_VALUE)
+    @Column(name = "title2", length = 100)
     private String title2; // e.g "Bed Cleansing status" may be not use
     @Column(name = "qrcode_type", length = 50)
     private String qrcodeType; // e.g BED , SR on the QRcode

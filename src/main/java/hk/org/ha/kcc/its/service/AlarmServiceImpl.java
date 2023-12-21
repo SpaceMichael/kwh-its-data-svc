@@ -29,10 +29,10 @@ public class AlarmServiceImpl implements AlarmService {
 
         String path = alarmPath + "api/v1/alarms";
         WebClient webClient = WebClient.create(alarmPath + "api/v1/alarms");
-        // use get method
         // get the current user token
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        /*
         AlarmDto alarmDto1 = new AlarmDto();
         alarmDto1.setRequestId("SR-230008"); // get the service-request Id
         alarmDto1.setAckEscalationId(73);
@@ -45,6 +45,7 @@ public class AlarmServiceImpl implements AlarmService {
         alarmDto1.setWebhook(true);
         alarmDto1.setAckTimeout(1);
         alarmDto1.setNotificationRequired(true);
+*/
 
         /*
           "requestId": "SR-20007",
@@ -63,7 +64,7 @@ public class AlarmServiceImpl implements AlarmService {
         AlarmResponseDto alarmResponseDto = webClient.post()
                 .uri(path)
                 .headers(h -> h.setBearerAuth(jwt.getTokenValue()))
-                .bodyValue(alarmDto1)
+                .bodyValue(alarmDto)
                 .retrieve()
                 .bodyToMono(AlarmResponseDto.class)
                 .block();

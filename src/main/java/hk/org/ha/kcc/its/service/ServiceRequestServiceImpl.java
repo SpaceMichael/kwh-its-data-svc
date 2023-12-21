@@ -1,5 +1,7 @@
 package hk.org.ha.kcc.its.service;
 
+import hk.org.ha.kcc.common.logging.AlsXLogger;
+import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 import hk.org.ha.kcc.its.dto.AlarmDto;
 import hk.org.ha.kcc.its.dto.AlarmResponseDto;
 import hk.org.ha.kcc.its.dto.ServiceRequestDto;
@@ -15,6 +17,10 @@ import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.SchemaOutputResolver;
+import java.lang.invoke.MethodHandles;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ServiceRequestServiceImpl implements ServiceRequestService {
+
+    private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
     private final ServiceRequestRepository serviceRequestRepository;
 
@@ -73,55 +81,65 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         AlarmDto alarmDto = new AlarmDto();
         // get service code by service id
         Services services = serviceRepository.findById(serviceRequest1.getServiceId()).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
-        String ServiceCode = services.getServiceCode();
-        // get the hh:mm from serviceRequest1.getCreatedDate()
-        LocalTime localTime = serviceRequest1.getCreatedDate().toLocalTime();
-        // get serviceAckReceiver by services.service_code
-/*        ServiceAckReceiver serviceAckReceiver = serviceAckReceiverRepository.findAll().stream()
-                .filter(s -> s.getServiceCode().equals(ServiceCode))
-                .findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAckReceiver not found"));*/
-        List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
-                .filter(s -> s.getServiceCode().equals(ServiceCode))
-                //compare the time
-                //.filter(s -> s.getStartTime().isAfter(localTime) && s.getEndTime().isBefore(localTime))
-                //.filter(s -> localTime.isAfter(s.getStartTime()))
-                //.filter(s -> localTime.isBefore(s.getEndTime()))
-                .collect(Collectors.toList());
-        for (ServiceAlarmReceiver serviceAlarmReceiver : serviceAlarmReceiverlist) {
-            // if starttime > end time, then end time +24hr
-            LocalTime localTime1 =serviceAlarmReceiver.getEndTime();
-            if (serviceAlarmReceiver.getStartTime().isAfter(serviceAlarmReceiver.getEndTime())) {
-                localTime1= localTime1.plusHours(24);
-            }
-            if (serviceAlarmReceiver.getStartTime().isBefore(localTime) && localTime1.isAfter(localTime)) {
-                alarmDto.setSeverity("normal");
-            } else {
-                alarmDto.setSeverity("critical");
-            }
+        String serviceCode = services.getServiceCode();
+        LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
+
+        // get serviceAckReceiver by services.service_code and location
+        List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
+
+        // CHECK NULL
+        if (serviceAckReceiverList.isEmpty()) {
+            //System.out.println("serviceAckReceiverList is empty");
+            log.debug("serviceAckReceiverList is empty");
+             throw new ResourceNotFoundException("ServiceAckReceiver not found");
         }
-        //.findFirst()
-        //.orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
-/*        LocalTime localTime1 = serviceAlarmReceiver.getStartTime();
-        LocalTime localTime2 = serviceAlarmReceiver.getEndTime();
-        // compare localTime and localTime1
-        //if (localTime.isAfter(localTime1)) {
-        if (localTime.isBefore(localTime2)) {
-            alarmDto.setSeverity("normal");
-        } else {
-            alarmDto.setSeverity("critical");
-        }*/
 
+        //System.out.println("serviceAckReceiver: " + serviceAckReceiverList.stream().findFirst().get().getEscalationId());
 
-        System.out.println("test");
+        // find serviceAlarmReceiver
+        List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
+                .filter(s -> s.getServiceCode().equals(serviceCode))
+                // compare creatTime with startTime > creatTime < endTime if serviceAlarmReceiver.getEndTime().atDate(LocalDate.now()) < serviceAlarmReceiver.getStartTime().atDate(LocalDate.now()); serviceAlarmReceiver.getEndTime().atDate(LocalDate.now())+1
+                .filter(serviceAlarmReceiver -> {
+                    LocalDateTime endTime = serviceAlarmReceiver.getEndTime().atDate(LocalDate.now());
+                    LocalDateTime endTime2 = null;
+                    LocalDateTime startTime = serviceAlarmReceiver.getStartTime().atDate(LocalDate.now());
+                    LocalDateTime startTime2 = null;
+                    if (startTime.isAfter(endTime)) {
+                        startTime2 = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+                        endTime2 = endTime;
+                        //startTime = startTime;
+                        endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+                    }
+                    // add if startTime2 and endTime2 is not null
+                    if (startTime2 != null && endTime2 != null) {
+                        return creatTime.isAfter(startTime) && creatTime.isBefore(endTime) || creatTime.isAfter(startTime2) && creatTime.isBefore(endTime2);
+                    } else {
+                        return creatTime.isAfter(startTime) && creatTime.isBefore(endTime);
+                    }
+                })
+                .collect(Collectors.toList());
+        //System.out.println("escalationId: " + serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
 
+        // set alarmDto
+        alarmDto.setRequestId(serviceRequest1.getId());
+        alarmDto.setAckEscalationId(serviceAckReceiverList.stream().findFirst().get().getEscalationId());
+        //alarmDto.setAckEscalationId(73);
+        alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
+        alarmDto.setSeverity("normal");
+        alarmDto.setType("HOUSEMAN TYPE");
+        alarmDto.setTitle("HOUSEMAN TITLE");
+        alarmDto.setMessage("HOUSEMAN MESSAGE");
+        alarmDto.setAckThreshold(1);
+        alarmDto.setWebhook(true);
+        alarmDto.setAckTimeout(1);
+        alarmDto.setNotificationRequired(true);
 
         // get resp
         AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
 
-
         // udpate service request
         serviceRequest1.setAlarmId(alarmResponseDto.getId());
-
 
 
         /*// get AlarmDto by SR id and location
