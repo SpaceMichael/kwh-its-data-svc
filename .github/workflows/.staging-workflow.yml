@@ -49,7 +49,7 @@ jobs:
   deploy-stg-c1:
     name: Deploy (STG primary)
     needs: build-container
-    runs-on: [self-hosted]
+    runs-on: [michael]
     env:
       IMAGE_TAG: ${{ needs.build-container.outputs.IMAGE_TAG }}
     steps:
