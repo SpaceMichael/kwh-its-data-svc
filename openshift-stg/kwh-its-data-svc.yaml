@@ -24,7 +24,8 @@ spec:
       volumes:
         - name: log-path
           persistentVolumeClaim:
-            claimName: hostpathcldlog-kccclinicalstagprd-pvc
+            # claimName: hostpathcldlog-kccclinicalstagprd-pvc
+            claimName: cldlog-kccclinicalstagprd-pvc
       containers:
         - name: kwh-its-data-svc
           image: image-registry.openshift-image-registry.svc:5000/kccclinical-stag-prd/kwh-its-data-svc
