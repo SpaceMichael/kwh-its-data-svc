@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.invoke.MethodHandles;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -113,16 +114,24 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                     }
                 })
                 .collect(Collectors.toList());
+        // Set title template
+        // String title = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation());
+
+        String Message0 = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
+                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks());
+
+        /* String Message = MessageFormat.format("Case no: {0}\\nWard Code: {1}\\nBed No.: {2}\\nRemark: {3}",
+                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(),serviceRequest1.getBedNo(),serviceRequest1.getRemarks());*/
 
         // set alarmDto
         alarmDto.setRequestId(serviceRequest1.getId());
         alarmDto.setAckEscalationId(serviceAckReceiverList.stream().findFirst().get().getEscalationId());
         alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
         alarmDto.setSeverity("normal");
-        alarmDto.setType(services.getServiceName() + " CALL!");
-        alarmDto.setTitle("Ward: " + serviceRequest1.getLocation() +
-                " BedNo: " + serviceRequest1.getBedNo());
-        alarmDto.setMessage(serviceRequest1.getRemarks());
+        alarmDto.setType("Houseman");
+        alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
+        alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
+                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));
         alarmDto.setAckThreshold(1); // hardcode in db service_ack_receiver?
         alarmDto.setWebhook(true);
         alarmDto.setAckTimeout(1);
@@ -131,8 +140,13 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get resp from alarm
         AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
 
+        if (alarmResponseDto.getSuccess().equals("false")) {
+            throw new ResourceNotFoundException("Alarm call false please check!");
+        }
+
         // update service request
         serviceRequest1.setAlarmId(alarmResponseDto.getId());
+
 
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);
     }

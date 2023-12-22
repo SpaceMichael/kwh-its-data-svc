@@ -66,6 +66,9 @@ public class ServiceAlarmReceiverServiceImpl implements ServiceAlarmReceiverServ
         if (serviceAlarmReceiverDto.getActiveFlag() != null) {
             serviceAlarmReceiver.setActiveFlag(serviceAlarmReceiverDto.getActiveFlag());
         }
+        if (serviceAlarmReceiverDto.getAlarmTitle() != null) {
+            serviceAlarmReceiver.setAlarmTitle(serviceAlarmReceiverDto.getAlarmTitle());
+        }
         //save and return
         return serviceAlarmReceiverMapper.ServiceAlarmReceiverToServiceAlarmReceiverDto(serviceAlarmReceiverRepository.save(serviceAlarmReceiver));
     }

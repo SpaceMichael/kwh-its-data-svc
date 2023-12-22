@@ -73,7 +73,7 @@ public class BedCleansingRequest extends Auditable {
   @Column(name = "active_flag")
   private Boolean activeFlag; //
   @Lob
-  @Column(name = "remarks", length = 100)
+  @Column(name = "remarks")
   private String remarks;
   @Column(name = "eform_id", length = 20, insertable = false, updatable = false)
   private Integer eformId;

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.time.LocalTime;
 
 @Data
@@ -21,6 +22,8 @@ public class ServiceAlarmReceiverDto {
     private Integer ackTimeout; //  1,2,3?
     private Integer escalationId; // fro
     private Boolean activeFlag;
+    private String alarmTitle;
+    private String alarmMessage;
     /*
      private int id; // e.g 1
     private String serviceCode; // Houseman  = service name ?

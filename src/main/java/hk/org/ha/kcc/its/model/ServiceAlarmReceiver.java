@@ -32,12 +32,14 @@ public class ServiceAlarmReceiver extends Auditable {
     private Integer escalationId; // from sam3 = to_escalation_id
     @Column(name = "active_flag")
     private Boolean activeFlag;
+    @Column(name = "alarm_title", length = 255)
+    private String alarmTitle;  // HOUSEMAN CALL at Ward {0}
+    @Lob
+    @Column(name = "alarm_message")
+    private String alarmMessage; // Houseman Call at Ward {0}
 /*
-    id
-    service_code
-    start_time
-    end_time
-    ack_timeout
-    escalation_id
+    @Column(name = "title", length = 20)
+    private String title;
+    alarm_message
  */
 }
