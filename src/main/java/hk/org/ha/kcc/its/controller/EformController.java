@@ -38,8 +38,7 @@ public class EformController {
     public ResponseEntity<EformResponseDto> getEformList(
             @RequestParam(required = false) String qrcode) throws IOException {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("getEformList qrcode: " + qrcode + " user " + currentAuditor);
-        //System.out.println("getEformList qrcode: " + qrcode);
+        //log.debug("getEformList qrcode: " + qrcode + " user " + currentAuditor);
         return eformService.getEformList(qrcode,currentAuditor);
     }
 
@@ -53,7 +52,7 @@ public class EformController {
     @ResponseStatus(HttpStatus.CREATED)
     public EformDto createEform(@RequestBody EformDto eformDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("createEform by : " + currentAuditor);
+        log.debug("create Eform by : " + currentAuditor);
         return this.eformService.create(eformDto);
     }
 
@@ -63,7 +62,7 @@ public class EformController {
     @ResponseStatus(HttpStatus.OK)
     public EformDto updateEform(@PathVariable Integer id, @RequestBody EformDto eformDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("updateEform id: " + id + " by : " + currentAuditor);
+        log.debug("update Eform id: " + id + " by : " + currentAuditor);
         return this.eformService.updateById(id, eformDto);
     }
 
@@ -73,7 +72,7 @@ public class EformController {
     @ResponseStatus(HttpStatus.OK)
     public List<EformDto> getAllEform() {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("getAllEform by : " + currentAuditor);
+        log.debug("getAll Eform by : " + currentAuditor);
         return this.eformService.getAllDto();
     }
 
@@ -83,7 +82,7 @@ public class EformController {
     @ResponseStatus(HttpStatus.OK)
     public EformDto getEformById(@PathVariable Integer id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("getEformById id:" + id + " by : " + currentAuditor);
+        log.debug("get Eform By Id id:" + id + " by : " + currentAuditor);
         return this.eformService.getDtoById(id);
     }
 
@@ -93,7 +92,7 @@ public class EformController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteEform(@PathVariable Integer id) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("deleteEform id: " + id + " by : " + currentAuditor);
+        log.debug("delete Eform id: " + id + " by : " + currentAuditor);
         this.eformService.deleteById(id);
     }
 
