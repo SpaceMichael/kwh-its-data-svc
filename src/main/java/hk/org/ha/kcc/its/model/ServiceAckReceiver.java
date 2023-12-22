@@ -26,7 +26,7 @@ public class ServiceAckReceiver extends Auditable {
     private Integer escalationId; // from sam3 =>ack_escalation_id
     @Column(name = "active_flag")
     private Boolean activeFlag;
-  /*  @Column(name = "severity", length = 20)
+    /*@Column(name = "severity", length = 20)
     private String severity; // normal
     @Column(name = "type", length = 20)
     private String type; // test alarm
@@ -41,8 +41,7 @@ public class ServiceAckReceiver extends Auditable {
     @Column(name = "ack_timeout")
     private Integer ackTimeout; // 1
     @Column(name = "notification_required")
-    private Boolean notificationRequired; // true
-*/
+    private Boolean notificationRequired; // true*/
 
     /*
     id

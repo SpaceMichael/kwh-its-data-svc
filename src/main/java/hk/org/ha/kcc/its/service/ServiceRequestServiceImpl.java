@@ -17,7 +17,6 @@ import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -82,6 +81,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get service code by service id
         Services services = serviceRepository.findById(serviceRequest1.getServiceId()).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         String serviceCode = services.getServiceCode();
+        //String serviceName = serviceRequest1.getServiceName();
         LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
 
         // get serviceAckReceiver by services.service_code and location
@@ -91,7 +91,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         if (serviceAckReceiverList.isEmpty()) {
             //System.out.println("serviceAckReceiverList is empty");
             log.debug("serviceAckReceiverList is empty");
-             throw new ResourceNotFoundException("ServiceAckReceiver not found");
+            throw new ResourceNotFoundException("ServiceAckReceiver not found");
         }
 
         //System.out.println("serviceAckReceiver: " + serviceAckReceiverList.stream().findFirst().get().getEscalationId());
@@ -112,7 +112,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                         endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
                     }
                     // add if startTime2 and endTime2 is not null
-                    if (startTime2 != null && endTime2 != null) {
+                    if (startTime2 != null) {
                         return creatTime.isAfter(startTime) && creatTime.isBefore(endTime) || creatTime.isAfter(startTime2) && creatTime.isBefore(endTime2);
                     } else {
                         return creatTime.isAfter(startTime) && creatTime.isBefore(endTime);
@@ -122,32 +122,27 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         //System.out.println("escalationId: " + serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
 
         // set alarmDto
+        String serviceName = serviceRequest1.getServiceName();
         alarmDto.setRequestId(serviceRequest1.getId());
         alarmDto.setAckEscalationId(serviceAckReceiverList.stream().findFirst().get().getEscalationId());
-        //alarmDto.setAckEscalationId(73);
         alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
         alarmDto.setSeverity("normal");
-        alarmDto.setType("HOUSEMAN TYPE");
-        alarmDto.setTitle("HOUSEMAN TITLE");
-        alarmDto.setMessage("HOUSEMAN MESSAGE");
-        alarmDto.setAckThreshold(1);
+        alarmDto.setType(services.getServiceName() + " CALL!");
+        alarmDto.setTitle("Ward: " + serviceRequest1.getLocation() +
+                " CubicleNo:  " + serviceRequest1.getCubicleNo() +
+                " BedNo: " + serviceRequest1.getBedNo());
+        alarmDto.setMessage(serviceRequest1.getRemarks());
+        alarmDto.setAckThreshold(1); // hardcoce in db?
         alarmDto.setWebhook(true);
         alarmDto.setAckTimeout(1);
         alarmDto.setNotificationRequired(true);
 
-        // get resp
+        // get resp from alarm
         AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
 
         // udpate service request
         serviceRequest1.setAlarmId(alarmResponseDto.getId());
 
-
-        /*// get AlarmDto by SR id and location
-        AlarmDto alarmDto = alarmService.getDtoBySRId(serviceRequestDto.getServiceId(), serviceRequestDto.getLocation());
-        AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
-        // update the alarm id
-        serviceRequest1.setAlarmId(alarmResponseDto.getId());*/
-        // return
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);
     }
 
