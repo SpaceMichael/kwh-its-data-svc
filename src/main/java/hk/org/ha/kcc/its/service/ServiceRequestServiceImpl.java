@@ -62,7 +62,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     @Override
     public ServiceRequestDto getDtoById(String id) {
-        ServiceRequest serviceRequest = serviceRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
+        ServiceRequest serviceRequest = serviceRequestRepository.findById(id).filter(ServiceRequest::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest);
     }
 
@@ -81,21 +81,15 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get service code by service id
         Services services = serviceRepository.findById(serviceRequest1.getServiceId()).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         String serviceCode = services.getServiceCode();
-        //String serviceName = serviceRequest1.getServiceName();
         LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
-
         // get serviceAckReceiver by services.service_code and location
         List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
-
         // CHECK NULL
         if (serviceAckReceiverList.isEmpty()) {
             //System.out.println("serviceAckReceiverList is empty");
             log.debug("serviceAckReceiverList is empty");
             throw new ResourceNotFoundException("ServiceAckReceiver not found");
         }
-
-        //System.out.println("serviceAckReceiver: " + serviceAckReceiverList.stream().findFirst().get().getEscalationId());
-
         // find serviceAlarmReceiver
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))
@@ -119,20 +113,17 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                     }
                 })
                 .collect(Collectors.toList());
-        //System.out.println("escalationId: " + serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
 
         // set alarmDto
-        String serviceName = serviceRequest1.getServiceName();
         alarmDto.setRequestId(serviceRequest1.getId());
         alarmDto.setAckEscalationId(serviceAckReceiverList.stream().findFirst().get().getEscalationId());
         alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
         alarmDto.setSeverity("normal");
         alarmDto.setType(services.getServiceName() + " CALL!");
         alarmDto.setTitle("Ward: " + serviceRequest1.getLocation() +
-                " CubicleNo:  " + serviceRequest1.getCubicleNo() +
                 " BedNo: " + serviceRequest1.getBedNo());
         alarmDto.setMessage(serviceRequest1.getRemarks());
-        alarmDto.setAckThreshold(1); // hardcoce in db?
+        alarmDto.setAckThreshold(1); // hardcode in db service_ack_receiver?
         alarmDto.setWebhook(true);
         alarmDto.setAckTimeout(1);
         alarmDto.setNotificationRequired(true);
@@ -140,7 +131,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get resp from alarm
         AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
 
-        // udpate service request
+        // update service request
         serviceRequest1.setAlarmId(alarmResponseDto.getId());
 
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);

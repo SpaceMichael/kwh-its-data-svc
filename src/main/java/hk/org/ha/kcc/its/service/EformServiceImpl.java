@@ -156,7 +156,6 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public List<EformDto> getAllDto() {
-        // filter the active flag is true
         List<Eform> eformList = this.eformRepository.findAll();
         return eformList.stream().map(eformMapper::EformToEformDto).filter(EformDto::getActiveFlag)
                 .collect(java.util.stream.Collectors.toList());
@@ -164,15 +163,13 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public EformDto getDtoById(Integer id) {
-        Eform eform = this.eformRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
+        Eform eform = this.eformRepository.findById(id).filter(Eform::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
         return this.eformMapper.EformToEformDto(eform);
     }
 
     @Override
     public EformDto updateById(Integer id, EformDto eformDto) {
-        Eform eform = this.eformRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
+        Eform eform = this.eformRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
         if (eformDto.getTitle() != null) {
             eform.setTitle(eformDto.getTitle());
         }

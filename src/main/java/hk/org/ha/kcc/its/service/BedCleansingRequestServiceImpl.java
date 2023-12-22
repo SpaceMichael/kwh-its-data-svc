@@ -92,7 +92,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         // Use findById() to get the record from the table. If not found, throw
         // ResourceNotFoundException
         BedCleansingRequest bedCleansingRequest =
-                this.bedCleansingServiceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
+                this.bedCleansingServiceRepository.findById(id).filter(BedCleansingRequest::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
         return this.bedCleansingRequestMapper
                 .BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest);
     }

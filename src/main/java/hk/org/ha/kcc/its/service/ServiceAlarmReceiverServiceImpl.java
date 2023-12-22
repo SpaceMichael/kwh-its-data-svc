@@ -41,13 +41,13 @@ public class ServiceAlarmReceiverServiceImpl implements ServiceAlarmReceiverServ
 
     @Override
     public ServiceAlarmReceiverDto getDtoById(int id) {
-        ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).stream().filter(ServiceAlarmReceiver::getActiveFlag).findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
+        ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).filter(ServiceAlarmReceiver::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
         return serviceAlarmReceiverMapper.ServiceAlarmReceiverToServiceAlarmReceiverDto(serviceAlarmReceiver);
     }
 
     @Override
     public ServiceAlarmReceiverDto updateDtoById(int id, ServiceAlarmReceiverDto serviceAlarmReceiverDto) {
-        ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).stream().filter(ServiceAlarmReceiver::getActiveFlag).findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
+        ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
         if (serviceAlarmReceiverDto.getServiceCode() != null) {
             serviceAlarmReceiver.setServiceCode(serviceAlarmReceiverDto.getServiceCode());
         }

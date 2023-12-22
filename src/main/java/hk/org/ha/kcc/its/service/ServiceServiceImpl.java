@@ -33,7 +33,7 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public ServiceDto getDtoById(Integer id) {
-        Services services = serviceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
+        Services services = serviceRepository.findById(id).filter(Services::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         return serviceMapper.ServiceToServiceDto(services);
     }
 

@@ -46,20 +46,6 @@ public class AlarmServiceImpl implements AlarmService {
         alarmDto1.setAckTimeout(1);
         alarmDto1.setNotificationRequired(true);
 */
-
-        /*
-          "requestId": "SR-20007",
-          "ackEscalationId": 73,
-          "toEscalationId": 73,
-          "severity": "normal",
-          "type": "ALARM TYPE",
-          "title": "ALARM TITLE ",
-          "message": "ALARM  MESSAGE",
-          "ackThreshold": 1,
-          "webhook": true,
-          "ackTimeout": 1,
-          "notificationRequired": true
-         */
         // add the token and alarmDto1 to request body
         AlarmResponseDto alarmResponseDto = webClient.post()
                 .uri(path)

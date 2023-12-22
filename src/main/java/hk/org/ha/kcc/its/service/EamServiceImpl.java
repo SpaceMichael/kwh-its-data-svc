@@ -22,13 +22,13 @@ public class EamServiceImpl implements EamService {
 
     @Override
     public List<EamDto> getAllDto() {
-        List<Eam> eamList = eamRepository.findAll();
+        List<Eam> eamList = eamRepository.findAll().stream().filter(Eam::getActiveFlag).collect(java.util.stream.Collectors.toList());
         return eamList.stream().map(eamMapper::EamToEamDto).collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     public EamDto getDtoById(Integer id) {
-        Eam eam = eamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
+        Eam eam = eamRepository.findById(id).filter(Eam::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
         return eamMapper.EamToEamDto(eam);
     }
 
@@ -45,7 +45,7 @@ public class EamServiceImpl implements EamService {
 
     @Override
     public EamDto updateById(Integer id, EamDto eamDto) {
-        Eam eam = new Eam();
+        Eam eam = eamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
         // set value if not null
         if (eamDto.getSerNo() != null) {
             eam.setSerNo(eamDto.getSerNo());
@@ -59,15 +59,6 @@ public class EamServiceImpl implements EamService {
         if (eamDto.getType() != null) {
             eam.setType(eamDto.getType());
         }
-
-
-        /*
-            private Integer eamNo; // 1824496
-            private String SerNo;// E09-123567890123
-            private String Model; // ELITDESK PU 8000G5 SFF
-            private String BelongTo;// KWH Ward 8A
-            private String Type; // MED
-         */
         // save and return
         return eamMapper.EamToEamDto(eamRepository.save(eam));
 

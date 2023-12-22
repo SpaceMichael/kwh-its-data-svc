@@ -36,7 +36,7 @@ public class UserAccessServiceImpl implements UserAccessService {
 
     @Override
     public UserAccessDto getDtoById(String id) {
-        UserAccess userAccess = userAcessRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found"));
+        UserAccess userAccess = userAcessRespository.findById(id).filter(UserAccess::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found"));
         return userAccessMapper.UserAccessToUserAccessDto(userAccess);
     }
 
@@ -70,7 +70,6 @@ public class UserAccessServiceImpl implements UserAccessService {
             userAccess.setActiveFlag(true);
         }
         // save and return
-        UserAccess userAccess1= userAcessRespository.save(userAccess);
         return userAccessMapper.UserAccessToUserAccessDto(userAcessRespository.save(userAccess));
     }
 }

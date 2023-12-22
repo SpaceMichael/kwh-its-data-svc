@@ -49,7 +49,7 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
 
     @Override
     public EquipUsageRequestDto getDtoById(String id) {
-        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
+        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id).filter(EquipUsageRequest::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
         return equipUsageRequestMapper.EquipUsageRequestToEquipUsageRequestDto(equipUsageRequest);
     }
 
@@ -83,10 +83,10 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
         if (equipUsageRequestDto.getActiveFlag() != null) {
             equipUsageRequest.setActiveFlag(equipUsageRequestDto.getActiveFlag());
         }
-        if (equipUsageRequestDto.getDate()!=null) {
+        if (equipUsageRequestDto.getDate() != null) {
             equipUsageRequest.setDate(equipUsageRequestDto.getDate());
         }
-        if (equipUsageRequestDto.getTime()!=null) {
+        if (equipUsageRequestDto.getTime() != null) {
             equipUsageRequest.setTime(equipUsageRequestDto.getTime());
         }
         /*
