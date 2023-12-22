@@ -117,21 +117,39 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // Set title template
         // String title = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation());
 
-        String Message0 = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
-                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks());
+        /*String Message0 = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
+                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks());*/
 
         /* String Message = MessageFormat.format("Case no: {0}\\nWard Code: {1}\\nBed No.: {2}\\nRemark: {3}",
                 serviceRequest1.getCaseNo(), serviceRequest1.getLocation(),serviceRequest1.getBedNo(),serviceRequest1.getRemarks());*/
 
+
+        // check null
+        if (serviceAckReceiverList.isEmpty()) {
+            throw new ResourceNotFoundException("ServiceAckReceiver not found.");
+        }
+        if (serviceAlarmReceiverlist.isEmpty()) {
+            throw new ResourceNotFoundException("ServiceAlarmReceiver not found.");
+        }
+
         // set alarmDto
         alarmDto.setRequestId(serviceRequest1.getId());
-        alarmDto.setAckEscalationId(serviceAckReceiverList.stream().findFirst().get().getEscalationId());
-        alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
+        if (serviceAckReceiverList.stream().findFirst().get().getEscalationId() != null) {
+            alarmDto.setAckEscalationId(serviceAckReceiverList.stream().findFirst().get().getEscalationId());
+        }
+        if (serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId() != null) {
+            alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
+        }
         alarmDto.setSeverity("normal");
         alarmDto.setType("Houseman");
-        alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
-        alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
-                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));
+        if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle().isEmpty()) {
+            alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
+        }
+        if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage().isEmpty()) {
+            alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage(), serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));
+        }
+        /*alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
+                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));*/
         alarmDto.setAckThreshold(1); // hardcode in db service_ack_receiver?
         alarmDto.setWebhook(true);
         alarmDto.setAckTimeout(1);
@@ -140,14 +158,13 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get resp from alarm
         AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
 
-        if (alarmResponseDto.getSuccess().equals("false")) {
+        // check resp
+        if (!alarmResponseDto.getSuccess()) {
             throw new ResourceNotFoundException("Alarm call false please check!");
         }
 
         // update service request
         serviceRequest1.setAlarmId(alarmResponseDto.getId());
-
-
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);
     }
 
