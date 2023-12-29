@@ -26,7 +26,8 @@ public class Services extends Auditable {
     private String serviceName; // Houseman (Team 1), Houseman (Respi + Neuro)
     @Column(name = "active_flag")
     private Boolean activeFlag;
-
+    @Column(name = "service_type", length = 50)
+    private String serviceType;
     /*@ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
