@@ -82,7 +82,10 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get service code by service id
         Services services = serviceRepository.findById(serviceRequest1.getServiceId()).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         String serviceCode = services.getServiceCode();
-        LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
+        //LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
+        // localDateTime is now
+        LocalDateTime creatTime = LocalDateTime.now();
+        log.debug("SR creatTime: " + creatTime);
         // get serviceAckReceiver by services.service_code and location
         List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
         // CHECK NULL
@@ -116,13 +119,10 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                 .collect(Collectors.toList());
         // Set title template
         // String title = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation());
-
         /*String Message0 = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
                 serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks());*/
-
         /* String Message = MessageFormat.format("Case no: {0}\\nWard Code: {1}\\nBed No.: {2}\\nRemark: {3}",
                 serviceRequest1.getCaseNo(), serviceRequest1.getLocation(),serviceRequest1.getBedNo(),serviceRequest1.getRemarks());*/
-
 
         // check null
         if (serviceAckReceiverList.isEmpty()) {
@@ -148,8 +148,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage().isEmpty()) {
             alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage(), serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));
         }
-        /*alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
-                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));*/
         alarmDto.setAckThreshold(1); // hardcode in db service_ack_receiver?
         alarmDto.setWebhook(true);
         alarmDto.setAckTimeout(1);
@@ -188,9 +186,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         if (serviceRequestDto.getServiceId() != null) {
             serviceRequest.setServiceId(serviceRequestDto.getServiceId());
         }
-        /*if (serviceRequestDto.getServiceName() != null) {
-            serviceRequest.setServiceName(serviceRequestDto.getServiceName());
-        }*/
         if (serviceRequestDto.getRemarks() != null) {
             serviceRequest.setRemarks(serviceRequestDto.getRemarks());
         }
