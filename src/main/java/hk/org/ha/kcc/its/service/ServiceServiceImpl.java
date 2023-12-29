@@ -62,9 +62,7 @@ public class ServiceServiceImpl implements ServiceService {
         if (serviceDto.getActiveFlag() != null) {
             services.setActiveFlag(serviceDto.getActiveFlag());
         }
-        if (serviceDto.getServiceType() != null) {
-            services.setServiceType(serviceDto.getServiceType());
-        }
+
         //save and return
         return serviceMapper.ServiceToServiceDto(serviceRepository.save(services));
     }

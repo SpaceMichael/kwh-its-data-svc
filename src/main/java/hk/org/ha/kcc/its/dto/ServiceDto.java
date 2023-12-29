@@ -14,7 +14,7 @@ public class ServiceDto {
     private String serviceCode; //
     private String serviceName; // ?
     private Boolean activeFlag;
-    private String serviceType;
+
     /*
     private int id;
     private String serviceName;

@@ -141,14 +141,14 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
             alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
         }
         alarmDto.setSeverity("normal");
-        alarmDto.setType(services.getServiceType());
+        alarmDto.setType("Houseman");
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle().isEmpty()) {
             alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
         }
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage().isEmpty()) {
             alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage(), serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));
         }
-        alarmDto.setAckThreshold(1); // hardcode in db service_ack_receiver? ack_threshold = 1  or 2    or 3?
+        alarmDto.setAckThreshold(1); // will call sam3 to get the information in future?
         alarmDto.setWebhook(true);
         alarmDto.setAckTimeout(1);
         alarmDto.setNotificationRequired(true);
