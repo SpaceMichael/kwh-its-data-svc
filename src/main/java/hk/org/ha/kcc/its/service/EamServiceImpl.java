@@ -4,10 +4,13 @@ import hk.org.ha.kcc.its.dto.EamDto;
 import hk.org.ha.kcc.its.mapper.EamMapper;
 import hk.org.ha.kcc.its.model.Eam;
 import hk.org.ha.kcc.its.repository.EamRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 @Service
 @Transactional
@@ -47,21 +50,8 @@ public class EamServiceImpl implements EamService {
     public EamDto updateById(Integer id, EamDto eamDto) {
         Eam eam = eamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
         // set value if not null
-        if (eamDto.getSerNo() != null) {
-            eam.setSerNo(eamDto.getSerNo());
-        }
-        if (eamDto.getModel() != null) {
-            eam.setModel(eamDto.getModel());
-        }
-        if (eamDto.getBelongTo() != null) {
-            eam.setBelongTo(eamDto.getBelongTo());
-        }
-        if (eamDto.getType() != null) {
-            eam.setType(eamDto.getType());
-        }
-        // save and return
+        BeanUtils.copyProperties(eamDto, eam, getNullPropertyNames(eamDto));
         return eamMapper.EamToEamDto(eamRepository.save(eam));
-
     }
 
     @Override

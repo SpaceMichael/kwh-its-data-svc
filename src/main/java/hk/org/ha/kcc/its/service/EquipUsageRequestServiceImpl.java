@@ -4,6 +4,7 @@ import hk.org.ha.kcc.its.dto.EquipUsageRequestDto;
 import hk.org.ha.kcc.its.mapper.EquipUsageRequestMapper;
 import hk.org.ha.kcc.its.model.EquipUsageRequest;
 import hk.org.ha.kcc.its.repository.EquipUsageRequestRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 
 @Service
@@ -132,48 +136,15 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
 
     @Override
     public EquipUsageRequestDto updateById(String id, EquipUsageRequestDto equipUsageRequestDto) {
-        // test id is exist or not
-        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
+        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
 
-        // Update by Dto
-        if (equipUsageRequestDto.getEamNo() != null) {
-            equipUsageRequest.setEamNo(equipUsageRequestDto.getEamNo());
-        }
-        if (equipUsageRequestDto.getSerNo() != null) {
-            equipUsageRequest.setSerNo(equipUsageRequestDto.getSerNo());
-        }
-        if (equipUsageRequestDto.getModel() != null) {
-            equipUsageRequest.setModel(equipUsageRequestDto.getModel());
-        }
-        if (equipUsageRequestDto.getBelongTo() != null) {
-            equipUsageRequest.setBelongTo(equipUsageRequestDto.getBelongTo());
-        }
-        if (equipUsageRequestDto.getType() != null) {
-            equipUsageRequest.setType(equipUsageRequestDto.getType());
-        }
-        if (equipUsageRequestDto.getCaseNo() != null) {
-            equipUsageRequest.setCaseNo(equipUsageRequestDto.getCaseNo());
-        }
-        if (equipUsageRequestDto.getPatientName() != null) {
-            equipUsageRequest.setPatientName(equipUsageRequestDto.getPatientName());
-        }
-        if (equipUsageRequestDto.getActiveFlag() != null) {
-            equipUsageRequest.setActiveFlag(equipUsageRequestDto.getActiveFlag());
-        }
-        if (equipUsageRequestDto.getDate() != null) {
-            equipUsageRequest.setDate(equipUsageRequestDto.getDate());
-        }
-        if (equipUsageRequestDto.getTime() != null) {
-            equipUsageRequest.setTime(equipUsageRequestDto.getTime());
-        }
-        /*
-            private String date; // date from user input
-            private String time; // time from user input
-         */
-        // save
+        BeanUtils.copyProperties(equipUsageRequestDto, equipUsageRequest, getNullPropertyNames(equipUsageRequestDto));
+
         equipUsageRequestRepository.save(equipUsageRequest);
         return equipUsageRequestMapper.EquipUsageRequestToEquipUsageRequestDto(equipUsageRequest);
     }
+
 
     @Override
     public void deleteById(String id) {

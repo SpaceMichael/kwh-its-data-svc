@@ -4,11 +4,14 @@ import hk.org.ha.kcc.its.dto.UserAccessDto;
 import hk.org.ha.kcc.its.mapper.UserAccessMapper;
 import hk.org.ha.kcc.its.model.UserAccess;
 import hk.org.ha.kcc.its.repository.UserAcessRespository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 
 @Service
@@ -27,7 +30,7 @@ public class UserAccessServiceImpl implements UserAccessService {
     @Override
     public List<UserAccessDto> getAllDto() {
         // use findAll() to get all user access
-       List<UserAccess> userAccessList = userAcessRespository.findAll().stream()
+        List<UserAccess> userAccessList = userAcessRespository.findAll().stream()
                 .filter(UserAccess::getActiveFlag)
                 .collect(Collectors.toList());
         // use UserAccess mapper to List<Dto>
@@ -45,7 +48,8 @@ public class UserAccessServiceImpl implements UserAccessService {
         // get by id , if is not exist, throw ResourceNotFoundException
         UserAccess userAccess = userAcessRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found"));
         // update by dto
-        userAccess.setFormId(userAccessDto.getFormId());
+        BeanUtils.copyProperties(userAccessDto, userAccess, getNullPropertyNames(userAccessDto));
+        //userAccess.setFormId(userAccessDto.getFormId());
         // save
         userAcessRespository.save(userAccess);
         return userAccessMapper.UserAccessToUserAccessDto(userAccess);

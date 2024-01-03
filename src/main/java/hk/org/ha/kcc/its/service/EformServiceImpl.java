@@ -11,9 +11,12 @@ import hk.org.ha.kcc.its.dto.*;
 import hk.org.ha.kcc.its.mapper.EformMapper;
 import hk.org.ha.kcc.its.model.Eform;
 import hk.org.ha.kcc.its.repository.EformRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 @Service
 public class EformServiceImpl implements EformService {
@@ -170,39 +173,7 @@ public class EformServiceImpl implements EformService {
     @Override
     public EformDto updateById(Integer id, EformDto eformDto) {
         Eform eform = this.eformRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
-        if (eformDto.getTitle() != null) {
-            eform.setTitle(eformDto.getTitle());
-        }
-        if (eformDto.getDescription() != null) {
-            eform.setDescription(eformDto.getDescription());
-        }
-        if (eformDto.getRemarks() != null) {
-            eform.setRemarks(eformDto.getRemarks());
-        }
-        if (eformDto.getIcon() != null) {
-            eform.setIcon(eformDto.getIcon());
-        }
-        if (eformDto.getUrl() != null) {
-            eform.setUrl(eformDto.getUrl());
-        }
-        if (eformDto.getActiveFlag() != null) {
-            eform.setActiveFlag(eformDto.getActiveFlag());
-        }
-        if (eformDto.getEnable() != null) {
-            eform.setEnable(eformDto.getEnable());
-        }
-        if (eformDto.getBarcodeKey() != null) {
-            eform.setBarcodeKey(eformDto.getBarcodeKey());
-        }
-        if (eformDto.getUrl2() != null) {
-            eform.setUrl2(eformDto.getUrl2());
-        }
-        if (eformDto.getTitle2() != null) {
-            eform.setTitle2(eformDto.getTitle2());
-        }
-        if (eformDto.getQrcodeType() != null) {
-            eform.setQrcodeType(eformDto.getQrcodeType());
-        }
+        BeanUtils.copyProperties(eformDto, eform, getNullPropertyNames(eformDto));
         return this.eformMapper.EformToEformDto(this.eformRepository.save(eform));
     }
 

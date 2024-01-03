@@ -69,11 +69,9 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public void deleteById(Integer id) {
-        try {
-            serviceRepository.deleteById(id);
-        } catch (Exception e) {
+        if (!serviceRepository.existsById(id)) {
             throw new ResourceNotFoundException("Service not found");
         }
-
+        serviceRepository.deleteById(id);
     }
 }

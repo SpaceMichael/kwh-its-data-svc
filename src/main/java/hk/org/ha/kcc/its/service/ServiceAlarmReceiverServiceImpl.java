@@ -4,11 +4,14 @@ import hk.org.ha.kcc.its.dto.ServiceAlarmReceiverDto;
 import hk.org.ha.kcc.its.mapper.ServiceAlarmReceiverMapper;
 import hk.org.ha.kcc.its.model.ServiceAlarmReceiver;
 import hk.org.ha.kcc.its.repository.ServiceAlarmReceiverRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 @Service
 @Transactional
@@ -48,7 +51,8 @@ public class ServiceAlarmReceiverServiceImpl implements ServiceAlarmReceiverServ
     @Override
     public ServiceAlarmReceiverDto updateDtoById(int id, ServiceAlarmReceiverDto serviceAlarmReceiverDto) {
         ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
-        if (serviceAlarmReceiverDto.getServiceCode() != null) {
+        BeanUtils.copyProperties(serviceAlarmReceiverDto, serviceAlarmReceiver, getNullPropertyNames(serviceAlarmReceiverDto));
+        /*if (serviceAlarmReceiverDto.getServiceCode() != null) {
             serviceAlarmReceiver.setServiceCode(serviceAlarmReceiverDto.getServiceCode());
         }
         if (serviceAlarmReceiverDto.getStartTime() != null) {
@@ -68,7 +72,7 @@ public class ServiceAlarmReceiverServiceImpl implements ServiceAlarmReceiverServ
         }
         if (serviceAlarmReceiverDto.getAlarmTitle() != null) {
             serviceAlarmReceiver.setAlarmTitle(serviceAlarmReceiverDto.getAlarmTitle());
-        }
+        }*/
         //save and return
         return serviceAlarmReceiverMapper.ServiceAlarmReceiverToServiceAlarmReceiverDto(serviceAlarmReceiverRepository.save(serviceAlarmReceiver));
     }

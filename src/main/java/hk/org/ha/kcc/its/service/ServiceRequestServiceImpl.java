@@ -14,16 +14,20 @@ import hk.org.ha.kcc.its.repository.ServiceAckReceiverRepository;
 import hk.org.ha.kcc.its.repository.ServiceAlarmReceiverRepository;
 import hk.org.ha.kcc.its.repository.ServiceRepository;
 import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 @Service
 @Transactional
@@ -97,6 +101,18 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // find serviceAlarmReceiver
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))
+                .filter(serviceAlarmReceiver -> {
+                    LocalDateTime startTime = serviceAlarmReceiver.getStartTime().atDate(LocalDate.now());
+                    LocalDateTime endTime = serviceAlarmReceiver.getEndTime().atDate(LocalDate.now());
+                    if (startTime.isAfter(endTime)) {
+                        endTime = endTime.plusDays(1);
+                    }
+                    return (creatTime.isAfter(startTime) && creatTime.isBefore(endTime));
+                })
+                .collect(Collectors.toList());
+
+     /*   List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
+                .filter(s -> s.getServiceCode().equals(serviceCode))
                 // compare creatTime with startTime > creatTime < endTime if serviceAlarmReceiver.getEndTime().atDate(LocalDate.now()) < serviceAlarmReceiver.getStartTime().atDate(LocalDate.now()); serviceAlarmReceiver.getEndTime().atDate(LocalDate.now())+1
                 .filter(serviceAlarmReceiver -> {
                     LocalDateTime endTime = serviceAlarmReceiver.getEndTime().atDate(LocalDate.now());
@@ -116,7 +132,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                         return creatTime.isAfter(startTime) && creatTime.isBefore(endTime);
                     }
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
         // Set title template
         // String title = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation());
         /*String Message0 = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
@@ -168,6 +184,24 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     @Override
     public ServiceRequestDto updateById(String id, ServiceRequestDto serviceRequestDto) {
+        ServiceRequest serviceRequest = serviceRequestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
+
+        BeanUtils.copyProperties(serviceRequestDto, serviceRequest, getNullPropertyNames(serviceRequestDto));
+
+        return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequestRepository.save(serviceRequest));
+    }
+
+/*    private String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        return Stream.of(pds)
+                .map(pd -> pd.getName())
+                .filter(name -> src.getPropertyValue(name) == null)
+                .toArray(String[]::new);
+    }*/
+/*    public ServiceRequestDto updateById(String id, ServiceRequestDto serviceRequestDto) {
 
         ServiceRequest serviceRequest = serviceRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
         //update by Dto if the value is not null
@@ -197,14 +231,12 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         }
         // save
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequestRepository.save(serviceRequest));
-    }
+    }*/
 
     @Override
     public void deleteById(String id) {
-        try {
-            serviceRequestRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("ServiceRequest not found");
-        }
+        serviceRequestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
+        serviceRequestRepository.deleteById(id);
     }
 }

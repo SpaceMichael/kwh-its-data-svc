@@ -151,9 +151,9 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         if (bedCleansingRequestDto.getActiveFlag() != null) {
             bedCleansingRequest.setActiveFlag(bedCleansingRequestDto.getActiveFlag());
         }
-        this.bedCleansingServiceRepository.save(bedCleansingRequest);
+        //this.bedCleansingServiceRepository.save(bedCleansingRequest);
         return this.bedCleansingRequestMapper
-                .BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest);
+                .BedCleansingRequestToBedCleansingRequestDto(bedCleansingServiceRepository.save(bedCleansingRequest));
     }
 
     @Override

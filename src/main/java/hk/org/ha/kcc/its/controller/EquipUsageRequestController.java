@@ -88,6 +88,8 @@ public class EquipUsageRequestController {
                                                         @RequestBody EquipUsageRequestDto equipUsageRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update equip usage request by: " + currentAuditor);
+        equipUsageRequestDto.setModifiedBy(currentAuditor);
+        equipUsageRequestDto.setModifiedDate(LocalDateTime.now());
         return this.equipUsageRequestService.updateById(id, equipUsageRequestDto);
     }
 
