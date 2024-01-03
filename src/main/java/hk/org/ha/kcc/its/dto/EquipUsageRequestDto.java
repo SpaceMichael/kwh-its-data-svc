@@ -29,6 +29,8 @@ public class EquipUsageRequestDto {
     private Boolean activeFlag;
     private String date; // date from user input
     private String time; // time from user input
+    private LocalDateTime userDateTime; // time from user input
+    private Integer total; // total number of records. group by eamNo
 
     /*
     @Id

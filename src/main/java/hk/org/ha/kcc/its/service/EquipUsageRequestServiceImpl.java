@@ -7,7 +7,10 @@ import hk.org.ha.kcc.its.repository.EquipUsageRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -33,6 +36,19 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
         } else {
             equipUsageRequest.setActiveFlag(true);
         }
+        // if date is null , get current date
+        if (equipUsageRequestDto.getDate() == null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            LocalDateTime dateTime = LocalDateTime.now();
+            equipUsageRequest.setDate(dateTime.format(formatter));
+        }
+        //if time is null , get current time
+        if (equipUsageRequestDto.getTime() == null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            LocalDateTime dateTime = LocalDateTime.now();
+            equipUsageRequest.setTime(dateTime.format(formatter));
+        }
+
         //save
         equipUsageRequestRepository.save(equipUsageRequest);
         // EquipUsageRequest to EquipUsageRequestDto
@@ -40,11 +56,72 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
     }
 
     @Override
-    public List<EquipUsageRequestDto> getAllDto() {
+    public List<EquipUsageRequestDto> getAllDto(Integer eamNo, String caseNo, Date dateStart, Date dateEnd, String year, String month) {
         List<EquipUsageRequest> equipUsageRequestList = equipUsageRequestRepository.findAll()
                 .stream().filter(EquipUsageRequest::getActiveFlag)
                 .collect(Collectors.toList());
-        return equipUsageRequestList.stream().map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto).collect(Collectors.toList());
+        // if Integer eamNo, String caseNo, LocalDateTime dateStart, LocalDateTime dateEnd, String year, String month all null ,return equipUsageRequestDtoList
+        if (eamNo == null && caseNo == null && dateStart == null && dateEnd == null && year == null && month == null) {
+            return equipUsageRequestList.stream().map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto).collect(Collectors.toList());
+        }
+        //return equipUsageRequestList.stream().map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto).collect(Collectors.toList());
+
+        List<EquipUsageRequestDto> equipUsageRequestDtoList = equipUsageRequestList.stream()
+                .map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto)
+                .filter(equipUsageRequestDto -> equipUsageRequestDto.getDate() != null && equipUsageRequestDto.getTime() != null)
+                .peek(equipUsageRequestDto -> {
+                    String tempDate = equipUsageRequestDto.getDate() + " " + equipUsageRequestDto.getTime();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                    LocalDateTime dateTime = LocalDateTime.parse(tempDate, formatter);
+                    equipUsageRequestDto.setUserDateTime(dateTime);
+                })
+                .collect(Collectors.toList());
+
+        // from date to localDateTime dateStart and dateEnd
+        LocalDateTime localDateTimeStart = dateStart != null ? dateStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay() : null;
+        LocalDateTime localDateTimeEnd = dateEnd != null ? dateEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(23, 59) : null;
+
+        equipUsageRequestDtoList = equipUsageRequestDtoList.stream()
+                .filter(equipUsageRequest -> eamNo == null || eamNo.equals(equipUsageRequest.getEamNo()))
+                .filter(equipUsageRequest -> caseNo == null || caseNo.equals(equipUsageRequest.getCaseNo()))
+                .filter(equipUsageRequest -> dateStart == null || equipUsageRequest.getUserDateTime().isAfter(localDateTimeStart))
+                .filter(equipUsageRequest -> dateEnd == null || equipUsageRequest.getUserDateTime().isBefore(localDateTimeEnd))
+                .filter(equipUsageRequest -> year == null || Integer.parseInt(year) == equipUsageRequest.getUserDateTime().getYear())
+                .filter(equipUsageRequest -> month == null || Integer.parseInt(month) == equipUsageRequest.getUserDateTime().getMonthValue())
+                .collect(Collectors.toList());
+
+        // use Map and Collectors.groupingBy to get total number of records by eamNo
+        Map<Integer, Long> eamNoCountMap = equipUsageRequestDtoList.stream()
+                .collect(Collectors.groupingBy(EquipUsageRequestDto::getEamNo, Collectors.counting()));
+
+        /*        List<EquipUsageRequestDto> equipUsageRequestDtoList2 = new ArrayList<>();
+        for (EquipUsageRequestDto equipUsageRequestDto : equipUsageRequestDtoList) {
+            int total = 0;
+            for (EquipUsageRequestDto equipUsageRequestDto1 : equipUsageRequestDtoList) {
+                if (equipUsageRequestDto.getEamNo().equals(equipUsageRequestDto1.getEamNo())) {
+                    total++;
+                }
+            }
+            EquipUsageRequestDto equipUsageRequestDto1 = new EquipUsageRequestDto();
+            equipUsageRequestDto1.setEamNo(equipUsageRequestDto.getEamNo());
+            equipUsageRequestDto1.setTotal(total);
+            equipUsageRequestDtoList2.add(equipUsageRequestDto1);
+        }
+        // distinct() eamNo
+        equipUsageRequestDtoList2 = equipUsageRequestDtoList2.stream()
+                .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(EquipUsageRequestDto::getEamNo))))
+                .stream()
+                .collect(Collectors.toList());*/
+
+        return eamNoCountMap.entrySet().stream()
+                .map(entry -> {
+                    EquipUsageRequestDto dto = new EquipUsageRequestDto();
+                    dto.setEamNo(entry.getKey());
+                    dto.setTotal(entry.getValue().intValue());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
     }
 
     @Override

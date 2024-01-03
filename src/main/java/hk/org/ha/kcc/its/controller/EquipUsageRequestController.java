@@ -9,11 +9,14 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Tag(name = "equip-usage", description = "Equipment Usage API")
@@ -34,13 +37,25 @@ public class EquipUsageRequestController {
     @Operation(summary = "Get list of EquipUsageRequestDto")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EquipUsageRequestDto> getAllEquipUsageRequest(@RequestParam(required = false) Integer eamNo,
-                                                              @RequestParam(required = false) String caseNo,
-                                                              @RequestParam(required = false) LocalDateTime dateStart,
-                                                              @RequestParam(required = false) LocalDateTime dateEnd) {
-        log.debug("get all equip usage request eamNo: " + eamNo + " caseNo: " + caseNo + " dateStart: " + dateStart + " dateEnd: " + dateEnd + " by: "
-                + auditorAware.getCurrentAuditor().orElse("Unknown"));
-        return this.equipUsageRequestService.getAllDto();
+    //public List<EquipUsageRequestDto> getAllEquipUsageRequest(@RequestParam(required = false) Integer eamNo,
+    public ResponseEntity<?> getAllEquipUsageRequest(@RequestParam(required = false) Integer eamNo,
+                                                     @RequestParam(required = false) String caseNo,
+                                                     @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
+                                                     @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd,
+                                                     @RequestParam(required = false) String year,
+                                                     @RequestParam(required = false) String month) {
+        log.debug("get all equip usage request eamNo: " + eamNo + " caseNo: " + caseNo + " dateStart: "
+                + dateStart + " dateEnd: " + dateEnd + " year: " + year + " month: " + month +
+                " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
+        // check if month is not null, year is not null , return resp 400
+        if (month != null && year == null) {
+            return ResponseEntity.badRequest().body("year is required when month is not null");
+        }
+        // check dateStart is and dateEnd is not null, or dateStart and dateEnd is null
+        if ((dateStart != null && dateEnd == null) || (dateStart == null && dateEnd != null)) {
+            return ResponseEntity.badRequest().body("dateStart and dateEnd must be both null or not null");
+        }
+        return ResponseEntity.ok().body(this.equipUsageRequestService.getAllDto(eamNo, caseNo, dateStart, dateEnd, year, month));
     }
 
     // get dto by id
