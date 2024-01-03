@@ -86,7 +86,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get service code by service id
         Services services = serviceRepository.findById(serviceRequest1.getServiceId()).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         String serviceCode = services.getServiceCode();
-        //LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
+        // LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
         // localDateTime is now
         LocalDateTime creatTime = LocalDateTime.now();
         log.debug("SR creatTime: " + creatTime);
@@ -110,35 +110,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                     return (creatTime.isAfter(startTime) && creatTime.isBefore(endTime));
                 })
                 .collect(Collectors.toList());
-
-     /*   List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
-                .filter(s -> s.getServiceCode().equals(serviceCode))
-                // compare creatTime with startTime > creatTime < endTime if serviceAlarmReceiver.getEndTime().atDate(LocalDate.now()) < serviceAlarmReceiver.getStartTime().atDate(LocalDate.now()); serviceAlarmReceiver.getEndTime().atDate(LocalDate.now())+1
-                .filter(serviceAlarmReceiver -> {
-                    LocalDateTime endTime = serviceAlarmReceiver.getEndTime().atDate(LocalDate.now());
-                    LocalDateTime endTime2 = null;
-                    LocalDateTime startTime = serviceAlarmReceiver.getStartTime().atDate(LocalDate.now());
-                    LocalDateTime startTime2 = null;
-                    if (startTime.isAfter(endTime)) {
-                        startTime2 = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
-                        endTime2 = endTime;
-                        //startTime = startTime;
-                        endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-                    }
-                    // add if startTime2 and endTime2 is not null
-                    if (startTime2 != null) {
-                        return creatTime.isAfter(startTime) && creatTime.isBefore(endTime) || creatTime.isAfter(startTime2) && creatTime.isBefore(endTime2);
-                    } else {
-                        return creatTime.isAfter(startTime) && creatTime.isBefore(endTime);
-                    }
-                })
-                .collect(Collectors.toList());*/
-        // Set title template
-        // String title = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation());
-        /*String Message0 = MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().stream().filter(s -> s.getServiceCode().equals(serviceCode)).findFirst().get().getAlarmMessage(),
-                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks());*/
-        /* String Message = MessageFormat.format("Case no: {0}\\nWard Code: {1}\\nBed No.: {2}\\nRemark: {3}",
-                serviceRequest1.getCaseNo(), serviceRequest1.getLocation(),serviceRequest1.getBedNo(),serviceRequest1.getRemarks());*/
 
         // check null
         if (serviceAckReceiverList.isEmpty()) {
@@ -191,47 +162,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequestRepository.save(serviceRequest));
     }
-
-/*    private String[] getNullPropertyNames(Object source) {
-        final BeanWrapper src = new BeanWrapperImpl(source);
-        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
-
-        return Stream.of(pds)
-                .map(pd -> pd.getName())
-                .filter(name -> src.getPropertyValue(name) == null)
-                .toArray(String[]::new);
-    }*/
-/*    public ServiceRequestDto updateById(String id, ServiceRequestDto serviceRequestDto) {
-
-        ServiceRequest serviceRequest = serviceRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
-        //update by Dto if the value is not null
-        if (serviceRequestDto.getCaseNo() != null) {
-            serviceRequest.setCaseNo(serviceRequestDto.getCaseNo());
-        }
-        if (serviceRequestDto.getLocation() != null) {
-            serviceRequest.setLocation(serviceRequestDto.getLocation());
-        }
-        if (serviceRequestDto.getCubicleNo() != null) {
-            serviceRequest.setCubicleNo(serviceRequestDto.getCubicleNo());
-        }
-        if (serviceRequestDto.getBedNo() != null) {
-            serviceRequest.setBedNo(serviceRequestDto.getBedNo());
-        }
-        if (serviceRequestDto.getServiceId() != null) {
-            serviceRequest.setServiceId(serviceRequestDto.getServiceId());
-        }
-        if (serviceRequestDto.getRemarks() != null) {
-            serviceRequest.setRemarks(serviceRequestDto.getRemarks());
-        }
-        if (serviceRequestDto.getActiveFlag() != null) {
-            serviceRequest.setActiveFlag(serviceRequestDto.getActiveFlag());
-        }
-        if (serviceRequestDto.getAlarmId() != null) {
-            serviceRequest.setAlarmId(serviceRequestDto.getAlarmId());
-        }
-        // save
-        return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequestRepository.save(serviceRequest));
-    }*/
 
     @Override
     public void deleteById(String id) {

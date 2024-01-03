@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
@@ -39,10 +40,7 @@ public class EamServiceImpl implements EamService {
     public EamDto create(EamDto eamDto) {
         Eam eam = eamMapper.EamDtoToEam(eamDto);
         // check activeFlag
-        if (eam.getActiveFlag() == null) {
-            eam.setActiveFlag(true);
-        }
-        //eamRepository.save(eam);
+        eam.setActiveFlag((Optional.ofNullable(eam.getActiveFlag()).orElse(true)));
         return eamMapper.EamToEamDto(eamRepository.save(eam));
     }
 

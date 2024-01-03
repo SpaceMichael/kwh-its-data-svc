@@ -68,7 +68,6 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
         if (eamNo == null && caseNo == null && dateStart == null && dateEnd == null && year == null && month == null) {
             return equipUsageRequestList.stream().map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto).collect(Collectors.toList());
         }
-        //return equipUsageRequestList.stream().map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto).collect(Collectors.toList());
 
         List<EquipUsageRequestDto> equipUsageRequestDtoList = equipUsageRequestList.stream()
                 .map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto)
@@ -98,25 +97,6 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
         Map<Integer, Long> eamNoCountMap = equipUsageRequestDtoList.stream()
                 .collect(Collectors.groupingBy(EquipUsageRequestDto::getEamNo, Collectors.counting()));
 
-        /*        List<EquipUsageRequestDto> equipUsageRequestDtoList2 = new ArrayList<>();
-        for (EquipUsageRequestDto equipUsageRequestDto : equipUsageRequestDtoList) {
-            int total = 0;
-            for (EquipUsageRequestDto equipUsageRequestDto1 : equipUsageRequestDtoList) {
-                if (equipUsageRequestDto.getEamNo().equals(equipUsageRequestDto1.getEamNo())) {
-                    total++;
-                }
-            }
-            EquipUsageRequestDto equipUsageRequestDto1 = new EquipUsageRequestDto();
-            equipUsageRequestDto1.setEamNo(equipUsageRequestDto.getEamNo());
-            equipUsageRequestDto1.setTotal(total);
-            equipUsageRequestDtoList2.add(equipUsageRequestDto1);
-        }
-        // distinct() eamNo
-        equipUsageRequestDtoList2 = equipUsageRequestDtoList2.stream()
-                .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(EquipUsageRequestDto::getEamNo))))
-                .stream()
-                .collect(Collectors.toList());*/
-
         return eamNoCountMap.entrySet().stream()
                 .map(entry -> {
                     EquipUsageRequestDto dto = new EquipUsageRequestDto();
@@ -138,9 +118,7 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
     public EquipUsageRequestDto updateById(String id, EquipUsageRequestDto equipUsageRequestDto) {
         EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
-
         BeanUtils.copyProperties(equipUsageRequestDto, equipUsageRequest, getNullPropertyNames(equipUsageRequestDto));
-
         equipUsageRequestRepository.save(equipUsageRequest);
         return equipUsageRequestMapper.EquipUsageRequestToEquipUsageRequestDto(equipUsageRequest);
     }
@@ -148,10 +126,9 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
 
     @Override
     public void deleteById(String id) {
-        try {
-            this.equipUsageRequestRepository.deleteById(id);
-        } catch (Exception e) {
+        if (!equipUsageRequestRepository.existsById(id)) {
             throw new ResourceNotFoundException("EquipUsageRequest not found");
         }
+        equipUsageRequestRepository.deleteById(id);
     }
 }

@@ -45,13 +45,6 @@ public class UserAccessServiceImplTest {
         assertEquals("99", userAccessDto.getFormId());
     }
 
-/*
-    @Test
-    void getAllDto(){
-        List<UserAccessDto> userAccessDtoList = userAccessService.getAllDto();
-        System.out.println(userAccessDtoList); // why is zero?
-    }
-*/
 
     @Test
     void createTestMock() {
@@ -75,19 +68,4 @@ public class UserAccessServiceImplTest {
         assertEquals("99", userAccessDto.getFormId());
     }
 
-  /*  @Test
-    void createTestNoMock(){
-        // given
-        UserAccessDto userAccessDto = new UserAccessDto();
-        userAccessDto.setCorpId("abc123");
-        userAccessDto.setFormId("88");
-        userAccessDto.setActiveFlag(true);
-        // when real save
-        UserAccessDto createdUserAccessDto = userAccessService.create(userAccessDto);
-        // then
-        assertNotNull(createdUserAccessDto);
-        assertEquals("abc123", createdUserAccessDto.getCorpId());
-        assertEquals("88", createdUserAccessDto.getFormId());
-    }
-*/
 }

@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
@@ -40,11 +42,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public ServiceDto create(ServiceDto serviceDto) {
         Services services = serviceMapper.ServiceDtoToService(serviceDto);
-        if (serviceDto.getActiveFlag() != null) {
-            services.setActiveFlag(serviceDto.getActiveFlag());
-        } else {
-            services.setActiveFlag(true);
-        }
+        services.setActiveFlag(serviceDto.getActiveFlag() != null ? serviceDto.getActiveFlag() : true);
         // save and return
         return serviceMapper.ServiceToServiceDto(serviceRepository.save(services));
     }
@@ -53,16 +51,9 @@ public class ServiceServiceImpl implements ServiceService {
     public ServiceDto updateById(Integer id, ServiceDto serviceDto) {
         Services services = serviceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         // update the dto if not null
-        if (serviceDto.getServiceCode() != null) {
-            services.setServiceCode(serviceDto.getServiceCode());
-        }
-        if (serviceDto.getServiceName() != null) {
-            services.setServiceName(serviceDto.getServiceName());
-        }
-        if (serviceDto.getActiveFlag() != null) {
-            services.setActiveFlag(serviceDto.getActiveFlag());
-        }
-
+        services.setServiceCode(Optional.ofNullable(serviceDto.getServiceCode()).orElse(services.getServiceCode()));
+        services.setServiceName(Optional.ofNullable(serviceDto.getServiceName()).orElse(services.getServiceName()));
+        services.setActiveFlag(Optional.ofNullable(serviceDto.getActiveFlag()).orElse(services.getActiveFlag()));
         //save and return
         return serviceMapper.ServiceToServiceDto(serviceRepository.save(services));
     }

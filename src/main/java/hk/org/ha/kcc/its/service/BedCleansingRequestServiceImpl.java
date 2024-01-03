@@ -12,9 +12,9 @@ import hk.org.ha.kcc.its.model.BedCleansingRequest;
 import hk.org.ha.kcc.its.repository.BedCleansingServiceRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,32 +37,21 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
 
     @Override
     public BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto) {
-        BedCleansingRequest bedCleansingRequest = this.bedCleansingRequestMapper
-                .BedCleansingRequestDtoToBedCleansingRequest(bedCleansingRequestDto);
-        // check menu id is correct or not
-        /*if (bedCleansingRequestDto.getMenuId() != null) {
-            Eform eform = this.menuRepository.findById(bedCleansingRequestDto.getMenuId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Id" + bedCleansingRequestDto.getMenuId() + "Menu not found"));
-            bedCleansingRequest.assignMenu(eform);
-        } // this id can check menu table and get the bed cleansing , id and insert to the bed cleansing table menu id?*/
+        BedCleansingRequest bedCleansingRequest = this.bedCleansingRequestMapper.BedCleansingRequestDtoToBedCleansingRequest(bedCleansingRequestDto);
 
         if (bedCleansingRequest.getEformId() != null) {
             Eform eform = this.eformRepository.findById(bedCleansingRequest.getEformId())
                     .orElseThrow(() -> new ResourceNotFoundException("Id" + bedCleansingRequest.getEformId() + "eform not found"));
             bedCleansingRequest.assignEform(eform);
         }
-        // the status should be "PENDING" when create the request
-        bedCleansingRequest.setStatus("PENDING");
-
         if (bedCleansingRequestDto.getWholeBed() == null) {
             bedCleansingRequest.setWholeBed(false);
         }
         if (bedCleansingRequestDto.getActiveFlag() == null) {
             bedCleansingRequest.setActiveFlag(true);
         }
-        BedCleansingRequest bedCleansingRequest1 = this.bedCleansingServiceRepository.save(bedCleansingRequest);
-        return this.bedCleansingRequestMapper
-                .BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest1);
+        //BedCleansingRequest bedCleansingRequest1 = this.bedCleansingServiceRepository.save(bedCleansingRequest);
+        return this.bedCleansingRequestMapper.BedCleansingRequestToBedCleansingRequestDto(bedCleansingServiceRepository.save(bedCleansingRequest));
     }
 
     @Override
@@ -91,69 +80,29 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     public BedCleansingRequestDto getDtoById(String id) {
         // Use findById() to get the record from the table. If not found, throw
         // ResourceNotFoundException
-        BedCleansingRequest bedCleansingRequest =
-                this.bedCleansingServiceRepository.findById(id).filter(BedCleansingRequest::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
-        return this.bedCleansingRequestMapper
-                .BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest);
+        BedCleansingRequest bedCleansingRequest = this.bedCleansingServiceRepository.findById(id).filter(BedCleansingRequest::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
+        return this.bedCleansingRequestMapper.BedCleansingRequestToBedCleansingRequestDto(bedCleansingRequest);
     }
 
     @Override
     public BedCleansingRequestDto updateById(String id, BedCleansingRequestDto bedCleansingRequestDto) {
         // get by id , if is not exist, throw ResourceNotFoundException
-        BedCleansingRequest bedCleansingRequest =
-                this.bedCleansingServiceRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
+        BedCleansingRequest bedCleansingRequest = this.bedCleansingServiceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
 
         // update by dto
-        if (bedCleansingRequestDto.getHospitalCode() != null) {
-            bedCleansingRequest.setHospitalCode(bedCleansingRequestDto.getHospitalCode());
-        }
-
-        if (bedCleansingRequestDto.getDept() != null) {
-            bedCleansingRequest.setDept(bedCleansingRequestDto.getDept());
-        }
-
-        if (bedCleansingRequestDto.getWard() != null) {
-            bedCleansingRequest.setWard(bedCleansingRequestDto.getWard());
-        }
-
-        if (bedCleansingRequestDto.getCubicle() != null) {
-            bedCleansingRequest.setCubicle(bedCleansingRequestDto.getCubicle());
-        }
-
-        if (bedCleansingRequestDto.getWholeBed() != null) {
-            bedCleansingRequest.setWholeBed(bedCleansingRequestDto.getWholeBed());
-        }
-
-        if (bedCleansingRequestDto.getBedNo() != null) {
-            bedCleansingRequest.setBedNo(bedCleansingRequestDto.getBedNo());
-        }
-
-        if (bedCleansingRequestDto.getBedType() != null) {
-            bedCleansingRequest.setBedType(bedCleansingRequestDto.getBedType());
-        }
-
-        if (bedCleansingRequestDto.getRemarks() != null) {
-            bedCleansingRequest.setRemarks(bedCleansingRequestDto.getRemarks());
-        }
-        // set all status to upperCase
-        if (bedCleansingRequestDto.getStatus() != null) {
-            bedCleansingRequest.setStatus(bedCleansingRequestDto.getStatus().toUpperCase());
-        }
-        if (bedCleansingRequestDto.getRequestorContactNo() != null) {
-            bedCleansingRequest.setRequestorContactNo(bedCleansingRequestDto.getRequestorContactNo());
-        }
-
-        if (bedCleansingRequestDto.getCleaner() != null) {
-            bedCleansingRequest.setCleaner(bedCleansingRequestDto.getCleaner());
-        }
-
-        if (bedCleansingRequestDto.getActiveFlag() != null) {
-            bedCleansingRequest.setActiveFlag(bedCleansingRequestDto.getActiveFlag());
-        }
-        //this.bedCleansingServiceRepository.save(bedCleansingRequest);
-        return this.bedCleansingRequestMapper
-                .BedCleansingRequestToBedCleansingRequestDto(bedCleansingServiceRepository.save(bedCleansingRequest));
+        bedCleansingRequest.setHospitalCode(Optional.ofNullable(bedCleansingRequestDto.getHospitalCode()).orElse(bedCleansingRequest.getHospitalCode()));
+        bedCleansingRequest.setDept(Optional.ofNullable(bedCleansingRequestDto.getDept()).orElse(bedCleansingRequest.getDept()));
+        bedCleansingRequest.setWard(Optional.ofNullable(bedCleansingRequestDto.getWard()).orElse(bedCleansingRequest.getWard()));
+        bedCleansingRequest.setCubicle(Optional.ofNullable(bedCleansingRequestDto.getCubicle()).orElse(bedCleansingRequest.getCubicle()));
+        bedCleansingRequest.setWholeBed(Optional.ofNullable(bedCleansingRequestDto.getWholeBed()).orElse(bedCleansingRequest.getWholeBed()));
+        bedCleansingRequest.setBedNo(Optional.ofNullable(bedCleansingRequestDto.getBedNo()).orElse(bedCleansingRequest.getBedNo()));
+        bedCleansingRequest.setBedType(Optional.ofNullable(bedCleansingRequestDto.getBedType()).orElse(bedCleansingRequest.getBedType()));
+        bedCleansingRequest.setRemarks(Optional.ofNullable(bedCleansingRequestDto.getRemarks()).orElse(bedCleansingRequest.getRemarks()));
+        bedCleansingRequest.setStatus(Optional.ofNullable(bedCleansingRequestDto.getStatus()).orElse(bedCleansingRequest.getStatus()));
+        bedCleansingRequest.setRequestorContactNo(Optional.ofNullable(bedCleansingRequestDto.getRequestorContactNo()).orElse(bedCleansingRequest.getRequestorContactNo()));
+        bedCleansingRequest.setCleaner(Optional.ofNullable(bedCleansingRequestDto.getCleaner()).orElse(bedCleansingRequest.getCleaner()));
+        bedCleansingRequest.setActiveFlag(Optional.ofNullable(bedCleansingRequestDto.getActiveFlag()).orElse(bedCleansingRequest.getActiveFlag()));
+        return this.bedCleansingRequestMapper.BedCleansingRequestToBedCleansingRequestDto(bedCleansingServiceRepository.save(bedCleansingRequest));
     }
 
     @Override
@@ -167,94 +116,41 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
 
     @Override
     public List<BedCleansingRequestAuditDto> getDtlByBCId(String Id) {
-        //List<Object[]> objectList = this.bedCleansingServiceRepository.getAllDtoByBCId(Id);
         List<Object[]> objectList = this.bedCleansingServiceRepository.getAllByBCId(Id);
-
         // map the objectList to BedCleansingRequestAuditDto
-        List<BedCleansingRequestAuditDto> bedCleansingRequestAuditDtoList = new ArrayList<>();
-        for (Object[] object : objectList) {
-            BedCleansingRequestAuditDto bedCleansingRequestAuditDto = new BedCleansingRequestAuditDto();
-            if (object[0] != null) { // if bcId is null, set it to false
-                bedCleansingRequestAuditDto.setBcId(object[0].toString());
-            }
-            if (object[1] != null) { // if revId is null, set it to false
-                bedCleansingRequestAuditDto.setRevId(object[1].toString());
-            }
-            if (object[2] != null) { // if revType is null, set it to false
-                bedCleansingRequestAuditDto.setRevType(object[2].toString());
-            }
-            if (object[3] != null) { // if cleaner is null, set it to false
-                bedCleansingRequestAuditDto.setCleaner(object[3].toString());
-            }
-            if (object[4] != null) { // if activeFlag is null, set it to false
-                bedCleansingRequestAuditDto.setActiveFlag(Boolean.parseBoolean(object[4].toString()));
-            }
-            if (object[5] != null) { // if bedNo is null, set it to false
-                bedCleansingRequestAuditDto.setBedNo(object[5].toString());
-            }
-            if (object[6] != null) { // if bedType is null, set it to false
-                bedCleansingRequestAuditDto.setBedType(object[6].toString());
-            }
-            if (object[7] != null) { // if cleaningProcess is null, set it to false
-                bedCleansingRequestAuditDto.setCleaningProcess(object[7].toString());
-            }
-            if (object[8] != null) { // if cubicleNo is null, set it to false
-                bedCleansingRequestAuditDto.setCubicleNo(object[8].toString());
-            }
-            if (object[9] != null) { // if deptCode is null, set it to false
-                bedCleansingRequestAuditDto.setDeptCode(object[9].toString());
-            }
-            if (object[10] != null) { // if detergent is null, set it to false
-                bedCleansingRequestAuditDto.setDetergent(object[10].toString());
-            }
-            if (object[11] != null) { // if hospitalCode is null, set it to false
-                bedCleansingRequestAuditDto.setHospitalCode(object[11].toString());
-            }
-            if (object[12] != null) { // if eform id is null, set it to false
-                bedCleansingRequestAuditDto.setEformId(Integer.parseInt(object[12].toString()));
-            }
-            if (object[13] != null) { // if remarks is null, set it to false
-                bedCleansingRequestAuditDto.setRemarks(object[13].toString());
-            }
-            if (object[14] != null) { // if requestorContactNo is null, set it to false
-                bedCleansingRequestAuditDto.setRequestorContactNo(Integer.parseInt(object[14].toString()));
-            }
-            if (object[15] != null) { // if status is null, set it to false
-                bedCleansingRequestAuditDto.setStatus(object[15].toString());
-            }
-            if (object[16] != null) { // if wardCode is null, set it to false
-                bedCleansingRequestAuditDto.setWardCode(object[16].toString());
-            }
-            if (object[17] != null) { // if wholeBedCleansing is null, set it to false
-                bedCleansingRequestAuditDto.setWholeBedCleansing(Boolean.parseBoolean(object[17].toString()));
-            }
-            if (object[18] != null) { // if requestorId is null, set it to false
-                bedCleansingRequestAuditDto.setRequestorId(object[18].toString());
-            }
-            if (object[19] != null) { // if revDetailId is null, set it to false
-                bedCleansingRequestAuditDto.setRevDetailId(object[19].toString());
-            }
-            if (object[20] != null) { // if action is null, set it to false
-                bedCleansingRequestAuditDto.setAction(object[20].toString());
-            }
-            if (object[21] != null) { // if actionDateTime is null, set it to false
-                bedCleansingRequestAuditDto.setActionDateTime(object[21].toString());
-            }
-            if (object[22] != null) { // if recordId is null, set it to false
-                bedCleansingRequestAuditDto.setRecordId(object[22].toString());
-            }
-            if (object[23] != null) { // if tableName is null, set it to false
-                bedCleansingRequestAuditDto.setTableName(object[23].toString());
-            }
-            if (object[24] != null) { // if username is null, set it to false
-                bedCleansingRequestAuditDto.setUsername(object[24].toString());
-            }
-            if (object[25] != null) { // if revisionId is null, set it to false
-                bedCleansingRequestAuditDto.setRevisionId(object[25].toString());
-            }
-            // add bedCleansingRequestAuditDtoList
-            bedCleansingRequestAuditDtoList.add(bedCleansingRequestAuditDto);
-        }
+        List<BedCleansingRequestAuditDto> bedCleansingRequestAuditDtoList = objectList.stream()
+                .filter(Objects::nonNull)
+                .map(objects -> {
+                    BedCleansingRequestAuditDto dto = new BedCleansingRequestAuditDto();
+                    dto.setBcId(Objects.toString(objects[0], null));
+                    dto.setRevId(Objects.toString(objects[1], null));
+                    dto.setRevType(Objects.toString(objects[2], null));
+                    dto.setCleaner(Objects.toString(objects[3], null));
+                    dto.setActiveFlag(Boolean.parseBoolean(Objects.toString(objects[4], "false")));
+                    dto.setBedNo(Objects.toString(objects[5], null));
+                    dto.setBedType(Objects.toString(objects[6], null));
+                    dto.setCleaningProcess(Objects.toString(objects[7], null));
+                    dto.setCubicleNo(Objects.toString(objects[8], null));
+                    dto.setDeptCode(Objects.toString(objects[9], null));
+                    dto.setDetergent(Objects.toString(objects[10], null));
+                    dto.setHospitalCode(Objects.toString(objects[11], null));
+                    dto.setEformId(Integer.parseInt(Objects.toString(objects[12], "0")));
+                    dto.setRemarks(Objects.toString(objects[13], null));
+                    dto.setRequestorContactNo(Integer.parseInt(Objects.toString(objects[14], "0")));
+                    dto.setStatus(Objects.toString(objects[15], null));
+                    dto.setWardCode(Objects.toString(objects[16], null));
+                    dto.setWholeBedCleansing(Boolean.parseBoolean(Objects.toString(objects[17], "false")));
+                    dto.setRequestorId(Objects.toString(objects[18], null));
+                    dto.setRevDetailId(Objects.toString(objects[19], null));
+                    dto.setAction(Objects.toString(objects[20], null));
+                    dto.setActionDateTime(Objects.toString(objects[21], null));
+                    dto.setRecordId(Objects.toString(objects[22], null));
+                    dto.setTableName(Objects.toString(objects[23], null));
+                    dto.setUsername(Objects.toString(objects[24], null));
+                    dto.setRevisionId(Objects.toString(objects[25], null));
+                    return dto;
+                })
+                .collect(Collectors.toList());
         return bedCleansingRequestAuditDtoList;
     }
 

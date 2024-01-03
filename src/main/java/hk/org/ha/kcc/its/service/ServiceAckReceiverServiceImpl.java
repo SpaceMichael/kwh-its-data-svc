@@ -49,18 +49,6 @@ public class ServiceAckReceiverServiceImpl implements ServiceAckReceiverService 
     public ServiceAckReceiverDto updateDtoById(int id, ServiceAckReceiverDto serviceAckReceiverDto) {
         ServiceAckReceiver serviceAckReceiver = serviceAckReceiverRepository.findById(id).stream().filter(ServiceAckReceiver::getActiveFlag).findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAckReceiver not found"));
         BeanUtils.copyProperties(serviceAckReceiverDto, serviceAckReceiver, getNullPropertyNames(serviceAckReceiverDto));
-        /*if (serviceAckReceiverDto.getServiceCode() != null) {
-            serviceAckReceiver.setServiceCode(serviceAckReceiverDto.getServiceCode());
-        }
-        if (serviceAckReceiverDto.getLocationCode() != null) {
-            serviceAckReceiver.setLocationCode(serviceAckReceiverDto.getLocationCode());
-        }
-        if (serviceAckReceiverDto.getEscalationId() != null) {
-            serviceAckReceiver.setEscalationId(serviceAckReceiverDto.getEscalationId());
-        }
-        if (serviceAckReceiverDto.getActiveFlag() != null) {
-            serviceAckReceiver.setActiveFlag(serviceAckReceiverDto.getActiveFlag());
-        }*/
         //save and return
         return serviceAckReceiverMapper.ServiceAckReceiverToServiceAckReceiverDto(serviceAckReceiverRepository.save(serviceAckReceiver));
     }

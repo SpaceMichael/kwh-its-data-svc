@@ -48,7 +48,7 @@ public class BedCleansingController {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("create bed cleansing " + bedCleansingRequestDto + "by: " + currentAuditor);
         bedCleansingRequestDto.setRequestor(currentAuditor);
-
+        bedCleansingRequestDto.setStatus("PENDING"); //// the status should be "PENDING" when create the request ?
         return this.bedCleansingRequestService.create(bedCleansingRequestDto);
     }
 
@@ -111,6 +111,10 @@ public class BedCleansingController {
                 && (bedCleansingRequestDto.getStatus().equalsIgnoreCase("Process")
                 || bedCleansingRequestDto.getStatus().equalsIgnoreCase("Completed"))) {
             bedCleansingRequestDto.setCleaner(auditorAware.getCurrentAuditor().orElse("Unknown"));
+        }
+        // set to uppercase
+        if (bedCleansingRequestDto.getStatus() != null) {
+            bedCleansingRequestDto.setStatus(bedCleansingRequestDto.getStatus().toUpperCase());
         }
         return this.bedCleansingRequestService.updateById(id, bedCleansingRequestDto);
     }

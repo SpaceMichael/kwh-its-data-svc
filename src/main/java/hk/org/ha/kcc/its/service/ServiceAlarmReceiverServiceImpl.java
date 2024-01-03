@@ -52,27 +52,6 @@ public class ServiceAlarmReceiverServiceImpl implements ServiceAlarmReceiverServ
     public ServiceAlarmReceiverDto updateDtoById(int id, ServiceAlarmReceiverDto serviceAlarmReceiverDto) {
         ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
         BeanUtils.copyProperties(serviceAlarmReceiverDto, serviceAlarmReceiver, getNullPropertyNames(serviceAlarmReceiverDto));
-        /*if (serviceAlarmReceiverDto.getServiceCode() != null) {
-            serviceAlarmReceiver.setServiceCode(serviceAlarmReceiverDto.getServiceCode());
-        }
-        if (serviceAlarmReceiverDto.getStartTime() != null) {
-            serviceAlarmReceiver.setStartTime(serviceAlarmReceiverDto.getStartTime());
-        }
-        if (serviceAlarmReceiverDto.getEndTime() != null) {
-            serviceAlarmReceiver.setEndTime(serviceAlarmReceiverDto.getEndTime());
-        }
-        if (serviceAlarmReceiverDto.getAckTimeout() != null) {
-            serviceAlarmReceiver.setAckTimeout(serviceAlarmReceiverDto.getAckTimeout());
-        }
-        if (serviceAlarmReceiverDto.getEscalationId() != null) {
-            serviceAlarmReceiver.setEscalationId(serviceAlarmReceiverDto.getEscalationId());
-        }
-        if (serviceAlarmReceiverDto.getActiveFlag() != null) {
-            serviceAlarmReceiver.setActiveFlag(serviceAlarmReceiverDto.getActiveFlag());
-        }
-        if (serviceAlarmReceiverDto.getAlarmTitle() != null) {
-            serviceAlarmReceiver.setAlarmTitle(serviceAlarmReceiverDto.getAlarmTitle());
-        }*/
         //save and return
         return serviceAlarmReceiverMapper.ServiceAlarmReceiverToServiceAlarmReceiverDto(serviceAlarmReceiverRepository.save(serviceAlarmReceiver));
     }
