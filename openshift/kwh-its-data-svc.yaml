@@ -70,6 +70,11 @@ spec:
                 secretKeyRef:
                   name: mysql-db-secret
                   key: mysql.db.password
+            - name: KWH_ITS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kwh-its-secret
+                  key: kwh.its.key
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:

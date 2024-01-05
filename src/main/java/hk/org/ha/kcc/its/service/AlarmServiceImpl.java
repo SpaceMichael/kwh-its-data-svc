@@ -2,8 +2,9 @@ package hk.org.ha.kcc.its.service;
 
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
-import hk.org.ha.kcc.its.dto.AlarmDto;
+
 import hk.org.ha.kcc.its.dto.AlarmResponseDto;
+import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,20 +33,31 @@ public class AlarmServiceImpl implements AlarmService {
         // get the current user token
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        /*
-        AlarmDto alarmDto1 = new AlarmDto();
-        alarmDto1.setRequestId("SR-230008"); // get the service-request Id
-        alarmDto1.setAckEscalationId(73);
-        alarmDto1.setToEscalationId(73);
-        alarmDto1.setSeverity("normal");
-        alarmDto1.setType("HOUSEMAN TYPE");
-        alarmDto1.setTitle("HOUSEMAN TITLE");
-        alarmDto1.setMessage("HOUSEMAN MESSAGE");
-        alarmDto1.setAckThreshold(1);
-        alarmDto1.setWebhook(true);
-        alarmDto1.setAckTimeout(1);
-        alarmDto1.setNotificationRequired(true);
-*/
+        // test String
+        String payload = "{\"ackThreshold\":null,"
+                + "\"alarmType\":\"" + alarmDto.getType() + "\","
+                + "\"escalationId\":" + alarmDto.getToEscalationId() + ","
+                + "\"severity\":null,"
+                + "\"title\":null,"
+                + "\"message\":\"" + alarmDto.getMessage() + "\","
+                + "\"webhook\":null}";
+
+        if (alarmDto.getAckThreshold() != null) {
+            payload = payload.replace("\"ackThreshold\":null", "\"ackThreshold\":\"" + alarmDto.getAckThreshold() + "\"");
+        }
+        if (alarmDto.getSeverity() != null) {
+            payload = payload.replace("\"severity\":null", "\"severity\":\"" + alarmDto.getSeverity() + "\"");
+        }
+        if (alarmDto.getTitle() != null) {
+            payload = payload.replace("\"title\":null", "\"title\":\"" + alarmDto.getTitle() + "\"");
+        }
+        if (alarmDto.getWebhook() != null) {
+            payload = payload.replace("\"webhook\":null", "\"webhook\":" + alarmDto.getWebhook());
+        }
+        // check payload
+        log.debug("payload: " + payload);
+
+
         // add the token and alarmDto1 to request body
         AlarmResponseDto alarmResponseDto = webClient.post()
                 .uri(path)

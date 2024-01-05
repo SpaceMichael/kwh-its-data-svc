@@ -2,9 +2,10 @@ package hk.org.ha.kcc.its.service;
 
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
-import hk.org.ha.kcc.its.dto.AlarmDto;
+
 import hk.org.ha.kcc.its.dto.AlarmResponseDto;
 import hk.org.ha.kcc.its.dto.ServiceRequestDto;
+import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.mapper.ServiceRequestMapper;
 import hk.org.ha.kcc.its.model.ServiceAckReceiver;
 import hk.org.ha.kcc.its.model.ServiceAlarmReceiver;
