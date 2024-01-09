@@ -6,6 +6,7 @@ import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 import hk.org.ha.kcc.its.dto.AlarmResponseDto;
 import hk.org.ha.kcc.its.dto.ServiceRequestDto;
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
+import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
 import hk.org.ha.kcc.its.mapper.ServiceRequestMapper;
 import hk.org.ha.kcc.its.model.ServiceAckReceiver;
 import hk.org.ha.kcc.its.model.ServiceAlarmReceiver;
@@ -121,36 +122,26 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         }
 
         // set alarmDto
-        alarmDto.setRequestId(serviceRequest1.getId());
-        if (serviceAckReceiverList.stream().findFirst().get().getEscalationId() != null) {
-            alarmDto.setAckEscalationId(serviceAckReceiverList.stream().findFirst().get().getEscalationId());
-        }
-        if (serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId() != null) {
-            alarmDto.setToEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
-        }
-        alarmDto.setSeverity("normal");
-        alarmDto.setType("Houseman");
+
+        alarmDto.setAlarmType("Houseman");
+        alarmDto.setEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId().toString());
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle().isEmpty()) {
             alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
         }
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage().isEmpty()) {
             alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage(), serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));
         }
-        alarmDto.setAckThreshold(1); // will call sam3 to get the information in future?
-        alarmDto.setWebhook(true);
-        alarmDto.setAckTimeout(1);
-        alarmDto.setNotificationRequired(true);
 
         // get resp from alarm
-        AlarmResponseDto alarmResponseDto = alarmService.create(alarmDto);
+        AtWorkAlarmResponseDto atWorkAlarmResponseDto = alarmService.create(alarmDto);
 
         // check resp
-        if (!alarmResponseDto.getSuccess()) {
+        if (!atWorkAlarmResponseDto.getSuccess()) {
             throw new ResourceNotFoundException("Alarm call false please check!");
         }
 
         // update service request
-        serviceRequest1.setAlarmId(alarmResponseDto.getId());
+        serviceRequest1.setAlarmId(atWorkAlarmResponseDto.getData().getId());
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);
     }
 

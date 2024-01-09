@@ -41,23 +41,6 @@ public class ServiceRequest extends Auditable {
     @Column(name = "active_flag")
     private Boolean activeFlag;
     @Column(name = "alarm_id")
-    private Long alarmId;
-
-    /*@NotAudited
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "service_id", insertable = false, updatable = false)
-    private Services services;
-
-    public void assignServices(Services services) {
-        this.services = services;
-        this.serviceId = services.getId();
-    }
-
-    public void removeServices(Services services) {
-        this.services = null;
-        this.serviceId = null;
-    }*/
+    private String alarmId; // from HKT api alarm id
 
 }

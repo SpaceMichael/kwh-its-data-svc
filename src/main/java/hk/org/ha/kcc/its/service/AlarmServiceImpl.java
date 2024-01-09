@@ -1,16 +1,20 @@
 package hk.org.ha.kcc.its.service;
 
+
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 
 import hk.org.ha.kcc.its.dto.AlarmResponseDto;
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
+import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.util.UriBuilder;
 
 import java.lang.invoke.MethodHandles;
 
@@ -23,43 +27,49 @@ public class AlarmServiceImpl implements AlarmService {
     private String alarmPath;
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
+    private final WebClient kwhItsWebClient;
+
+    public AlarmServiceImpl(WebClient kwhItsWebClient) {
+        this.kwhItsWebClient = kwhItsWebClient;
+    }
 
 
     @Override
-    public AlarmResponseDto create(AlarmDto alarmDto) {
+    public AtWorkAlarmResponseDto create(AlarmDto alarmDto) {
 
         String path = alarmPath + "api/v1/alarms";
         WebClient webClient = WebClient.create(alarmPath + "api/v1/alarms");
         // get the current user token
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // test String
-        String payload = "{\"ackThreshold\":null,"
-                + "\"alarmType\":\"" + alarmDto.getType() + "\","
-                + "\"escalationId\":" + alarmDto.getToEscalationId() + ","
-                + "\"severity\":null,"
-                + "\"title\":null,"
-                + "\"message\":\"" + alarmDto.getMessage() + "\","
-                + "\"webhook\":null}";
-
-        if (alarmDto.getAckThreshold() != null) {
-            payload = payload.replace("\"ackThreshold\":null", "\"ackThreshold\":\"" + alarmDto.getAckThreshold() + "\"");
-        }
-        if (alarmDto.getSeverity() != null) {
-            payload = payload.replace("\"severity\":null", "\"severity\":\"" + alarmDto.getSeverity() + "\"");
-        }
-        if (alarmDto.getTitle() != null) {
-            payload = payload.replace("\"title\":null", "\"title\":\"" + alarmDto.getTitle() + "\"");
-        }
-        if (alarmDto.getWebhook() != null) {
-            payload = payload.replace("\"webhook\":null", "\"webhook\":" + alarmDto.getWebhook());
-        }
+        // add payload from alarmDto
+        String payload = "{\"message\": \"" + alarmDto.getMessage() + "\"," +
+                "\"escalationId\": \"" + alarmDto.getEscalationId() + "\"," +
+                "\"alarmType\": \"" + alarmDto.getAlarmType() + "\"," +
+                "\"severity\":\"null\",\n" +
+                "\"title\": \"" + alarmDto.getTitle() + "\"\n" +
+                "}";
+        /* ok sample
+                String payload2 ="{\"message\": \"1258\", \n" +
+                "\"escalationId\": \"73\",\n" +
+                "\"alarmType\": \"Houseman\",\n" +
+                "\"severity\":\"normal\",\n" +
+                "\"title\": \"test title\"\n" +
+                "}";
+         */
         // check payload
         log.debug("payload: " + payload);
-
+        // send the post request to hkt alarm
+        AtWorkAlarmResponseDto atWorkAlarmResponseDto = kwhItsWebClient.post()
+                .uri((UriBuilder uriBuilder) -> uriBuilder.path("/meta/alarms")
+                        .build())
+                .body(BodyInserters.fromMultipartData("payload", payload))
+                .retrieve()
+                .bodyToMono(AtWorkAlarmResponseDto.class)
+                .block();
+        log.debug("atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
 
         // add the token and alarmDto1 to request body
-        AlarmResponseDto alarmResponseDto = webClient.post()
+        /*AlarmResponseDto alarmResponseDto = webClient.post()
                 .uri(path)
                 .headers(h -> h.setBearerAuth(jwt.getTokenValue()))
                 .bodyValue(alarmDto)
@@ -67,7 +77,8 @@ public class AlarmServiceImpl implements AlarmService {
                 .bodyToMono(AlarmResponseDto.class)
                 .block();
         log.debug("alarmResponseDto: " + alarmResponseDto);
-        return alarmResponseDto;
+        return alarmResponseDto;*/
+        return atWorkAlarmResponseDto;
     }
 
 }

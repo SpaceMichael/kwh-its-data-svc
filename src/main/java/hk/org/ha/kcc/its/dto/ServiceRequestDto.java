@@ -19,16 +19,7 @@ public class ServiceRequestDto {
     private Integer serviceId;  // e.g. 1
     private String remarks; // e.g. 1
     private Boolean activeFlag;
-    private Long alarmId;
+    private String alarmId;
 }
 
-    /*
-    private String id;
-    private String caseNo; // e.g. HN123454677 patient strap
-    private String location; // e.g. KWH
-    private String cubicleNo; // e.g. 1
-    private String bedNo; // e.g. 1
-    private String serviceName; // e.g. 1
-    private String remarks; // e.g. 1
-     */
 

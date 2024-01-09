@@ -3,11 +3,11 @@ package hk.org.ha.kcc.its.service;
 
 import hk.org.ha.kcc.its.dto.AlarmResponseDto;
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
-
+import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
 
 
 public interface AlarmService {
 
-    AlarmResponseDto create(AlarmDto alarmDto); // test use
+    AtWorkAlarmResponseDto create(AlarmDto alarmDto); // test use
 
 }
