@@ -75,11 +75,6 @@ spec:
                 secretKeyRef:
                   name: kwh-its-secret
                   key: kwh.its.key
-            - name: SPRING_PROFILES_ACTIVE
-              valueFrom:
-                configMapKeyRef:
-                  name: env-config
-                  key: spring.profiles.active
             - name: ALS_PROJECT_CODE
               value: ITS
             - name: ALS_POD_NAME
