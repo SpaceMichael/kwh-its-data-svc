@@ -37,10 +37,10 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public AtWorkAlarmResponseDto create(AlarmDto alarmDto) {
 
-        String path = alarmPath + "api/v1/alarms";
+        /*String path = alarmPath + "api/v1/alarms";
         WebClient webClient = WebClient.create(alarmPath + "api/v1/alarms");
         // get the current user token
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();*/
         // add payload from alarmDto
         String payload = "{\"message\": \"" + alarmDto.getMessage() + "\"," +
                 "\"escalationId\": \"" + alarmDto.getEscalationId() + "\"," +
@@ -81,4 +81,9 @@ public class AlarmServiceImpl implements AlarmService {
         return atWorkAlarmResponseDto;
     }
 
+    @Override
+    public void webhookAlarm(AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
+        // log the response
+        log.debug("atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
+    }
 }

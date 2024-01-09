@@ -10,4 +10,6 @@ public interface AlarmService {
 
     AtWorkAlarmResponseDto create(AlarmDto alarmDto); // test use
 
+    void webhookAlarm(AtWorkAlarmResponseDto atWorkAlarmResponseDto);
+
 }
