@@ -66,7 +66,7 @@ public class AlarmServiceImpl implements AlarmService {
                 .retrieve()
                 .bodyToMono(AtWorkAlarmResponseDto.class)
                 .block();
-        log.debug("atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
+        log.debug("create alarm atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
 
         // add the token and alarmDto1 to request body
         /*AlarmResponseDto alarmResponseDto = webClient.post()
@@ -84,6 +84,6 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public void webhookAlarm(AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
         // log the response
-        log.debug("atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
+        log.debug("webhookAlarm in service atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
     }
 }

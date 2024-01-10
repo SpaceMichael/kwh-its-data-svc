@@ -31,7 +31,7 @@ public class WebhookApiController {
     @PostMapping(value = "/alarm", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void webhookAlarm(@RequestBody AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
-        log.debug("atWorkAlarmResponseDto:", atWorkAlarmResponseDto);
+        log.debug("webhookAlarm in controller atWorkAlarmResponseDto:" + atWorkAlarmResponseDto);
         alarmService.webhookAlarm(atWorkAlarmResponseDto);
     }
 }
