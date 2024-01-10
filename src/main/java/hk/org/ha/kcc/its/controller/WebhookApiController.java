@@ -23,7 +23,7 @@ import java.lang.invoke.MethodHandles;
 public class WebhookApiController {
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
-    public static final String BASE_URL = "/api/v1/webhook";
+    public static final String BASE_URL = "/api/v2/webhook";
 
     private final AlarmService alarmService;
 
@@ -31,7 +31,7 @@ public class WebhookApiController {
     @PostMapping(value = "/alarm", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void webhookAlarm(@RequestBody AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
-        log.debug("PATCH alarm From Webhook ITS by Id: {}", atWorkAlarmResponseDto.getData().getId());
+        log.debug("atWorkAlarmResponseDto:", atWorkAlarmResponseDto);
         alarmService.webhookAlarm(atWorkAlarmResponseDto);
     }
 }

@@ -5,6 +5,7 @@ import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -19,21 +20,21 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
     private ApiKeyUtil apiKeyUtil;
 
-    private static final AlsXLogger log =
-            AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
+    private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
     public ApiKeyAuthFilter(ApiKeyUtil apiKeyUtil) {
         this.apiKeyUtil = apiKeyUtil;
     }
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if(request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
+        if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
             String requestApiKey = getApiKey((HttpServletRequest) request);
 
-            if(requestApiKey != null) {
-                if(apiKeyUtil.validateApiKey(requestApiKey)) {
+            if (requestApiKey != null) {
+                if (apiKeyUtil.validateApiKey(requestApiKey)) {
                     ApiKeyAuthToken apiToken = new ApiKeyAuthToken(requestApiKey, AuthorityUtils.NO_AUTHORITIES);
                     SecurityContextHolder.getContext().setAuthentication(apiToken);
                 } else {
@@ -50,11 +51,12 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     private String getApiKey(HttpServletRequest httpRequest) {
         String authHeader = httpRequest.getHeader("api-key");
 
-        if(authHeader != null) {
+        if (authHeader != null) {
             return authHeader.trim();
         }
 
         return null;
     }
+
 
 }
