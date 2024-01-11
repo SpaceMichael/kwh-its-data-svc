@@ -4,7 +4,6 @@ package hk.org.ha.kcc.its.service;
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 
-
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
 import org.springframework.beans.factory.annotation.Value;

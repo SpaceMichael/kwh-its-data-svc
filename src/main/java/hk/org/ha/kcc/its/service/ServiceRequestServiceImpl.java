@@ -115,9 +115,9 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         }
 
         // set alarmDto
-        String testStr = services.getAlarmType();
-        log.debug("testStr: " + testStr);
-        alarmDto.setAlarmType("Houseman");
+   /*     String testStr = services.getAlarmType();
+        log.debug("testStr: " + testStr);*/
+        alarmDto.setAlarmType(services.getAlarmType());
         alarmDto.setEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle().isEmpty()) {
             alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
@@ -136,6 +136,8 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         if (!atWorkAlarmResponseDto.getSuccess()) {
             serviceRequest1.setSuccess(false);
             throw new ResourceNotFoundException("Alarm call false please check!");
+        } else {
+            serviceRequest1.setSuccess(true);
         }
         // update service request
         serviceRequest1.setAlarmId(atWorkAlarmResponseDto.getData().getId());
