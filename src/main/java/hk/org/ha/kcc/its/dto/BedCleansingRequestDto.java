@@ -26,7 +26,6 @@ public class BedCleansingRequestDto {
     private String status; // apply or pending or completed
     private Integer requestorContactNo;
     private String cleaner; // e.g Mobile Device 008?
-    private Boolean activeFlag; //
     private String remarks;
     private Long eformId;
     private String requestor;

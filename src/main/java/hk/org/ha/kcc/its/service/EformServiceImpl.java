@@ -126,7 +126,7 @@ public class EformServiceImpl implements EformService {
     @Override
     public EformDto create(EformDto eformDto) {
         Eform eform = this.eformMapper.EformDtoToEform(eformDto);
-        eform.setActiveFlag(Optional.ofNullable(eformDto.getActiveFlag()).orElse(true));
+        //eform.setActiveFlag(Optional.ofNullable(eformDto.getActiveFlag()).orElse(true));
         eform.setEnable(Optional.ofNullable(eformDto.getEnable()).orElse(true));
         return this.eformMapper.EformToEformDto(this.eformRepository.save(eform));
     }
@@ -134,13 +134,13 @@ public class EformServiceImpl implements EformService {
     @Override
     public List<EformDto> getAllDto() {
         List<Eform> eformList = this.eformRepository.findAll();
-        return eformList.stream().map(eformMapper::EformToEformDto).filter(EformDto::getActiveFlag)
+        return eformList.stream().map(eformMapper::EformToEformDto)
                 .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     public EformDto getDtoById(Integer id) {
-        Eform eform = this.eformRepository.findById(id).filter(Eform::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
+        Eform eform = this.eformRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
         return this.eformMapper.EformToEformDto(eform);
     }
 
@@ -163,7 +163,7 @@ public class EformServiceImpl implements EformService {
     public List<EformDto> findByQrcodeType(String qrcodeType) {
 
         List<EformDto> matchingEform = this.eformRepository.findAll().stream()
-                .filter(eform -> eform.getQrcodeType().equals(qrcodeType)).filter(Eform::getActiveFlag)
+                .filter(eform -> eform.getQrcodeType().equals(qrcodeType))
                 .map(eformMapper::EformToEformDto).collect(Collectors.toList());
         // if matching Eform is empty, throw the exception ResourceNotFoundException
         if (!matchingEform.isEmpty()) {

@@ -38,8 +38,6 @@ public class Eform extends Auditable {
     private String icon; // e.g "https://kwh-its-data-svc-kccclinical-dev.tstcld61.server.ha.org.hk/iconBedCleansing.png"
     @Column(name = "url", length = 200)
     private String url; // e.g request url for requester use "https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest
-    @Column(name = "active_flag")
-    private Boolean activeFlag;
     @Column(name = "enable")  // under barcode Dto use
     private Boolean enable;
     @Column(name = "barcode_key") // cannot use key keyword in mssql

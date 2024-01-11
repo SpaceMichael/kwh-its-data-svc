@@ -29,22 +29,19 @@ public class ServiceAlarmReceiverServiceImpl implements ServiceAlarmReceiverServ
     @Override
     public ServiceAlarmReceiverDto createDto(ServiceAlarmReceiverDto ServiceAlarmReceiverDto) {
         ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverMapper.ServiceAlarmReceiverDtoToServiceAlarmReceiver(ServiceAlarmReceiverDto);
-        if (ServiceAlarmReceiverDto.getActiveFlag() != null) {
-            serviceAlarmReceiver.setActiveFlag(ServiceAlarmReceiverDto.getActiveFlag());
-        }
         serviceAlarmReceiverRepository.save(serviceAlarmReceiver);
         return serviceAlarmReceiverMapper.ServiceAlarmReceiverToServiceAlarmReceiverDto(serviceAlarmReceiver);
     }
 
     @Override
     public List<ServiceAlarmReceiverDto> getAllDto() {
-        List<ServiceAlarmReceiver> serviceAlarmReceiverList = serviceAlarmReceiverRepository.findAll().stream().filter(ServiceAlarmReceiver::getActiveFlag).collect(Collectors.toList());
+        List<ServiceAlarmReceiver> serviceAlarmReceiverList = serviceAlarmReceiverRepository.findAll();
         return serviceAlarmReceiverList.stream().map(serviceAlarmReceiverMapper::ServiceAlarmReceiverToServiceAlarmReceiverDto).collect(Collectors.toList());
     }
 
     @Override
     public ServiceAlarmReceiverDto getDtoById(int id) {
-        ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).filter(ServiceAlarmReceiver::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
+        ServiceAlarmReceiver serviceAlarmReceiver = serviceAlarmReceiverRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceAlarmReceiver not found"));
         return serviceAlarmReceiverMapper.ServiceAlarmReceiverToServiceAlarmReceiverDto(serviceAlarmReceiver);
     }
 

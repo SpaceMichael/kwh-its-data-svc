@@ -26,8 +26,7 @@ public class UserAccess extends Auditable {
     @Column(name = "form_id")
     private String formId; // formId is array contain eform.id e.g  1, 2, 3
 
-    @Column(name = "active_flag") // 1 & 0
-    private Boolean activeFlag;
+
     /*
     corp_id, form_id
      */

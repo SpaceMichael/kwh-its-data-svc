@@ -27,27 +27,24 @@ public class ServiceAckReceiverServiceImpl implements ServiceAckReceiverService 
     @Override
     public ServiceAckReceiverDto create(ServiceAckReceiverDto serviceAckReceiverDto) {
         ServiceAckReceiver serviceAckReceiver = serviceAckReceiverMapper.ServiceAckReceiverDtoToServiceAckReceiver(serviceAckReceiverDto);
-        if (serviceAckReceiverDto.getActiveFlag() != null) {
-            serviceAckReceiver.setActiveFlag(serviceAckReceiverDto.getActiveFlag());
-        }
         return serviceAckReceiverMapper.ServiceAckReceiverToServiceAckReceiverDto(serviceAckReceiverRepository.save(serviceAckReceiver));
     }
 
     @Override
     public List<ServiceAckReceiverDto> getAllDto() {
-        List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findAll().stream().filter(ServiceAckReceiver::getActiveFlag).collect(Collectors.toList());
+        List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findAll();
         return serviceAckReceiverList.stream().map(serviceAckReceiverMapper::ServiceAckReceiverToServiceAckReceiverDto).collect(Collectors.toList());
     }
 
     @Override
     public ServiceAckReceiverDto getDtoById(int id) {
-        ServiceAckReceiver serviceAckReceiver = serviceAckReceiverRepository.findById(id).stream().filter(ServiceAckReceiver::getActiveFlag).findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAckReceiver not found"));
+        ServiceAckReceiver serviceAckReceiver = serviceAckReceiverRepository.findById(id).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAckReceiver not found"));
         return serviceAckReceiverMapper.ServiceAckReceiverToServiceAckReceiverDto(serviceAckReceiver);
     }
 
     @Override
     public ServiceAckReceiverDto updateDtoById(int id, ServiceAckReceiverDto serviceAckReceiverDto) {
-        ServiceAckReceiver serviceAckReceiver = serviceAckReceiverRepository.findById(id).stream().filter(ServiceAckReceiver::getActiveFlag).findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAckReceiver not found"));
+        ServiceAckReceiver serviceAckReceiver = serviceAckReceiverRepository.findById(id).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("ServiceAckReceiver not found"));
         BeanUtils.copyProperties(serviceAckReceiverDto, serviceAckReceiver, getNullPropertyNames(serviceAckReceiverDto));
         //save and return
         return serviceAckReceiverMapper.ServiceAckReceiverToServiceAckReceiverDto(serviceAckReceiverRepository.save(serviceAckReceiver));

@@ -34,7 +34,7 @@ public class UserAccessServiceImplTest {
         UserAccess mockUserAcess = new UserAccess();
         mockUserAcess.setCorpId("ttk799");
         mockUserAcess.setFormId("99");
-        mockUserAcess.setActiveFlag(true);
+
 
         when(userAcessRespository.findById("ttk799")).thenReturn(java.util.Optional.of(mockUserAcess));
         // service check and get dto
@@ -51,13 +51,13 @@ public class UserAccessServiceImplTest {
         UserAccessDto mockUserAcessDto = new UserAccessDto();
         mockUserAcessDto.setCorpId("ttk799");
         mockUserAcessDto.setFormId("99");
-        mockUserAcessDto.setActiveFlag(true);
+
         // Mock the behavior of userAcessRespository.save()
         when(userAcessRespository.save(any(UserAccess.class))).thenAnswer(invocation -> {
             UserAccess savedUserAccess = invocation.getArgument(0);
             savedUserAccess.setCorpId("ttk799");
             savedUserAccess.setFormId("99");
-            savedUserAccess.setActiveFlag(true);
+
             return savedUserAccess;
         });
 

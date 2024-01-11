@@ -30,16 +30,14 @@ public class UserAccessServiceImpl implements UserAccessService {
     @Override
     public List<UserAccessDto> getAllDto() {
         // use findAll() to get all user access
-        List<UserAccess> userAccessList = userAcessRespository.findAll().stream()
-                .filter(UserAccess::getActiveFlag)
-                .collect(Collectors.toList());
+        List<UserAccess> userAccessList = userAcessRespository.findAll();
         // use UserAccess mapper to List<Dto>
         return userAccessList.stream().map(userAccessMapper::UserAccessToUserAccessDto).collect(Collectors.toList());
     }
 
     @Override
     public UserAccessDto getDtoById(String id) {
-        UserAccess userAccess = userAcessRespository.findById(id).filter(UserAccess::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found"));
+        UserAccess userAccess = userAcessRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found"));
         return userAccessMapper.UserAccessToUserAccessDto(userAccess);
     }
 
@@ -66,11 +64,6 @@ public class UserAccessServiceImpl implements UserAccessService {
     public UserAccessDto create(UserAccessDto userAccessDto) {
         // create new user access
         UserAccess userAccess = userAccessMapper.UserAccessDtoToUserAccess(userAccessDto);
-        if (userAccessDto.getActiveFlag() != null) {
-            userAccess.setActiveFlag(userAccessDto.getActiveFlag());
-        } else {
-            userAccess.setActiveFlag(true);
-        }
         // save and return
         return userAccessMapper.UserAccessToUserAccessDto(userAcessRespository.save(userAccess));
     }

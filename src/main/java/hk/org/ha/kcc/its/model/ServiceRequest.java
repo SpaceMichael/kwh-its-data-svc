@@ -38,9 +38,17 @@ public class ServiceRequest extends Auditable {
     private Integer serviceId;
     @Column(name = "remarks", length = 1000)
     private String remarks; // e.g. 1
-    @Column(name = "active_flag")
-    private Boolean activeFlag;
     @Column(name = "alarm_id")
     private String alarmId; // from HKT api alarm id
+    @Column(name = "success")
+    private Boolean success;
+    @Column(name = "escalation_Id")
+    private Integer escalationId;
+    @Lob
+    @Column(name = "error_message")
+    private String errorMessage;
+    /*
+    success
+     */
 
 }

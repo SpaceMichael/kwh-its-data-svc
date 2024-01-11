@@ -30,8 +30,6 @@ public class ServiceAlarmReceiver extends Auditable {
     private Integer ackTimeout; //  1,2,3?
     @Column(name = "escalation_id")
     private Integer escalationId; // from sam3 = to_escalation_id
-    @Column(name = "active_flag")
-    private Boolean activeFlag;
     @Column(name = "alarm_title", length = 255)
     private String alarmTitle;  // HOUSEMAN CALL at Ward {0}
     @Lob

@@ -12,7 +12,7 @@ import lombok.*;
 public class AlarmDto {
 
     private String alarmType;  // not null  type=>alarmType get from service_alarm_receiver alarm_type , defined by self?
-    private String escalationId; // not null toEscalationId = escalationId get from service_alarm_receiver escalation_id
+    private Integer escalationId; // not null toEscalationId = escalationId get from service_alarm_receiver escalation_id
     private String message; // not null, get form service_alarm_receiver alarm_message
     private String title;  // get from service_alarm_receiver alarm_title
 

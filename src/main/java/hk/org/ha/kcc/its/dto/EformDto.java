@@ -21,7 +21,6 @@ public class EformDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String icon; // e.g // "https://kwh-its-data-svc-kccclinical-dev.tstcld61.server.ha.org.hk/iconBedCleansing.png"
     private String url; // e.g // "https://kwh-its-eform-app-kccclinical-dev.tstcld61.server.ha.org.hk/BedCleansingRequest
-    private Boolean activeFlag;
     private Boolean enable;
     private String barcodeKey;
     @JsonInclude(JsonInclude.Include.NON_NULL)

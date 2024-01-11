@@ -24,25 +24,5 @@ public class ServiceAckReceiver extends Auditable {
     private String locationCode; //  e.g 3A
     @Column(name = "escalation_id")
     private Integer escalationId; // from sam3 =>ack_escalation_id
-    @Column(name = "active_flag")
-    private Boolean activeFlag;
-/*    @Column(name = "ack_threshold")
-    private Integer ackThreshold;
-    @Column(name = "webhook")
-    private Boolean webhook;
-    @Column(name = "ack_timeout")
-    private Integer ackTimeout;
-    @Column(name = "notification_required")
-    private Boolean notificationRequired;*/
-    /*
-    ackThreshold;
-    webhook;
-    ackTimeout;
-    notificationRequired;
 
-    alarmDto.setAckThreshold(1);
-    alarmDto.setWebhook(true);
-    alarmDto.setAckTimeout(1);
-    alarmDto.setNotificationRequired(true);
-    */
 }

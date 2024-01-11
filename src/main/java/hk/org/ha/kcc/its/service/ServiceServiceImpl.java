@@ -28,21 +28,19 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public List<ServiceDto> getAllDto() {
-        List<Services> servicesList = serviceRepository.findAll().stream().filter(Services::getActiveFlag)
-                .collect(Collectors.toList());
+        List<Services> servicesList = serviceRepository.findAll();
         return servicesList.stream().map(serviceMapper::ServiceToServiceDto).collect(Collectors.toList());
     }
 
     @Override
     public ServiceDto getDtoById(Integer id) {
-        Services services = serviceRepository.findById(id).filter(Services::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
+        Services services = serviceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         return serviceMapper.ServiceToServiceDto(services);
     }
 
     @Override
     public ServiceDto create(ServiceDto serviceDto) {
         Services services = serviceMapper.ServiceDtoToService(serviceDto);
-        services.setActiveFlag(serviceDto.getActiveFlag() != null ? serviceDto.getActiveFlag() : true);
         // save and return
         return serviceMapper.ServiceToServiceDto(serviceRepository.save(services));
     }
@@ -53,7 +51,6 @@ public class ServiceServiceImpl implements ServiceService {
         // update the dto if not null
         services.setServiceCode(Optional.ofNullable(serviceDto.getServiceCode()).orElse(services.getServiceCode()));
         services.setServiceName(Optional.ofNullable(serviceDto.getServiceName()).orElse(services.getServiceName()));
-        services.setActiveFlag(Optional.ofNullable(serviceDto.getActiveFlag()).orElse(services.getActiveFlag()));
         //save and return
         return serviceMapper.ServiceToServiceDto(serviceRepository.save(services));
     }

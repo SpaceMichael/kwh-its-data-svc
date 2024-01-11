@@ -41,8 +41,6 @@ public class EquipUsageRequest extends Auditable {
   private String CaseNo; // e.g. HN123454677 patient strap
   @Column(name = "patient_name", length = 100)
   private String PatientName; // KC
-  @Column(name = "active_flag")
-  private Boolean activeFlag;
   @Column(name = "date", length = 50)
   private String date; // date from user input 2023/12/11 YYYY/MM/DD
   @Column(name = "time", length = 50)

@@ -26,13 +26,13 @@ public class EamServiceImpl implements EamService {
 
     @Override
     public List<EamDto> getAllDto() {
-        List<Eam> eamList = eamRepository.findAll().stream().filter(Eam::getActiveFlag).collect(java.util.stream.Collectors.toList());
+        List<Eam> eamList = eamRepository.findAll().stream().collect(java.util.stream.Collectors.toList());
         return eamList.stream().map(eamMapper::EamToEamDto).collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     public EamDto getDtoById(Integer id) {
-        Eam eam = eamRepository.findById(id).filter(Eam::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
+        Eam eam = eamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eam not found"));
         return eamMapper.EamToEamDto(eam);
     }
 
@@ -40,7 +40,7 @@ public class EamServiceImpl implements EamService {
     public EamDto create(EamDto eamDto) {
         Eam eam = eamMapper.EamDtoToEam(eamDto);
         // check activeFlag
-        eam.setActiveFlag((Optional.ofNullable(eam.getActiveFlag()).orElse(true)));
+        //eam.setActiveFlag((Optional.ofNullable(eam.getActiveFlag()).orElse(true)));
         return eamMapper.EamToEamDto(eamRepository.save(eam));
     }
 

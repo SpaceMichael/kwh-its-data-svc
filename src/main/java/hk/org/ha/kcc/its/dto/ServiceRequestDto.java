@@ -18,8 +18,16 @@ public class ServiceRequestDto {
     //private String serviceName; // e.g.  Houseman
     private Integer serviceId;  // e.g. 1
     private String remarks; // e.g. 1
-    private Boolean activeFlag;
     private String alarmId;
+    private Boolean success;
+    private Integer escalationId;
+    private String errorMessage;
+
+    /*
+    private Boolean success;
+    private Integer escalationId;
+    private String errorMessage;
+     */
 }
 
 

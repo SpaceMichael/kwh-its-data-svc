@@ -26,7 +26,6 @@ public class EquipUsageRequestDto {
     private LocalDateTime createdDate;
     private String modifiedBy;
     private LocalDateTime modifiedDate;
-    private Boolean activeFlag;
     private String date; // date from user input
     private String time; // time from user input
     private LocalDateTime userDateTime; // time from user input

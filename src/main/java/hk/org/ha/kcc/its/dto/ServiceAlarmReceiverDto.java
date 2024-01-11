@@ -21,15 +21,7 @@ public class ServiceAlarmReceiverDto {
     private LocalTime endTime; //    17:00 ?
     private Integer ackTimeout; //  1,2,3?
     private Integer escalationId; // fro
-    private Boolean activeFlag;
     private String alarmTitle;
     private String alarmMessage;
-    /*
-     private int id; // e.g 1
-    private String serviceCode; // Houseman  = service name ?
-    private LocalDateTime startTime; //   8:00 ?
-    private LocalDateTime endTime; //    17:00 ?
-    private Integer ackTimeout; //  1,2,3?
-    private Integer escalationId; // fro
-     */
+
 }

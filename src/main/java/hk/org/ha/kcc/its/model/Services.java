@@ -1,11 +1,9 @@
 package hk.org.ha.kcc.its.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Data
 @ToString(callSuper = true)
@@ -24,8 +22,9 @@ public class Services extends Auditable {
     private String serviceCode; // PAED_HOUSEMAN_T1,  PAED_HOUSEMAN_RESP_NEUR
     @Column(name = "service_name", length = 50)
     private String serviceName; // Houseman (Team 1), Houseman (Respi + Neuro)
-    @Column(name = "active_flag")
-    private Boolean activeFlag;
+    @Column(name = "alarm_type", length = 50)
+    private String alarmType; // Houseman (Team 1), Houseman (Respi + Neuro)
+
 
     /*@ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -70,8 +70,7 @@ public class BedCleansingRequest extends Auditable {
   private Integer requestorContactNo;
   @Column(name = "cleaner", length = 50)
   private String cleaner; // e.g Mobile Device 008?
-  @Column(name = "active_flag")
-  private Boolean activeFlag; //
+
   @Lob
   @Column(name = "remarks")
   private String remarks;

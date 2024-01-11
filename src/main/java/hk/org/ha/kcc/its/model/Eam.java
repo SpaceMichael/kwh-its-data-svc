@@ -26,6 +26,5 @@ public class Eam extends Auditable {
     private String belongTo;// KWH Ward 8A   LOC? KWH-SB-01-122?
     @Column(name = "type", length = 50)
     private String type; // MED ?
-    @Column(name = "active_flag")
-    private Boolean activeFlag;
+
 }

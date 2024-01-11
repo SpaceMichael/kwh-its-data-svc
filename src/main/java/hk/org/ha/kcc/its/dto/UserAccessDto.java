@@ -13,7 +13,6 @@ public class UserAccessDto {
 
     private String corpId; // ttk799
     private String formId; //
-    private Boolean activeFlag;
 
     /*
     private String corpId; // ttk799

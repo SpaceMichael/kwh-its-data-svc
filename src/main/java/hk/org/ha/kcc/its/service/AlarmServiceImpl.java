@@ -4,7 +4,7 @@ package hk.org.ha.kcc.its.service;
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 
-import hk.org.ha.kcc.its.dto.AlarmResponseDto;
+
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.util.UriBuilder;
 
 import java.lang.invoke.MethodHandles;
@@ -42,10 +40,12 @@ public class AlarmServiceImpl implements AlarmService {
         // get the current user token
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();*/
         // add payload from alarmDto
-        String payload = "{\"message\": \"" + alarmDto.getMessage() + "\"," +
-                "\"escalationId\": \"" + alarmDto.getEscalationId() + "\"," +
-                "\"alarmType\": \"" + alarmDto.getAlarmType() + "\"," +
+        String payload = "{\n" +
+                "\"message\": \"" + alarmDto.getMessage() + "\",\n" +
+                "\"escalationId\": \"" + alarmDto.getEscalationId() + "\",\n" +
+                "\"alarmType\": \"" + alarmDto.getAlarmType() + "\",\n" +
                 "\"severity\":\"null\",\n" +
+                "\"webhook\":\"true\",\n" +
                 "\"title\": \"" + alarmDto.getTitle() + "\"\n" +
                 "}";
         /* ok sample

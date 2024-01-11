@@ -35,11 +35,7 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
         // create a new EquipUsageRequest
         // EquipUsageRequestDto to EquipUsageRequest
         EquipUsageRequest equipUsageRequest = equipUsageRequestMapper.EquipUsageRequestDtoToEquipUsageRequest(equipUsageRequestDto);
-        if (equipUsageRequestDto.getActiveFlag() != null) {
-            equipUsageRequest.setActiveFlag(equipUsageRequestDto.getActiveFlag());
-        } else {
-            equipUsageRequest.setActiveFlag(true);
-        }
+
         // if date is null , get current date
         if (equipUsageRequestDto.getDate() == null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -61,9 +57,8 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
 
     @Override
     public List<EquipUsageRequestDto> getAllDto(Integer eamNo, String caseNo, Date dateStart, Date dateEnd, String year, String month) {
-        List<EquipUsageRequest> equipUsageRequestList = equipUsageRequestRepository.findAll()
-                .stream().filter(EquipUsageRequest::getActiveFlag)
-                .collect(Collectors.toList());
+        List<EquipUsageRequest> equipUsageRequestList = equipUsageRequestRepository.findAll();
+
         // if Integer eamNo, String caseNo, LocalDateTime dateStart, LocalDateTime dateEnd, String year, String month all null ,return equipUsageRequestDtoList
         if (eamNo == null && caseNo == null && dateStart == null && dateEnd == null && year == null && month == null) {
             return equipUsageRequestList.stream().map(equipUsageRequestMapper::EquipUsageRequestToEquipUsageRequestDto).collect(Collectors.toList());
@@ -110,7 +105,7 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
 
     @Override
     public EquipUsageRequestDto getDtoById(String id) {
-        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id).filter(EquipUsageRequest::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
+        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
         return equipUsageRequestMapper.EquipUsageRequestToEquipUsageRequestDto(equipUsageRequest);
     }
 

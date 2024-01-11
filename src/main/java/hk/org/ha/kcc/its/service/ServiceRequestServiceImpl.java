@@ -3,7 +3,7 @@ package hk.org.ha.kcc.its.service;
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 
-import hk.org.ha.kcc.its.dto.AlarmResponseDto;
+
 import hk.org.ha.kcc.its.dto.ServiceRequestDto;
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
@@ -61,26 +61,20 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
     @Override
     public List<ServiceRequestDto> getAllDto() {
         // filter get active flag is true and then mapper to dto
-        List<ServiceRequest> serviceRequestList = serviceRequestRepository.findAll().stream()
-                .filter(ServiceRequest::getActiveFlag)
-                .collect(Collectors.toList());
+        List<ServiceRequest> serviceRequestList = serviceRequestRepository.findAll();
         return serviceRequestList.stream().map(serviceRequestMapper::ServiceRequestToServiceRequestDto).collect(Collectors.toList());
     }
 
     @Override
     public ServiceRequestDto getDtoById(String id) {
-        ServiceRequest serviceRequest = serviceRequestRepository.findById(id).filter(ServiceRequest::getActiveFlag).orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
+        ServiceRequest serviceRequest = serviceRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest);
     }
 
     @Override
     public ServiceRequestDto create(ServiceRequestDto serviceRequestDto) {
         ServiceRequest serviceRequest = serviceRequestMapper.ServiceRequestDtoToServiceRequest(serviceRequestDto);
-        if (serviceRequestDto.getActiveFlag() != null) {
-            serviceRequest.setActiveFlag(serviceRequestDto.getActiveFlag());
-        } else {
-            serviceRequest.setActiveFlag(true);
-        }
+
         // save
         ServiceRequest serviceRequest1 = serviceRequestRepository.save(serviceRequest);
         // set alarm
@@ -91,7 +85,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
         // localDateTime is now
         LocalDateTime creatTime = LocalDateTime.now();
-        log.debug("SR creatTime: " + creatTime);
         // get serviceAckReceiver by services.service_code and location
         List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
         // CHECK NULL
@@ -122,9 +115,10 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         }
 
         // set alarmDto
-
+        String testStr = services.getAlarmType();
+        log.debug("testStr: " + testStr);
         alarmDto.setAlarmType("Houseman");
-        alarmDto.setEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId().toString());
+        alarmDto.setEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle().isEmpty()) {
             alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
         }
@@ -135,13 +129,19 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get resp from alarm
         AtWorkAlarmResponseDto atWorkAlarmResponseDto = alarmService.create(alarmDto);
 
-        // check resp
         if (!atWorkAlarmResponseDto.getSuccess()) {
+            serviceRequest1.setErrorMessage(atWorkAlarmResponseDto.getError().getMessage());
+        }
+        // check resp when false
+        if (!atWorkAlarmResponseDto.getSuccess()) {
+            serviceRequest1.setSuccess(false);
             throw new ResourceNotFoundException("Alarm call false please check!");
         }
-
         // update service request
         serviceRequest1.setAlarmId(atWorkAlarmResponseDto.getData().getId());
+        if (alarmDto.getEscalationId() != null) {
+            serviceRequest1.setEscalationId(alarmDto.getEscalationId());
+        }
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);
     }
 
