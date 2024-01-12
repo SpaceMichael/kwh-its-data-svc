@@ -62,6 +62,10 @@ public class ServicesController {
     @ResponseStatus(HttpStatus.OK)
     public ServiceDto updateService(@PathVariable Integer id, @RequestBody ServiceDto serviceDto) {
         log.debug("update service by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
+        // check id is null
+        if (serviceDto.getId() == null) {
+            serviceDto.setId(id);
+        }
         return this.serviceService.updateById(id, serviceDto);
     }
 

@@ -4,6 +4,7 @@ import hk.org.ha.kcc.its.dto.BedCleansingDashBoardDto;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
 import hk.org.ha.kcc.its.model.Eform;
 import hk.org.ha.kcc.its.repository.EformRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import hk.org.ha.kcc.its.dto.BedCleansingRequestDto;
@@ -14,8 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 @Service
 @Transactional
@@ -56,7 +58,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     public List<BedCleansingRequestDto> getAllDto(String ward, String cubicle, String bed, Integer period, Boolean completedStatus) {
         // use findAll() to get all the records from the table
         // and filter ward, cubicle, bed if they are not null, and request.ward, cubicle, bed !=null
-        // and activeflag is true
         // and if period is not null, get the list of BedCleansingRequest in recent period hours  ,check by request.getCreatedDate()
         List<BedCleansingRequest> bedCleansingRequestList = bedCleansingServiceRepository.findAll().stream()
                 .filter(request -> ward == null || (request.getWard() != null && request.getWard().equals(ward)))
@@ -87,7 +88,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         BedCleansingRequest bedCleansingRequest = this.bedCleansingServiceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
 
         // update by dto
-        bedCleansingRequest.setHospitalCode(Optional.ofNullable(bedCleansingRequestDto.getHospitalCode()).orElse(bedCleansingRequest.getHospitalCode()));
+/*        bedCleansingRequest.setHospitalCode(Optional.ofNullable(bedCleansingRequestDto.getHospitalCode()).orElse(bedCleansingRequest.getHospitalCode()));
         bedCleansingRequest.setDept(Optional.ofNullable(bedCleansingRequestDto.getDept()).orElse(bedCleansingRequest.getDept()));
         bedCleansingRequest.setWard(Optional.ofNullable(bedCleansingRequestDto.getWard()).orElse(bedCleansingRequest.getWard()));
         bedCleansingRequest.setCubicle(Optional.ofNullable(bedCleansingRequestDto.getCubicle()).orElse(bedCleansingRequest.getCubicle()));
@@ -97,7 +98,8 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         bedCleansingRequest.setRemarks(Optional.ofNullable(bedCleansingRequestDto.getRemarks()).orElse(bedCleansingRequest.getRemarks()));
         bedCleansingRequest.setStatus(Optional.ofNullable(bedCleansingRequestDto.getStatus()).orElse(bedCleansingRequest.getStatus()));
         bedCleansingRequest.setRequestorContactNo(Optional.ofNullable(bedCleansingRequestDto.getRequestorContactNo()).orElse(bedCleansingRequest.getRequestorContactNo()));
-        bedCleansingRequest.setCleaner(Optional.ofNullable(bedCleansingRequestDto.getCleaner()).orElse(bedCleansingRequest.getCleaner()));
+        bedCleansingRequest.setCleaner(Optional.ofNullable(bedCleansingRequestDto.getCleaner()).orElse(bedCleansingRequest.getCleaner()));*/
+        BeanUtils.copyProperties(bedCleansingRequestDto, bedCleansingRequest, getNullPropertyNames(bedCleansingRequestDto));
         return this.bedCleansingRequestMapper.BedCleansingRequestToBedCleansingRequestDto(bedCleansingServiceRepository.save(bedCleansingRequest));
     }
 
@@ -114,7 +116,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     public List<BedCleansingRequestAuditDto> getDtlByBCId(String Id) {
         List<Object[]> objectList = this.bedCleansingServiceRepository.getAllByBCId(Id);
         // map the objectList to BedCleansingRequestAuditDto
-        List<BedCleansingRequestAuditDto> bedCleansingRequestAuditDtoList = objectList.stream()
+        return objectList.stream()
                 .filter(Objects::nonNull)
                 .map(objects -> {
                     BedCleansingRequestAuditDto dto = new BedCleansingRequestAuditDto();
@@ -147,7 +149,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
                     return dto;
                 })
                 .collect(Collectors.toList());
-        return bedCleansingRequestAuditDtoList;
     }
 
     @Override

@@ -4,6 +4,7 @@ import hk.org.ha.kcc.its.dto.ServiceDto;
 import hk.org.ha.kcc.its.mapper.ServiceMapper;
 import hk.org.ha.kcc.its.repository.ServiceRepository;
 import hk.org.ha.kcc.its.model.Services;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
 
 @Service
@@ -51,6 +54,7 @@ public class ServiceServiceImpl implements ServiceService {
         // update the dto if not null
         services.setServiceCode(Optional.ofNullable(serviceDto.getServiceCode()).orElse(services.getServiceCode()));
         services.setServiceName(Optional.ofNullable(serviceDto.getServiceName()).orElse(services.getServiceName()));
+        BeanUtils.copyProperties(serviceDto, services, getNullPropertyNames(serviceDto));
         //save and return
         return serviceMapper.ServiceToServiceDto(serviceRepository.save(services));
     }

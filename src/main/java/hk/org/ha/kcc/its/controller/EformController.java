@@ -39,7 +39,7 @@ public class EformController {
             @RequestParam(required = false) String qrcode) throws IOException {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         //log.debug("getEformList qrcode: " + qrcode + " user " + currentAuditor);
-        return eformService.getEformList(qrcode,currentAuditor);
+        return eformService.getEformList(qrcode, currentAuditor);
     }
 
     /*
@@ -63,6 +63,10 @@ public class EformController {
     public EformDto updateEform(@PathVariable Integer id, @RequestBody EformDto eformDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update Eform id: " + id + " by : " + currentAuditor);
+        // check id is null, set
+        if (eformDto.getId() == null) {
+            eformDto.setId(id);
+        }
         return this.eformService.updateById(id, eformDto);
     }
 

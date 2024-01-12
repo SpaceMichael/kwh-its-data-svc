@@ -90,6 +90,10 @@ public class EquipUsageRequestController {
         log.debug("update equip usage request by: " + currentAuditor);
         equipUsageRequestDto.setModifiedBy(currentAuditor);
         equipUsageRequestDto.setModifiedDate(LocalDateTime.now());
+        // check id is null
+        if (equipUsageRequestDto.getId() == null) {
+            equipUsageRequestDto.setId(id);
+        }
         return this.equipUsageRequestService.updateById(id, equipUsageRequestDto);
     }
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
 
@@ -26,7 +25,7 @@ public class EamServiceImpl implements EamService {
 
     @Override
     public List<EamDto> getAllDto() {
-        List<Eam> eamList = eamRepository.findAll().stream().collect(java.util.stream.Collectors.toList());
+        List<Eam> eamList = eamRepository.findAll();
         return eamList.stream().map(eamMapper::EamToEamDto).collect(java.util.stream.Collectors.toList());
     }
 
@@ -39,8 +38,6 @@ public class EamServiceImpl implements EamService {
     @Override
     public EamDto create(EamDto eamDto) {
         Eam eam = eamMapper.EamDtoToEam(eamDto);
-        // check activeFlag
-        //eam.setActiveFlag((Optional.ofNullable(eam.getActiveFlag()).orElse(true)));
         return eamMapper.EamToEamDto(eamRepository.save(eam));
     }
 

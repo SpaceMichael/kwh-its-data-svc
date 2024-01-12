@@ -45,7 +45,6 @@ public class UserAccessController {
     public UserAccessDto createUserAccess(@RequestBody UserAccessDto userAccessDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("create user access by: " + currentAuditor);
-        // userAccessDto.(currentAuditor);
         return this.userAccessService.create(userAccessDto);
     }
 
@@ -53,10 +52,13 @@ public class UserAccessController {
     @Operation(summary = "Update UserAccess by id")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserAccessDto updateUserAccess(@PathVariable String id,
-            @RequestBody UserAccessDto userAccessDto) {
+    public UserAccessDto updateUserAccess(@PathVariable String id, @RequestBody UserAccessDto userAccessDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update user access by: " + currentAuditor);
+        // check corpdId is null
+        if (userAccessDto.getCorpId() != null) {
+            userAccessDto.setCorpId(id);
+        }
         return this.userAccessService.updateById(id, userAccessDto);
     }
 

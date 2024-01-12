@@ -71,6 +71,10 @@ public class ServiceRequestController {
             @RequestBody ServiceRequestDto serviceRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("update service request: " + serviceRequestDto + " by: " + currentAuditor);
+        // check id is null
+        if (serviceRequestDto.getId() == null) {
+            serviceRequestDto.setId(id);
+        }
         return this.serviceRequestService.updateById(id, serviceRequestDto);
     }
 

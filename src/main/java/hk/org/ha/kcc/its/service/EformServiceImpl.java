@@ -153,9 +153,7 @@ public class EformServiceImpl implements EformService {
 
     @Override
     public void deleteById(Integer id) {
-        if (!this.eformRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Eform not found");
-        }
+        this.eformRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eform not found"));
         this.eformRepository.deleteById(id);
     }
 

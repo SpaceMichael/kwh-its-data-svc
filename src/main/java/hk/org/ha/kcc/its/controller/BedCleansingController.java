@@ -116,6 +116,10 @@ public class BedCleansingController {
         if (bedCleansingRequestDto.getStatus() != null) {
             bedCleansingRequestDto.setStatus(bedCleansingRequestDto.getStatus().toUpperCase());
         }
+        // check id
+        if (bedCleansingRequestDto.getId() != null) {
+            bedCleansingRequestDto.setId(id);
+        }
         return this.bedCleansingRequestService.updateById(id, bedCleansingRequestDto);
     }
 

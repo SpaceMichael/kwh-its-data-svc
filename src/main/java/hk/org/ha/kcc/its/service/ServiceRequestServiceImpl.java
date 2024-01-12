@@ -82,14 +82,12 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get service code by service id
         Services services = serviceRepository.findById(serviceRequest1.getServiceId()).orElseThrow(() -> new ResourceNotFoundException("Service not found"));
         String serviceCode = services.getServiceCode();
-        // LocalDateTime creatTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 0, 0)); //  test 02:00:00 test 10:00 test 20:00:00
         // localDateTime is now
         LocalDateTime creatTime = LocalDateTime.now();
         // get serviceAckReceiver by services.service_code and location
         List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
         // CHECK NULL
         if (serviceAckReceiverList.isEmpty()) {
-            //System.out.println("serviceAckReceiverList is empty");
             log.debug("serviceAckReceiverList is empty");
             throw new ResourceNotFoundException("ServiceAckReceiver not found");
         }
@@ -115,8 +113,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         }
 
         // set alarmDto
-   /*     String testStr = services.getAlarmType();
-        log.debug("testStr: " + testStr);*/
         alarmDto.setAlarmType(services.getAlarmType());
         alarmDto.setEscalationId(serviceAlarmReceiverlist.stream().findFirst().get().getEscalationId());
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle().isEmpty()) {
@@ -149,11 +145,8 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     @Override
     public ServiceRequestDto updateById(String id, ServiceRequestDto serviceRequestDto) {
-        ServiceRequest serviceRequest = serviceRequestRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
-
+        ServiceRequest serviceRequest = serviceRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ServiceRequest not found"));
         BeanUtils.copyProperties(serviceRequestDto, serviceRequest, getNullPropertyNames(serviceRequestDto));
-
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequestRepository.save(serviceRequest));
     }
 

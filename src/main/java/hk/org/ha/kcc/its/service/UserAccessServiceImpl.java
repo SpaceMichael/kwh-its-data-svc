@@ -45,9 +45,8 @@ public class UserAccessServiceImpl implements UserAccessService {
     public UserAccessDto updateById(String id, UserAccessDto userAccessDto) {
         // get by id , if is not exist, throw ResourceNotFoundException
         UserAccess userAccess = userAcessRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found"));
-        // update by dto
         BeanUtils.copyProperties(userAccessDto, userAccess, getNullPropertyNames(userAccessDto));
-        // save
+        // save and return
         return userAccessMapper.UserAccessToUserAccessDto(userAcessRespository.save(userAccess));
     }
 
