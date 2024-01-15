@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
     @Bean
     public WebClient kwhItsWebClient(@Value("${kwh.its.url}") String url,
-                                     @Value("${kwh.its.key}") String key,
+                                     @Value("${api.key}") String key,
                                      WebClient.Builder webClientBuilder
     ) {
         return webClientBuilder
