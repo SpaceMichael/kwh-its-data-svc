@@ -86,10 +86,10 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         LocalDateTime creatTime = LocalDateTime.now();
         // get serviceAckReceiver by services.service_code and location
         List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
-        // CHECK NULL
+        // CHECK null
         if (serviceAckReceiverList.isEmpty()) {
-            log.debug("serviceAckReceiverList is empty");
-            throw new ResourceNotFoundException("ServiceAckReceiver not found");
+            log.debug("serviceAckReceiverList is empty: " + serviceCode + " and  " + serviceRequest1.getLocation());
+            throw new ResourceNotFoundException("please check serviceCode and location not found: " + serviceCode + " and  " + serviceRequest1.getLocation());
         }
         // find serviceAlarmReceiver
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
@@ -105,11 +105,9 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                 .collect(Collectors.toList());
 
         // check null
-        if (serviceAckReceiverList.isEmpty()) {
-            throw new ResourceNotFoundException("ServiceAckReceiver not found.");
-        }
         if (serviceAlarmReceiverlist.isEmpty()) {
-            throw new ResourceNotFoundException("ServiceAlarmReceiver not found.");
+            log.debug("serviceAlarmReceiverlist. please check serviceCode, and start and end time" + serviceCode);
+            throw new ResourceNotFoundException("please check serviceCode, and start and end time." + serviceCode);
         }
 
         // set alarmDto
