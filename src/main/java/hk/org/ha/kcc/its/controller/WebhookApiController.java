@@ -32,6 +32,6 @@ public class WebhookApiController {
     @ResponseStatus(HttpStatus.OK)
     public void webhookAlarm(@RequestBody AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
         log.debug("webhookAlarm in controller atWorkAlarmResponseDto:" + atWorkAlarmResponseDto);
-        alarmService.webhookAlarm(atWorkAlarmResponseDto);
+        //alarmService.webhookAlarm(atWorkAlarmResponseDto);
     }
 }
