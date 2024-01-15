@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApiKeyUtil {
-    @Value("${kwh.its.key}")
+    @Value("${api.key}")
     private String apiKey;
 
     public boolean validateApiKey(String authApiKey) {

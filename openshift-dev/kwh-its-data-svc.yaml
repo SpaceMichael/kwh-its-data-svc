@@ -70,12 +70,12 @@ spec:
                 secretKeyRef:
                   name: mysql-db-secret
                   key: mysql.db.password
-            - name: API_KEY
+            - name: KWH_ITS_KEY
               valueFrom:
                 secretKeyRef:
                   name: kwh-its-secret
                   key: kwh.its.key
-            - name: KWH_ITS_KEY
+            - name: API_KEY
               valueFrom:
                 secretKeyRef:
                   name: kwh-its-data-secret
