@@ -73,8 +73,8 @@ spec:
             - name: KWH_ITS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: kwh-its-data-secret
-                  key: kwh.its.data.key
+                  name: kwh-its-secret
+                  key: kwh.its.key
             - name: API_KEY
               valueFrom:
                 secretKeyRef:
