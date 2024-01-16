@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApiKeyUtil {
-    @Value("5f2f3d82-94cc-4a0a-b731-b61d8a2631d2")
+    @Value("${api.key}")
     private String apiKey;
 
     public boolean validateApiKey(String authApiKey) {
