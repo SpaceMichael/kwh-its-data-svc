@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,11 +24,12 @@ public class ServiceRequestDto {
     private Boolean success;
     private Integer escalationId;
     private String errorMessage;
+    private String ack_by;
+    private LocalDateTime ack_date;
 
     /*
-    private Boolean success;
-    private Integer escalationId;
-    private String errorMessage;
+    private String ack_by;
+    private LocalDateTime ack_date;
      */
 }
 

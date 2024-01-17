@@ -4,9 +4,10 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator;
-import org.hibernate.envers.NotAudited;
+
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @ToString(callSuper = true)
@@ -47,8 +48,13 @@ public class ServiceRequest extends Auditable {
     @Lob
     @Column(name = "error_message")
     private String errorMessage;
+    @Column(name = "ack_by")
+    private String ack_by;
+    @Column(name = "ack_date")
+    private LocalDateTime ack_date;
     /*
-    success
+    private String ackBy;
+    private LocalDateTime ackDate;
      */
 
 }

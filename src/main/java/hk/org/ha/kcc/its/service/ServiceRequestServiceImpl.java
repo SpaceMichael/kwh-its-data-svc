@@ -25,6 +25,7 @@ import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +93,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
             throw new ResourceNotFoundException("please check serviceCode and location not found: " + serviceCode + " and  " + serviceRequest1.getLocation());
         }
         // find serviceAlarmReceiver
-        List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
+/*        List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))
                 .filter(serviceAlarmReceiver -> {
                     LocalDateTime startTime = serviceAlarmReceiver.getStartTime().atDate(LocalDate.now());
@@ -102,8 +103,29 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                     }
                     return (creatTime.isAfter(startTime) && creatTime.isBefore(endTime));
                 })
+                .collect(Collectors.toList());*/
+        // find serviceAlarmReceiver
+        List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
+                .filter(s -> s.getServiceCode().equals(serviceCode))
+                .filter(serviceAlarmReceiver -> {
+                    LocalDateTime endTime = serviceAlarmReceiver.getEndTime().atDate(LocalDate.now());
+                    LocalDateTime endTime2 = null;
+                    LocalDateTime startTime = serviceAlarmReceiver.getStartTime().atDate(LocalDate.now());
+                    LocalDateTime startTime2 = null;
+                    if (startTime.isAfter(endTime)) {
+                        startTime2 = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+                        endTime2 = endTime;
+                        //startTime = startTime;
+                        endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+                    }
+                    // add if startTime2 and endTime2 is not null
+                    if (startTime2 != null) {
+                        return creatTime.isAfter(startTime) && creatTime.isBefore(endTime) || creatTime.isAfter(startTime2) && creatTime.isBefore(endTime2);
+                    } else {
+                        return creatTime.isAfter(startTime) && creatTime.isBefore(endTime);
+                    }
+                })
                 .collect(Collectors.toList());
-
         // check null
         if (serviceAlarmReceiverlist.isEmpty()) {
             log.debug("serviceAlarmReceiverlist. please check serviceCode, and start and end time" + serviceCode);

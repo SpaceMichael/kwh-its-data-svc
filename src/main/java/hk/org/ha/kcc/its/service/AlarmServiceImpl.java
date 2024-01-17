@@ -6,7 +6,8 @@ import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
-import org.springframework.beans.factory.annotation.Value;
+import hk.org.ha.kcc.its.model.ServiceRequest;
+import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -20,24 +21,21 @@ import java.lang.invoke.MethodHandles;
 @Transactional
 public class AlarmServiceImpl implements AlarmService {
 
-    @Value("${app.its.alarm.path}")
-    private String alarmPath;
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
     private final WebClient kwhItsWebClient;
 
-    public AlarmServiceImpl(WebClient kwhItsWebClient) {
+    private final ServiceRequestRepository serviceRequestRepository;
+
+    public AlarmServiceImpl(WebClient kwhItsWebClient, ServiceRequestRepository serviceRequestRepository) {
         this.kwhItsWebClient = kwhItsWebClient;
+        this.serviceRequestRepository = serviceRequestRepository;
     }
 
 
     @Override
     public AtWorkAlarmResponseDto create(AlarmDto alarmDto) {
 
-        /*String path = alarmPath + "api/v1/alarms";
-        WebClient webClient = WebClient.create(alarmPath + "api/v1/alarms");
-        // get the current user token
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();*/
         // add payload from alarmDto
         String payload = "{\n" +
                 "\"message\": \"" + alarmDto.getMessage() + "\",\n" +
@@ -82,7 +80,23 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void webhookAlarm(AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
-        // log the response
-        log.debug("webhookAlarm in service atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
+        /*String id = String.valueOf(atWorkAlarmResponseDto.getData().getId());
+        log.debug("acknowledge alarm id : {}", id);
+        log.debug("acknowledge by: " + atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getCorpId());
+        log.debug("acknowledge DateTime : " + atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getTime());*/
+
+        if (atWorkAlarmResponseDto.getData().getId() != null) {
+            //get the server request
+            ServiceRequest serviceRequest = serviceRequestRepository.findAll().stream().filter(sr -> sr.getAlarmId().equals(atWorkAlarmResponseDto.getData().getId())).findFirst().orElse(null);
+            // if the service request is not null, update the service request
+            if (serviceRequest != null) {
+                serviceRequest.setAck_by(atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getCorpId());
+                serviceRequest.setAck_date(atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getTime());
+                serviceRequestRepository.save(serviceRequest);
+            } else {
+                log.debug("service request record is null, please check " + atWorkAlarmResponseDto.getData().getId());
+                throw new ResourceNotFoundException("service request record is null, please check " + atWorkAlarmResponseDto.getData().getId());
+            }
+        }
     }
 }
