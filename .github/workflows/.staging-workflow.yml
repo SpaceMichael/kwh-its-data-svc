@@ -13,7 +13,7 @@ env:
 jobs:
   build-artifact:
     name: Build artifact
-    runs-on: [michael]
+    runs-on: [self-hosted]
     env:
       MAVEN_CONFIG: ${{ secrets.MAVEN_CONFIG }}
     steps:
@@ -30,7 +30,7 @@ jobs:
   build-container:
     name: Build container
     needs: build-artifact
-    runs-on: [michael]
+    runs-on: [self-hosted]
     steps:
       - name: Generate image tag
         run: echo "IMAGE_TAG=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_ENV
