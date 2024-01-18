@@ -11,14 +11,14 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Override
-    /*public Optional<String> getCurrentAuditor() {
+    public Optional<String> getCurrentAuditor() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(context -> (JwtAuthenticationToken) context.getAuthentication())
                 .filter(Authentication::isAuthenticated)
                 .map(authentication -> authentication.getTokenAttributes().get("preferred_username").toString());
 
-    }*/
-    public Optional<String> getCurrentAuditor() {
+    }
+    /*public Optional<String> getCurrentAuditor() {
         return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(authentication -> {
                     if (authentication instanceof JwtAuthenticationToken) {
@@ -34,7 +34,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
                         throw new IllegalArgumentException("Unsupported authentication token type: " + authentication.getClass().getName());
                     }
                 });
-    }
+    }*/
 
 
 }
