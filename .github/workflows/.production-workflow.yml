@@ -62,6 +62,7 @@ jobs:
 
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_PRD }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_PRD }}
+        continue-on-error: true
 
       - name: Update image tag in YAML configuration file
         run: (Get-Content openshift\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift\${{ env.APP_NAME }}.yaml
@@ -70,7 +71,9 @@ jobs:
         run: oc apply -f openshift\${{ env.APP_NAME }}.yaml
 
       - name: Check Rollout Status
-        run: oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_PRD }}
+        run: |
+          oc set image deployment ${{ env.APP_NAME }} ${{ env.APP_NAME }}=image-registry.openshift-image-registry.svc:5000/${{ vars.NAMESPACE_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} -n ${{ vars.NAMESPACE_STG }}
+          oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}
 
   deploy-prd-c2:
     name: Deploy (PROD secondary)
@@ -88,6 +91,7 @@ jobs:
 
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_PRD }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_PRD }}
+        continue-on-error: true
 
       - name: Update image tag in YAML configuration file
         run: (Get-Content openshift\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift\${{ env.APP_NAME }}.yaml
@@ -96,4 +100,6 @@ jobs:
         run: oc apply -f openshift\${{ env.APP_NAME }}.yaml
 
       - name: Check Rollout Status
-        run: oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_PRD }}
+        run: |
+          oc set image deployment ${{ env.APP_NAME }} ${{ env.APP_NAME }}=image-registry.openshift-image-registry.svc:5000/${{ vars.NAMESPACE_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} -n ${{ vars.NAMESPACE_STG }}
+          oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}

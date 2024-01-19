@@ -7,6 +7,8 @@ import hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator;
 
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -16,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-// @Audited
+@Audited
 @Table(name = "service_request")
 public class ServiceRequest extends Auditable {
 /*    @Id
@@ -31,9 +33,9 @@ public class ServiceRequest extends Auditable {
     private String id;*/
     @Id
     @Column(length = 12)
-    @GeneratedValue(generator = "equip_usage_request_generator")
-    @GenericGenerator(name = "equip_usage_request_generator", strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
-            parameters = {@Parameter(name = PrefixedSequenceIdGenerator.SEQUENCE_PARAM, value = "equip_usage_request_seq"), @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "SR-")})
+    @GeneratedValue(generator = "service_request_generator")
+    @GenericGenerator(name = "service_request_generator", strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
+            parameters = {@Parameter(name = PrefixedSequenceIdGenerator.SEQUENCE_PARAM, value = "service_request_seq"), @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "SR-")})
     private String id;
     @Column(name = "case_no", length = 12)
     private String caseNo; // e.g. HN123454677 patient strap
