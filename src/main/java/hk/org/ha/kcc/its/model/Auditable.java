@@ -36,7 +36,7 @@ public abstract class Auditable {
 
     @NotNull
     @LastModifiedBy
-    @Column(name = "modified_by", length = 20,updatable = false)
+    @Column(name = "modified_by", length = 20)
     private String modifiedBy;
 
     @NotNull

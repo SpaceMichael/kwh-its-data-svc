@@ -24,11 +24,12 @@ public class AuditorAwareImpl implements AuditorAware<String> {
                     if (authentication instanceof JwtAuthenticationToken) {
                         JwtAuthenticationToken jwtAuthentication = (JwtAuthenticationToken) authentication;
                         // Extract the information from the JwtAuthenticationToken
-                        return jwtAuthentication.getName();
+                        return jwtAuthentication.getTokenAttributes().get("preferred_username").toString();
                     } else if (authentication instanceof ApiKeyAuthToken) {
                         ApiKeyAuthToken apiKeyAuth = (ApiKeyAuthToken) authentication;
                         // Extract the information from the ApiKeyAuthToken
-                        return apiKeyAuth.getName();
+                        //return apiKeyAuth.getName();
+                        return "system";
                     } else {
                         // Handle other types of authentication tokens or throw an exception
                         throw new IllegalArgumentException("Unsupported authentication token type: " + authentication.getClass().getName());
