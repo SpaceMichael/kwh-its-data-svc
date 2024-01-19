@@ -13,7 +13,7 @@
         </named-native-query>-->
 
     <!--use name native query to get all nurse clinics-->
-        <named-native-query name="BedCleansingRequest.getAllByBCId" >
+        <!--<named-native-query name="BedCleansingRequest.getAllByBCId" >
             <query>
                 <![CDATA[select bed_cleansing_request_audit_log.id as bc_id,
                                 bed_cleansing_request_audit_log.rev_id,
@@ -44,5 +44,5 @@
                          where bed_cleansing_request_audit_log.id=:Id order by rev_detail_id
                 ]]>
             </query>
-        </named-native-query>
+        </named-native-query>-->
 </entity-mappings>

@@ -8,18 +8,17 @@ import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
 import hk.org.ha.kcc.its.model.ServiceRequest;
 import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.lang.invoke.MethodHandles;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+
+
 
 
 @Service
@@ -28,14 +27,15 @@ public class AlarmServiceImpl implements AlarmService {
 
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
+
     private EntityManager entityManager;
 
     private final WebClient kwhItsWebClient;
 
     private final ServiceRequestRepository serviceRequestRepository;
 
-    public AlarmServiceImpl(WebClient kwhItsWebClient, ServiceRequestRepository serviceRequestRepository) {
+    public AlarmServiceImpl(EntityManager entityManager, WebClient kwhItsWebClient, ServiceRequestRepository serviceRequestRepository) {
+        this.entityManager = entityManager;
         this.kwhItsWebClient = kwhItsWebClient;
         this.serviceRequestRepository = serviceRequestRepository;
     }
@@ -88,21 +88,22 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void webhookAlarm(AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
-        String alramId = atWorkAlarmResponseDto.getData().getId();
-        log.debug("alramId: " + alramId);
-        if (alramId != null) {
+        String alarmId = atWorkAlarmResponseDto.getData().getId();
+        log.debug("alarmId: " + alarmId);
+        if (alarmId != null) {
             //get the server request
             List<ServiceRequest> serviceRequestList = serviceRequestRepository.findAll().stream()
-                    .filter(serviceRequest -> serviceRequest.getAlarmId() != null && serviceRequest.getAlarmId().equals(alramId)).collect(Collectors.toList());
+                    .filter(serviceRequest -> serviceRequest.getAlarmId() != null && serviceRequest.getAlarmId().equals(alarmId)).toList();
 
             ServiceRequest serviceRequest = serviceRequestList.stream().findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("service request record is null, please check " + alramId));
+                    .orElseThrow(() -> new ResourceNotFoundException("service request record is null, please check " + alarmId));
             // if the service request is not null, update the service request
             if (serviceRequest != null) {
                 serviceRequest.setAck_by(atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getCorpId());
                 serviceRequest.setAck_date(atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getTime());
-                entityManager.merge(serviceRequest);
-                //serviceRequestRepository.save(serviceRequest);
+                serviceRequest.setModifiedBy("system");
+                //entityManager.merge(serviceRequest);
+                serviceRequestRepository.save(serviceRequest);
             } else {
                 log.debug("service request record is null, please check " + atWorkAlarmResponseDto.getData().getId());
                 throw new ResourceNotFoundException("service request record is null, please check " + atWorkAlarmResponseDto.getData().getId());

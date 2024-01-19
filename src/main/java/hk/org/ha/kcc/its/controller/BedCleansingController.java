@@ -1,11 +1,9 @@
 package hk.org.ha.kcc.its.controller;
 
 import java.lang.invoke.MethodHandles;
-import java.util.List;
 
 
 import hk.org.ha.kcc.its.dto.BedCleansingDashBoardDto;
-import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -132,14 +130,5 @@ public class BedCleansingController {
         this.bedCleansingRequestService.deleteById(id);
     }
 
-    // get detail by id
-    @Operation(summary = "Get the BedCleansingRequest detail by id")
-    @GetMapping(value = "/dtl/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BedCleansingRequestAuditDto> getBCRDtlById(@PathVariable String id) {
-        log.debug(
-                "get detail by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
-        return this.bedCleansingRequestService.getDtlByBCId(id);
-    }
 
 }

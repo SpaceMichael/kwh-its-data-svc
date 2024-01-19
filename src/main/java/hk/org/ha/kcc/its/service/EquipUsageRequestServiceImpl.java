@@ -86,7 +86,7 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
                 .filter(equipUsageRequest -> dateEnd == null || equipUsageRequest.getUserDateTime().isBefore(localDateTimeEnd))
                 .filter(equipUsageRequest -> year == null || Integer.parseInt(year) == equipUsageRequest.getUserDateTime().getYear())
                 .filter(equipUsageRequest -> month == null || Integer.parseInt(month) == equipUsageRequest.getUserDateTime().getMonthValue())
-                .collect(Collectors.toList());
+                .toList();
 
         // use Map and Collectors.groupingBy to get total number of records by eamNo
         Map<Integer, Long> eamNoCountMap = equipUsageRequestDtoList.stream()

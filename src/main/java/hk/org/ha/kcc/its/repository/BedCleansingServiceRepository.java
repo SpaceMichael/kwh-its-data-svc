@@ -40,5 +40,4 @@ public interface BedCleansingServiceRepository extends JpaRepository<BedCleansin
             "        where bed_cleansing_request_audit_log.id=?1 order by rev_detail_id", nativeQuery = true)
     List<Object[]> getAllDtoByBCId(String Id);*/
 
-    List<Object[]> getAllByBCId(String Id);
 }

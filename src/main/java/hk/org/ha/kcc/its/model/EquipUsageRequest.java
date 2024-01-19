@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Data
 @ToString(callSuper = true)
@@ -27,6 +27,16 @@ public class EquipUsageRequest extends Auditable {
               value = "equip_usage_request_seq"),
           @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "EU-")})
   private String id;
+/*@Id
+@Column(length = 12)
+@GeneratedValue(generator = "equip_usage_request_generator")
+@GenericGenerator(name = "equip_usage_request_generator",
+        parameters = {
+                @Parameter(name = "sequence_name", value = "equip_usage_request_seq"),
+                @Parameter(name = "prefix", value = "EU-"),
+                @Parameter(name = "strategy", value = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator")
+        })
+private String id;*/
   @Column(name = "eam_no")
   private Integer eamNo; // 1824496
   @Column(name = "ser_no", length = 50)

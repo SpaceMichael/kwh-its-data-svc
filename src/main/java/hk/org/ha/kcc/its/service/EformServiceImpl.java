@@ -110,7 +110,7 @@ public class EformServiceImpl implements EformService {
 
             List<EformDto> eformDtoList =
                     this.getAllDto().stream().filter(eformDto -> formIdList.contains((eformDto.getId())))
-                            .collect(java.util.stream.Collectors.toList());
+                            .toList();
             for (EformDto eformDto : eformDtoList) {
                 forms.add(FormDto.builder().title(eformDto.getTitle())
                         .description(eformDto.getDescription()).url(serverFrontEndAddress + eformDto.getUrl())

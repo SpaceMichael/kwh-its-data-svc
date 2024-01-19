@@ -13,7 +13,7 @@ env:
 jobs:
   build-artifact:
     name: Build artifact
-    runs-on: [michael]
+    runs-on: [self-hosted]
     env:
       MAVEN_CONFIG: ${{ secrets.MAVEN_CONFIG }}
     steps:
@@ -30,7 +30,7 @@ jobs:
   build-container:
     name: Build container
     needs: build-artifact
-    runs-on: [michael]
+    runs-on: [self-hosted]
     steps:
       - name: Generate image tag
         run: echo "IMAGE_TAG=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_ENV
@@ -62,6 +62,7 @@ jobs:
 
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
+        continue-on-error: true
 
       - name: Update image tag in YAML configuration file
         run: (Get-Content openshift-stg\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift-stg\${{ env.APP_NAME }}.yaml
@@ -70,7 +71,9 @@ jobs:
         run: oc apply -f openshift-stg\${{ env.APP_NAME }}.yaml
 
       - name: Check Rollout Status
-        run: oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}
+        run: |
+          oc set image deployment ${{ env.APP_NAME }} ${{ env.APP_NAME }}=image-registry.openshift-image-registry.svc:5000/${{ vars.NAMESPACE_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} -n ${{ vars.NAMESPACE_STG }}
+          oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}
 
   deploy-stg-c2:
     name: Deploy (STG secondary)
@@ -88,6 +91,7 @@ jobs:
 
       - name: Import image from JFrog to OpenShift
         run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_STG }}
+        continue-on-error: true
 
       - name: Update image tag in YAML configuration file
         run: (Get-Content openshift-stg\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift-stg\${{ env.APP_NAME }}.yaml
@@ -96,4 +100,6 @@ jobs:
         run: oc apply -f openshift-stg\${{ env.APP_NAME }}.yaml
 
       - name: Check Rollout Status
-        run: oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}
+        run: |
+          oc set image deployment ${{ env.APP_NAME }} ${{ env.APP_NAME }}=image-registry.openshift-image-registry.svc:5000/${{ vars.NAMESPACE_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} -n ${{ vars.NAMESPACE_STG }}
+          oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}

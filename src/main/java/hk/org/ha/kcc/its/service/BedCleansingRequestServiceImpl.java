@@ -1,8 +1,6 @@
 package hk.org.ha.kcc.its.service;
 
 import hk.org.ha.kcc.its.dto.BedCleansingDashBoardDto;
-import hk.org.ha.kcc.its.dto.BedCleansingRequestAuditDto;
-import hk.org.ha.kcc.its.model.Eform;
 import hk.org.ha.kcc.its.repository.EformRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -14,7 +12,6 @@ import hk.org.ha.kcc.its.repository.BedCleansingServiceRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
@@ -25,27 +22,27 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
 
     private final BedCleansingServiceRepository bedCleansingServiceRepository;
     private final BedCleansingRequestMapper bedCleansingRequestMapper;
-    private final EformRepository eformRepository;
+
 
 
     public BedCleansingRequestServiceImpl(BedCleansingServiceRepository bedCleansingServiceRepository
             , BedCleansingRequestMapper bedCleansingRequestMapper
-            , EformRepository eformRepository
+
     ) {
         this.bedCleansingServiceRepository = bedCleansingServiceRepository;
         this.bedCleansingRequestMapper = bedCleansingRequestMapper;
-        this.eformRepository = eformRepository;
+
     }
 
     @Override
     public BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto) {
         BedCleansingRequest bedCleansingRequest = this.bedCleansingRequestMapper.BedCleansingRequestDtoToBedCleansingRequest(bedCleansingRequestDto);
 
-        if (bedCleansingRequest.getEformId() != null) {
+/*        if (bedCleansingRequest.getEformId() != null) {
             Eform eform = this.eformRepository.findById(bedCleansingRequest.getEformId())
                     .orElseThrow(() -> new ResourceNotFoundException("Id" + bedCleansingRequest.getEformId() + "eform not found"));
             bedCleansingRequest.assignEform(eform);
-        }
+        }*/
         if (bedCleansingRequestDto.getWholeBed() == null) {
             bedCleansingRequest.setWholeBed(false);
         }
@@ -66,7 +63,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
                 // if period is not null, get the list of BedCleansingRequest in recent period hours  ,check by request.getCreatedDate()
                 .filter(request -> period == null || (request.getCreatedDate() != null && request.getCreatedDate().isAfter(java.time.LocalDateTime.now().minusHours(period))))
                 .filter(request -> completedStatus == null || (request.getStatus() != null && completedStatus && request.getStatus().equalsIgnoreCase("COMPLETED")) || (request.getStatus() != null && !completedStatus && !request.getStatus().equalsIgnoreCase("COMPLETED")))
-                .collect(Collectors.toList());
+                .toList();
 
         // use stream and map and filter to get the list of BedCleansingRequestDto
         return bedCleansingRequestList.stream()
@@ -112,44 +109,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
         }
     }
 
-    @Override
-    public List<BedCleansingRequestAuditDto> getDtlByBCId(String Id) {
-        List<Object[]> objectList = this.bedCleansingServiceRepository.getAllByBCId(Id);
-        // map the objectList to BedCleansingRequestAuditDto
-        return objectList.stream()
-                .filter(Objects::nonNull)
-                .map(objects -> {
-                    BedCleansingRequestAuditDto dto = new BedCleansingRequestAuditDto();
-                    dto.setBcId(Objects.toString(objects[0], null));
-                    dto.setRevId(Objects.toString(objects[1], null));
-                    dto.setRevType(Objects.toString(objects[2], null));
-                    dto.setCleaner(Objects.toString(objects[3], null));
-                    dto.setActiveFlag(Boolean.parseBoolean(Objects.toString(objects[4], "false")));
-                    dto.setBedNo(Objects.toString(objects[5], null));
-                    dto.setBedType(Objects.toString(objects[6], null));
-                    dto.setCleaningProcess(Objects.toString(objects[7], null));
-                    dto.setCubicleNo(Objects.toString(objects[8], null));
-                    dto.setDeptCode(Objects.toString(objects[9], null));
-                    dto.setDetergent(Objects.toString(objects[10], null));
-                    dto.setHospitalCode(Objects.toString(objects[11], null));
-                    dto.setEformId(Integer.parseInt(Objects.toString(objects[12], "0")));
-                    dto.setRemarks(Objects.toString(objects[13], null));
-                    dto.setRequestorContactNo(Integer.parseInt(Objects.toString(objects[14], "0")));
-                    dto.setStatus(Objects.toString(objects[15], null));
-                    dto.setWardCode(Objects.toString(objects[16], null));
-                    dto.setWholeBedCleansing(Boolean.parseBoolean(Objects.toString(objects[17], "false")));
-                    dto.setRequestorId(Objects.toString(objects[18], null));
-                    dto.setRevDetailId(Objects.toString(objects[19], null));
-                    dto.setAction(Objects.toString(objects[20], null));
-                    dto.setActionDateTime(Objects.toString(objects[21], null));
-                    dto.setRecordId(Objects.toString(objects[22], null));
-                    dto.setTableName(Objects.toString(objects[23], null));
-                    dto.setUsername(Objects.toString(objects[24], null));
-                    dto.setRevisionId(Objects.toString(objects[25], null));
-                    return dto;
-                })
-                .collect(Collectors.toList());
-    }
 
     @Override
     public BedCleansingDashBoardDto getBedCleansingDashBoardDto(String ward, String cubicle, String bed, Integer period, Boolean completedStatus, Boolean total) {

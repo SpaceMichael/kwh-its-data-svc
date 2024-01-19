@@ -38,7 +38,7 @@ public class EformController {
     public ResponseEntity<EformResponseDto> getEformList(
             @RequestParam(required = false) String qrcode) throws IOException {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        //log.debug("getEformList qrcode: " + qrcode + " user " + currentAuditor);
+        log.debug("getEformList qrcode: " + qrcode + " user " + currentAuditor);
         return eformService.getEformList(qrcode, currentAuditor);
     }
 

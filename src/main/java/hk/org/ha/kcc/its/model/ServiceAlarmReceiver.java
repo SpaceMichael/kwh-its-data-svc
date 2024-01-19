@@ -2,9 +2,7 @@ package hk.org.ha.kcc.its.model;
 
 import lombok.*;
 
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import java.time.LocalTime;
 
 @Data
@@ -30,14 +28,10 @@ public class ServiceAlarmReceiver extends Auditable {
     private Integer ackTimeout; //  1,2,3?
     @Column(name = "escalation_id")
     private Integer escalationId; // from sam3 = to_escalation_id
-    @Column(name = "alarm_title", length = 255)
+    @Column(name = "alarm_title")
     private String alarmTitle;  // HOUSEMAN CALL at Ward {0}
     @Lob
     @Column(name = "alarm_message")
     private String alarmMessage; // Houseman Call at Ward {0}
-/*
-    @Column(name = "title", length = 20)
-    private String title;
-    alarm_message
- */
+
 }

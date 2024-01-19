@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM registry.access.redhat.com/ubi9/openjdk-21-runtime
 ARG JAR_FILE=target/*.jar
 WORKDIR /opt/app
 COPY ${JAR_FILE} /opt/app/kwh-its-data-svc.jar

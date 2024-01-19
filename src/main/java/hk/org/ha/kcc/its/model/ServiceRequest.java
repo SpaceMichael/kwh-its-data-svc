@@ -6,7 +6,7 @@ import org.hibernate.annotations.Parameter;
 import hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,6 +19,16 @@ import java.time.LocalDateTime;
 // @Audited
 @Table(name = "service_request")
 public class ServiceRequest extends Auditable {
+/*    @Id
+    @Column(length = 12)
+    @GeneratedValue(generator = "equip_usage_request_generator")
+    @GenericGenerator(name = "equip_usage_request_generator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "equip_usage_request_seq"),
+                    @Parameter(name = "prefix", value = "SR-"),
+                    @Parameter(name = "strategy", value = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator")
+            })
+    private String id;*/
     @Id
     @Column(length = 12)
     @GeneratedValue(generator = "equip_usage_request_generator")

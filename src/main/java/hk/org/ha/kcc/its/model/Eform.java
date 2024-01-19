@@ -1,6 +1,6 @@
 package hk.org.ha.kcc.its.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -9,10 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.envers.Audited;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Data
 @ToString(callSuper = true)
@@ -21,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Audited
 @Table(name = "eform")
 public class Eform extends Auditable {
 
@@ -49,7 +46,7 @@ public class Eform extends Auditable {
     @Column(name = "qrcode_type", length = 50)
     private String qrcodeType; // e.g BED , SR on the QRcode
 
-    @ToString.Exclude
+    /*@ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
     @JsonIgnore
@@ -64,5 +61,5 @@ public class Eform extends Auditable {
     public void removeBedCleansingRequest(BedCleansingRequest bedCleansingRequest) {
         bedCleansingRequestList.remove(bedCleansingRequest);
         bedCleansingRequest.setEform(null);
-    }
+    }*/
 }

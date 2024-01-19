@@ -2,16 +2,15 @@ package hk.org.ha.kcc.common.web;
 
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import hk.org.ha.kcc.common.logging.AlsXLogger;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @Component
 public class ServiceRequestInterceptor implements HandlerInterceptor {

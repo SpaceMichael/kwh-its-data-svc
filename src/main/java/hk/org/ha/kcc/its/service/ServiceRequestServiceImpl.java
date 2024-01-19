@@ -125,7 +125,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                         return creatTime.isAfter(startTime) && creatTime.isBefore(endTime);
                     }
                 })
-                .collect(Collectors.toList());
+                .toList();
         // check null
         if (serviceAlarmReceiverlist.isEmpty()) {
             log.debug("serviceAlarmReceiverlist. please check serviceCode, and start and end time" + serviceCode);
