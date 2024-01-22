@@ -85,25 +85,16 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         String serviceCode = services.getServiceCode();
         // localDateTime is now
         LocalDateTime creatTime = LocalDateTime.now();
-        // get serviceAckReceiver by services.service_code and location
+        // get ServiceAlarmSender by services.service_code and location
         List<ServiceAlarmSender> serviceAlarmSenderList = serviceAlarmSenderRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
         // CHECK null
         if (serviceAlarmSenderList.isEmpty()) {
             log.debug("serviceAckReceiverList is empty: " + serviceCode + " and  " + serviceRequest1.getLocation());
             throw new ResourceNotFoundException("please check serviceCode and location not found: " + serviceCode + " and  " + serviceRequest1.getLocation());
         }
-        // find serviceAlarmReceiver
-/*        List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
-                .filter(s -> s.getServiceCode().equals(serviceCode))
-                .filter(serviceAlarmReceiver -> {
-                    LocalDateTime startTime = serviceAlarmReceiver.getStartTime().atDate(LocalDate.now());
-                    LocalDateTime endTime = serviceAlarmReceiver.getEndTime().atDate(LocalDate.now());
-                    if (startTime.isAfter(endTime)) {
-                        endTime = endTime.plusDays(1);
-                    }
-                    return (creatTime.isAfter(startTime) && creatTime.isBefore(endTime));
-                })
-                .collect(Collectors.toList());*/
+        // get sender id to override ServiceAlarmSender
+        alarmDto.setSenderGroupIds(serviceAlarmSenderList.stream().findFirst().get().getSenderId().toString());
+        log.debug("sender id: " + alarmDto.getSenderGroupIds());
         // find serviceAlarmReceiver
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))

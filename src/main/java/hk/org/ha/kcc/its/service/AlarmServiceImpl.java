@@ -15,10 +15,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
 
 import jakarta.persistence.EntityManager;
+
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-
-
 
 
 @Service
@@ -51,6 +50,9 @@ public class AlarmServiceImpl implements AlarmService {
                 "\"alarmType\": \"" + alarmDto.getAlarmType() + "\",\n" +
                 "\"severity\":\"null\",\n" +
                 "\"webhook\":\"true\",\n" +
+                "\"senderGroupIds\": [" + alarmDto.getSenderGroupIds() + "],\n" +// add the alarmDto.get
+                "\"notifySenderRst\":\"true\",\n" +
+                "\"notifySenderNoResp\":\"true\",\n" +
                 "\"title\": \"" + alarmDto.getTitle() + "\"\n" +
                 "}";
         /* ok sample
