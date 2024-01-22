@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceAckReceiverDto {
+public class ServiceAlarmSenderDto {
     private Integer id; // e.g 1
     private String serviceCode; // Houseman  = service name ?
     private String locationCode; //  e.g 3A
-    private Integer escalationId; // from sam3 =>ack_escalation_id
+    private Integer senderId; // override the sender group if
 
 }

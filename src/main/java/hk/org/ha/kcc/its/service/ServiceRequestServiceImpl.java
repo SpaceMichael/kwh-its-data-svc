@@ -8,11 +8,11 @@ import hk.org.ha.kcc.its.dto.ServiceRequestDto;
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
 import hk.org.ha.kcc.its.mapper.ServiceRequestMapper;
-import hk.org.ha.kcc.its.model.ServiceAckReceiver;
+import hk.org.ha.kcc.its.model.ServiceAlarmSender;
 import hk.org.ha.kcc.its.model.ServiceAlarmReceiver;
 import hk.org.ha.kcc.its.model.ServiceRequest;
 import hk.org.ha.kcc.its.model.Services;
-import hk.org.ha.kcc.its.repository.ServiceAckReceiverRepository;
+import hk.org.ha.kcc.its.repository.ServiceAlarmSenderRepository;
 import hk.org.ha.kcc.its.repository.ServiceAlarmReceiverRepository;
 import hk.org.ha.kcc.its.repository.ServiceRepository;
 import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
@@ -40,7 +40,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     private final ServiceRequestRepository serviceRequestRepository;
 
-    private final ServiceAckReceiverRepository serviceAckReceiverRepository;
+    private final ServiceAlarmSenderRepository serviceAlarmSenderRepository;
 
     private final ServiceAlarmReceiverRepository sServiceAlarmReceiverRepository;
 
@@ -50,9 +50,9 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     private final AlarmService alarmService;
 
-    public ServiceRequestServiceImpl(ServiceRequestRepository serviceRequestRepository, ServiceAckReceiverRepository serviceAckReceiverRepository, ServiceAlarmReceiverRepository sServiceAlarmReceiverRepository, ServiceRequestMapper serviceRequestMapper, ServiceRepository serviceRepository, AlarmService alarmService) {
+    public ServiceRequestServiceImpl(ServiceRequestRepository serviceRequestRepository, ServiceAlarmSenderRepository serviceAlarmSenderRepository, ServiceAlarmReceiverRepository sServiceAlarmReceiverRepository, ServiceRequestMapper serviceRequestMapper, ServiceRepository serviceRepository, AlarmService alarmService) {
         this.serviceRequestRepository = serviceRequestRepository;
-        this.serviceAckReceiverRepository = serviceAckReceiverRepository;
+        this.serviceAlarmSenderRepository = serviceAlarmSenderRepository;
         this.sServiceAlarmReceiverRepository = sServiceAlarmReceiverRepository;
         this.serviceRequestMapper = serviceRequestMapper;
         this.serviceRepository = serviceRepository;
@@ -86,9 +86,9 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // localDateTime is now
         LocalDateTime creatTime = LocalDateTime.now();
         // get serviceAckReceiver by services.service_code and location
-        List<ServiceAckReceiver> serviceAckReceiverList = serviceAckReceiverRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
+        List<ServiceAlarmSender> serviceAlarmSenderList = serviceAlarmSenderRepository.findByServiceCodeLike(serviceCode, serviceRequest1.getLocation());
         // CHECK null
-        if (serviceAckReceiverList.isEmpty()) {
+        if (serviceAlarmSenderList.isEmpty()) {
             log.debug("serviceAckReceiverList is empty: " + serviceCode + " and  " + serviceRequest1.getLocation());
             throw new ResourceNotFoundException("please check serviceCode and location not found: " + serviceCode + " and  " + serviceRequest1.getLocation());
         }
