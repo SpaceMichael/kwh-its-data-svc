@@ -27,7 +27,4 @@ public class UserAccess extends Auditable {
     private String formId; // formId is array contain eform.id e.g  1, 2, 3
 
 
-    /*
-    corp_id, form_id
-     */
 }

@@ -14,9 +14,4 @@ public class UserAccessDto {
     private String corpId; // ttk799
     private String formId; //
 
-    /*
-    private String corpId; // ttk799
-    private Integer formId; // form Id is eform id e.g:1
-    private Boolean activeFlag;
-     */
 }

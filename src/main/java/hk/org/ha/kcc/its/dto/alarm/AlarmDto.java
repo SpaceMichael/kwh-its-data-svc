@@ -23,18 +23,6 @@ public class AlarmDto {
     private Boolean notifySenderRst; // predefine in escalation flow
     private Boolean notifySenderNoResp; // predefine in escalation flow
 
-    /*
-    "message": "1224",
-    "escalationId": "73",
-    "alarmType": "Houseman",
-    "ackThreshold":1,
-    "severity":"normal",
-    "title": "test title" ,
-    "webhook": true,          // pre-defined in escalation flow
-    "senderGroupIds": [73],   // pre-defined value in escalation flow
-    "notifySenderRst": true,  // pre-defined value in escalation flow
-    "notifySenderNoResp": true // predefined value in escalation flow
-     */
 
 }
 

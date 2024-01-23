@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/openjdk-21-runtime
+FROM eclipse-temurin:21-jre
 ARG JAR_FILE=target/*.jar
 WORKDIR /opt/app
 COPY ${JAR_FILE} /opt/app/kwh-its-data-svc.jar

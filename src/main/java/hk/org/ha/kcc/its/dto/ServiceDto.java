@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 public class ServiceDto {
     private Integer id; // e.g 1? or use Prefixed?
     private String serviceCode; //
-    private String serviceName; // ?
+    private String serviceName; //
+    private String alarmType;
 
-    /*
-    private int id;
-    private String serviceName;
-     */
 }

@@ -28,26 +28,16 @@ import lombok.ToString;
 @Table(name = "bed_cleansing_request")
 public class BedCleansingRequest extends Auditable {
 
-      @Id
-      @Column(length = 12)
-      @GeneratedValue(generator = "bed_cleansing_request_generator")
-      @GenericGenerator(name = "bed_cleansing_request_generator",
-          strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
-          parameters = {
-              @Parameter(name = PrefixedSequenceIdGenerator.SEQUENCE_PARAM,
-                  value = "bed_cleansing_request_seq"),
-              @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "BC-")})
-      private String id;
-/*    @Id
+    @Id
     @Column(length = 12)
-    @GeneratedValue(generator = "equip_usage_request_generator")
-    @GenericGenerator(name = "equip_usage_request_generator",
+    @GeneratedValue(generator = "bed_cleansing_request_generator")
+    @GenericGenerator(name = "bed_cleansing_request_generator",
+            strategy = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator",
             parameters = {
-                    @Parameter(name = "sequence_name", value = "equip_usage_request_seq"),
-                    @Parameter(name = "prefix", value = "BC-"),
-                    @Parameter(name = "strategy", value = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator")
-            })
-    private String id*/;
+                    @Parameter(name = PrefixedSequenceIdGenerator.SEQUENCE_PARAM,
+                            value = "bed_cleansing_request_seq"),
+                    @Parameter(name = PrefixedSequenceIdGenerator.PREFIX_PARAM, value = "BC-")})
+    private String id;
     @Column(name = "hospital_code", length = 3)
     private String hospitalCode; // e.g KWH
     @Column(name = "dept_code", length = 10)

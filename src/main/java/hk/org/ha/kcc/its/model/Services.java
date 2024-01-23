@@ -26,21 +26,6 @@ public class Services extends Auditable {
     private String alarmType; // Houseman (Team 1), Houseman (Respi + Neuro)
 
 
-    /*@ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @Builder.Default
-    @JsonIgnore
-    @OneToMany(mappedBy = "services", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ServiceRequest> serviceRequestList = new ArrayList<>();
-    private void addServiceRequest(ServiceRequest serviceRequest) {
-        serviceRequestList.add(serviceRequest);
-        serviceRequest.setServices(this);
-    }
-
-    private void removeServiceRequest(ServiceRequest serviceRequest) {
-        serviceRequestList.remove(serviceRequest);
-        serviceRequest.setServices(null);
-    }*/
 
 
 }

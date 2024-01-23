@@ -17,7 +17,6 @@ public class ServiceRequestDto {
     private String location; // e.g. KWH
     private String cubicleNo; // e.g. 1
     private String bedNo; // e.g. 1
-    //private String serviceName; // e.g.  Houseman
     private Integer serviceId;  // e.g. 1
     private String remarks; // e.g. 1
     private String alarmId;
@@ -27,10 +26,7 @@ public class ServiceRequestDto {
     private String ack_by;
     private LocalDateTime ack_date;
 
-    /*
-    private String ack_by;
-    private LocalDateTime ack_date;
-     */
+
 }
 
 

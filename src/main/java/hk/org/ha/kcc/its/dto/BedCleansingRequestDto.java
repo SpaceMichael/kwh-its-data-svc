@@ -33,10 +33,5 @@ public class BedCleansingRequestDto {
     private LocalDateTime createdDate;
     private String modifiedBy;
     private LocalDateTime modifiedDate;
-    /*
-    private String createdBy;
-  private LocalDateTime createdDate;
-  private String modifiedBy;
-  private LocalDateTime modifiedDate;
-     */
+
 }
