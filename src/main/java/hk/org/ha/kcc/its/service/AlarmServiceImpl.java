@@ -43,7 +43,7 @@ public class AlarmServiceImpl implements AlarmService {
                 "\"escalationId\": \"" + alarmDto.getEscalationId() + "\",\n" +
                 "\"alarmType\": \"" + alarmDto.getAlarmType() + "\",\n" +
                 "\"severity\":\"null\",\n" + // default normal
-                "\"webhook\":\"true\",\n" +  // 
+                "\"webhook\":\"true\",\n" +  //
                 "\"senderGroupIds\": [" + alarmDto.getSenderGroupIds() + "],\n" +// add the alarmDto.get
                 "\"notifySenderRst\":\"true\",\n" +
                 "\"notifySenderNoResp\":\"true\",\n" +

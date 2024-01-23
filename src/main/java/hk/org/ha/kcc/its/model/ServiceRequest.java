@@ -21,16 +21,16 @@ import java.time.LocalDateTime;
 @Audited
 @Table(name = "service_request")
 public class ServiceRequest extends Auditable {
-/*    @Id
-    @Column(length = 12)
-    @GeneratedValue(generator = "equip_usage_request_generator")
-    @GenericGenerator(name = "equip_usage_request_generator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "equip_usage_request_seq"),
-                    @Parameter(name = "prefix", value = "SR-"),
-                    @Parameter(name = "strategy", value = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator")
-            })
-    private String id;*/
+    /*    @Id
+        @Column(length = 12)
+        @GeneratedValue(generator = "equip_usage_request_generator")
+        @GenericGenerator(name = "equip_usage_request_generator",
+                parameters = {
+                        @Parameter(name = "sequence_name", value = "equip_usage_request_seq"),
+                        @Parameter(name = "prefix", value = "SR-"),
+                        @Parameter(name = "strategy", value = "hk.org.ha.kcc.common.data.PrefixedSequenceIdGenerator")
+                })
+        private String id;*/
     @Id
     @Column(length = 12)
     @GeneratedValue(generator = "service_request_generator")
@@ -45,8 +45,6 @@ public class ServiceRequest extends Auditable {
     private String cubicleNo; // e.g. 1
     @Column(name = "bed_no", length = 5)
     private String bedNo; // e.g. 1
-    @Column(name = "service_name", length = 50)
-    private String serviceName; // e.g. 1
     @Column(name = "service_id")
     private Integer serviceId;
     @Column(name = "remarks", length = 1000)
@@ -64,9 +62,5 @@ public class ServiceRequest extends Auditable {
     private String ack_by;
     @Column(name = "ack_date")
     private LocalDateTime ack_date;
-    /*
-    private String ackBy;
-    private LocalDateTime ackDate;
-     */
 
 }
