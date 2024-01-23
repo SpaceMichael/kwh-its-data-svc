@@ -111,10 +111,8 @@ public class EquipUsageRequestServiceImpl implements EquipUsageRequestService {
 
     @Override
     public EquipUsageRequestDto updateById(String id, EquipUsageRequestDto equipUsageRequestDto) {
-        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
+        EquipUsageRequest equipUsageRequest = equipUsageRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("EquipUsageRequest not found"));
         BeanUtils.copyProperties(equipUsageRequestDto, equipUsageRequest, getNullPropertyNames(equipUsageRequestDto));
-        //equipUsageRequestRepository.save(equipUsageRequest);
         return equipUsageRequestMapper.EquipUsageRequestToEquipUsageRequestDto(equipUsageRequestRepository.save(equipUsageRequest));
     }
 

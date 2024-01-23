@@ -102,7 +102,6 @@ public class EformServiceImpl implements EformService {
             eformResponseDto.setSuccess(true);
             // get user access by corpId
             // UserAccessDto userAccessDto = this.userAccessService.getDtoById(currentAuditor); //
-            // cwk853 is for test
             // Split the userAccessDto.getFormId() by '," to list of formID
 
             List<FormDto> forms = new ArrayList<>();
@@ -126,7 +125,6 @@ public class EformServiceImpl implements EformService {
     @Override
     public EformDto create(EformDto eformDto) {
         Eform eform = this.eformMapper.EformDtoToEform(eformDto);
-        //eform.setActiveFlag(Optional.ofNullable(eformDto.getActiveFlag()).orElse(true));
         eform.setEnable(Optional.ofNullable(eformDto.getEnable()).orElse(true));
         return this.eformMapper.EformToEformDto(this.eformRepository.save(eform));
     }

@@ -24,7 +24,6 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     private final BedCleansingRequestMapper bedCleansingRequestMapper;
 
 
-
     public BedCleansingRequestServiceImpl(BedCleansingServiceRepository bedCleansingServiceRepository
             , BedCleansingRequestMapper bedCleansingRequestMapper
 
@@ -38,16 +37,10 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     public BedCleansingRequestDto create(BedCleansingRequestDto bedCleansingRequestDto) {
         BedCleansingRequest bedCleansingRequest = this.bedCleansingRequestMapper.BedCleansingRequestDtoToBedCleansingRequest(bedCleansingRequestDto);
 
-/*        if (bedCleansingRequest.getEformId() != null) {
-            Eform eform = this.eformRepository.findById(bedCleansingRequest.getEformId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Id" + bedCleansingRequest.getEformId() + "eform not found"));
-            bedCleansingRequest.assignEform(eform);
-        }*/
         if (bedCleansingRequestDto.getWholeBed() == null) {
             bedCleansingRequest.setWholeBed(false);
         }
 
-        //BedCleansingRequest bedCleansingRequest1 = this.bedCleansingServiceRepository.save(bedCleansingRequest);
         return this.bedCleansingRequestMapper.BedCleansingRequestToBedCleansingRequestDto(bedCleansingServiceRepository.save(bedCleansingRequest));
     }
 
@@ -83,19 +76,7 @@ public class BedCleansingRequestServiceImpl implements BedCleansingRequestServic
     public BedCleansingRequestDto updateById(String id, BedCleansingRequestDto bedCleansingRequestDto) {
         // get by id , if is not exist, throw ResourceNotFoundException
         BedCleansingRequest bedCleansingRequest = this.bedCleansingServiceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BedCleansingRequest not found"));
-
         // update by dto
-/*        bedCleansingRequest.setHospitalCode(Optional.ofNullable(bedCleansingRequestDto.getHospitalCode()).orElse(bedCleansingRequest.getHospitalCode()));
-        bedCleansingRequest.setDept(Optional.ofNullable(bedCleansingRequestDto.getDept()).orElse(bedCleansingRequest.getDept()));
-        bedCleansingRequest.setWard(Optional.ofNullable(bedCleansingRequestDto.getWard()).orElse(bedCleansingRequest.getWard()));
-        bedCleansingRequest.setCubicle(Optional.ofNullable(bedCleansingRequestDto.getCubicle()).orElse(bedCleansingRequest.getCubicle()));
-        bedCleansingRequest.setWholeBed(Optional.ofNullable(bedCleansingRequestDto.getWholeBed()).orElse(bedCleansingRequest.getWholeBed()));
-        bedCleansingRequest.setBedNo(Optional.ofNullable(bedCleansingRequestDto.getBedNo()).orElse(bedCleansingRequest.getBedNo()));
-        bedCleansingRequest.setBedType(Optional.ofNullable(bedCleansingRequestDto.getBedType()).orElse(bedCleansingRequest.getBedType()));
-        bedCleansingRequest.setRemarks(Optional.ofNullable(bedCleansingRequestDto.getRemarks()).orElse(bedCleansingRequest.getRemarks()));
-        bedCleansingRequest.setStatus(Optional.ofNullable(bedCleansingRequestDto.getStatus()).orElse(bedCleansingRequest.getStatus()));
-        bedCleansingRequest.setRequestorContactNo(Optional.ofNullable(bedCleansingRequestDto.getRequestorContactNo()).orElse(bedCleansingRequest.getRequestorContactNo()));
-        bedCleansingRequest.setCleaner(Optional.ofNullable(bedCleansingRequestDto.getCleaner()).orElse(bedCleansingRequest.getCleaner()));*/
         BeanUtils.copyProperties(bedCleansingRequestDto, bedCleansingRequest, getNullPropertyNames(bedCleansingRequestDto));
         return this.bedCleansingRequestMapper.BedCleansingRequestToBedCleansingRequestDto(bedCleansingServiceRepository.save(bedCleansingRequest));
     }

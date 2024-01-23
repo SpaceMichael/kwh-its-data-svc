@@ -14,8 +14,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
 
-import jakarta.persistence.EntityManager;
-
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
@@ -26,15 +24,11 @@ public class AlarmServiceImpl implements AlarmService {
 
     private static final AlsXLogger log = AlsXLoggerFactory.getXLogger(MethodHandles.lookup().lookupClass());
 
-
-    private EntityManager entityManager;
-
     private final WebClient kwhItsWebClient;
 
     private final ServiceRequestRepository serviceRequestRepository;
 
-    public AlarmServiceImpl(EntityManager entityManager, WebClient kwhItsWebClient, ServiceRequestRepository serviceRequestRepository) {
-        this.entityManager = entityManager;
+    public AlarmServiceImpl(WebClient kwhItsWebClient, ServiceRequestRepository serviceRequestRepository) {
         this.kwhItsWebClient = kwhItsWebClient;
         this.serviceRequestRepository = serviceRequestRepository;
     }
@@ -48,8 +42,8 @@ public class AlarmServiceImpl implements AlarmService {
                 "\"message\": \"" + alarmDto.getMessage() + "\",\n" +
                 "\"escalationId\": \"" + alarmDto.getEscalationId() + "\",\n" +
                 "\"alarmType\": \"" + alarmDto.getAlarmType() + "\",\n" +
-                "\"severity\":\"null\",\n" +
-                "\"webhook\":\"true\",\n" +
+                "\"severity\":\"null\",\n" + // default normal
+                "\"webhook\":\"true\",\n" +  // 
                 "\"senderGroupIds\": [" + alarmDto.getSenderGroupIds() + "],\n" +// add the alarmDto.get
                 "\"notifySenderRst\":\"true\",\n" +
                 "\"notifySenderNoResp\":\"true\",\n" +
@@ -75,16 +69,6 @@ public class AlarmServiceImpl implements AlarmService {
                 .block();
         log.debug("create alarm atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
 
-        // add the token and alarmDto1 to request body
-        /*AlarmResponseDto alarmResponseDto = webClient.post()
-                .uri(path)
-                .headers(h -> h.setBearerAuth(jwt.getTokenValue()))
-                .bodyValue(alarmDto)
-                .retrieve()
-                .bodyToMono(AlarmResponseDto.class)
-                .block();
-        log.debug("alarmResponseDto: " + alarmResponseDto);
-        return alarmResponseDto;*/
         return atWorkAlarmResponseDto;
     }
 
@@ -104,7 +88,6 @@ public class AlarmServiceImpl implements AlarmService {
                 serviceRequest.setAck_by(atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getCorpId());
                 serviceRequest.setAck_date(atWorkAlarmResponseDto.getData().getFirstResponse().getUser().getTime());
                 serviceRequest.setModifiedBy("system");
-                //entityManager.merge(serviceRequest);
                 serviceRequestRepository.save(serviceRequest);
             } else {
                 log.debug("service request record is null, please check " + atWorkAlarmResponseDto.getData().getId());
