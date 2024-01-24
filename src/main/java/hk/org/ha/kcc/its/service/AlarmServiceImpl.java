@@ -45,8 +45,8 @@ public class AlarmServiceImpl implements AlarmService {
                 "\"severity\":\"null\",\n" + // default normal
                 "\"webhook\":\"true\",\n" +  //
                 "\"senderGroupIds\": [" + alarmDto.getSenderGroupIds() + "],\n" +// add the alarmDto.get
-                "\"notifySenderRst\":\"true\",\n" +
-                "\"notifySenderNoResp\":\"true\",\n" +
+                /*"\"notifySenderRst\":\"true\",\n" +
+                "\"notifySenderNoResp\":\"true\",\n" +*/
                 "\"title\": \"" + alarmDto.getTitle() + "\"\n" +
                 "}";
         // check payload
@@ -59,7 +59,7 @@ public class AlarmServiceImpl implements AlarmService {
                 .retrieve()
                 .bodyToMono(AtWorkAlarmResponseDto.class)
                 .block();
-        log.debug("create alarm atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
+        //log.debug("create alarm atWorkAlarmResponseDto: " + atWorkAlarmResponseDto);
 
         return atWorkAlarmResponseDto;
     }
