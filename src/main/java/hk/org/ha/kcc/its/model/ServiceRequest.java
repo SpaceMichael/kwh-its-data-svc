@@ -55,6 +55,8 @@ public class ServiceRequest extends Auditable {
     private Boolean success;
     @Column(name = "escalation_Id")
     private Integer escalationId;
+    @Column(name = "sender_Id")
+    private String senderId;
     @Lob
     @Column(name = "error_message")
     private String errorMessage;

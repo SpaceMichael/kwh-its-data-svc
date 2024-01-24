@@ -37,7 +37,7 @@ public class UserAccessServiceImpl implements UserAccessService {
 
     @Override
     public UserAccessDto getDtoById(String id) {
-        UserAccess userAccess = userAcessRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found"));
+        UserAccess userAccess = userAcessRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserAccess not found: " + id));
         return userAccessMapper.UserAccessToUserAccessDto(userAccess);
     }
 

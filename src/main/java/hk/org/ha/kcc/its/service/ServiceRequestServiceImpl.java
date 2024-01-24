@@ -75,7 +75,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
     @Override
     public ServiceRequestDto create(ServiceRequestDto serviceRequestDto) {
         ServiceRequest serviceRequest = serviceRequestMapper.ServiceRequestDtoToServiceRequest(serviceRequestDto);
-
         // save
         ServiceRequest serviceRequest1 = serviceRequestRepository.save(serviceRequest);
         // set alarm
@@ -92,9 +91,15 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
             log.debug("serviceAckReceiverList is empty: " + serviceCode + " and  " + serviceRequest1.getLocation());
             throw new ResourceNotFoundException("please check serviceCode and location not found: " + serviceCode + " and  " + serviceRequest1.getLocation());
         }
-        // get sender id to override ServiceAlarmSender
-        alarmDto.setSenderGroupIds(serviceAlarmSenderList.stream().findFirst().get().getSenderId().toString());
-        log.debug("sender id: " + alarmDto.getSenderGroupIds());
+        String senderId = serviceAlarmSenderList.stream().findFirst().get().getSenderId();
+        // get sender id to override ServiceAlarmSender suppose only one sender Id
+        if (senderId != null) {
+            log.debug("sender id: " + senderId);
+            alarmDto.setSenderGroupIds(senderId);
+            serviceRequest1.setSenderId(senderId);
+        } else {
+            log.debug("sender id is null: " + alarmDto.getSenderGroupIds());
+        }
         // find serviceAlarmReceiver
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))
@@ -135,22 +140,28 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
         // get resp from alarm
         AtWorkAlarmResponseDto atWorkAlarmResponseDto = alarmService.create(alarmDto);
-
         if (!atWorkAlarmResponseDto.getSuccess()) {
             serviceRequest1.setErrorMessage(atWorkAlarmResponseDto.getError().getMessage());
         }
         // check resp when false
         if (!atWorkAlarmResponseDto.getSuccess()) {
             serviceRequest1.setSuccess(false);
+            serviceRequest1.setErrorMessage(atWorkAlarmResponseDto.getError().getMessage());
             throw new ResourceNotFoundException("Alarm call false please check!");
         } else {
             serviceRequest1.setSuccess(true);
         }
-        // update service request
-        serviceRequest1.setAlarmId(atWorkAlarmResponseDto.getData().getId());
+        //  check alarmId and escalationId is null
+        if (atWorkAlarmResponseDto.getData().getId() != null) {
+            serviceRequest1.setAlarmId(atWorkAlarmResponseDto.getData().getId());
+        }
         if (alarmDto.getEscalationId() != null) {
             serviceRequest1.setEscalationId(alarmDto.getEscalationId());
         }
+        /*
+        Optional.ofNullable(atWorkAlarmResponseDto.getData().getId()).ifPresent(serviceRequest1::setAlarmId);
+        Optional.ofNullable(alarmDto.getEscalationId()).ifPresent(serviceRequest1::setEscalationId);
+         */
         return serviceRequestMapper.ServiceRequestToServiceRequestDto(serviceRequest1);
     }
 

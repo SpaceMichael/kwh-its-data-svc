@@ -55,8 +55,7 @@ public class ServiceRequestController {
     @Operation(summary = "Create new ServiceRequestDto")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ServiceRequestDto createServiceRequest(
-            @RequestBody ServiceRequestDto serviceRequestDto) {
+    public ServiceRequestDto createServiceRequest(@RequestBody ServiceRequestDto serviceRequestDto) {
         String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
         log.debug("create service request: " + serviceRequestDto + " by: " + currentAuditor);
         return this.serviceRequestService.create(serviceRequestDto);

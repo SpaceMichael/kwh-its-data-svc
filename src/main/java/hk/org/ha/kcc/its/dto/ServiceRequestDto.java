@@ -22,6 +22,7 @@ public class ServiceRequestDto {
     private String alarmId;
     private Boolean success;
     private Integer escalationId;
+    private String senderId;
     private String errorMessage;
     private String ack_by;
     private LocalDateTime ack_date;

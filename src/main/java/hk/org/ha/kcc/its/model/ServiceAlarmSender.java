@@ -3,6 +3,7 @@ package hk.org.ha.kcc.its.model;
 import lombok.*;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
 
 
 @Data
@@ -12,8 +13,8 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-//@Audited
-@Table(name = " service_alarm_sender")// @Table(name = "service_ack_receiver")
+@Audited
+@Table(name = " service_alarm_sender")
 public class ServiceAlarmSender extends Auditable {
 
     @Id
@@ -24,6 +25,6 @@ public class ServiceAlarmSender extends Auditable {
     @Column(name = "location_code", length = 50)
     private String locationCode; //  e.g 3A
     @Column(name = "sender_id")
-    private Integer senderId; //  override the sender group
+    private String senderId; //  override the sender group "1" or "1,2,3"
 
 }

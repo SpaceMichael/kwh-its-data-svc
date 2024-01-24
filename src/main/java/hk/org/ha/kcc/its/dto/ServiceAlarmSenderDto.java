@@ -17,6 +17,6 @@ public class ServiceAlarmSenderDto {
     private Integer id; // e.g 1
     private String serviceCode; // Houseman  = service name ?
     private String locationCode; //  e.g 3A
-    private Integer senderId; // override the sender group if
+    private String senderId; // override the sender group if
 
 }

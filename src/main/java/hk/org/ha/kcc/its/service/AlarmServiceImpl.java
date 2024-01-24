@@ -49,14 +49,6 @@ public class AlarmServiceImpl implements AlarmService {
                 "\"notifySenderNoResp\":\"true\",\n" +
                 "\"title\": \"" + alarmDto.getTitle() + "\"\n" +
                 "}";
-        /* ok sample
-                String payload2 ="{\"message\": \"1258\", \n" +
-                "\"escalationId\": \"73\",\n" +
-                "\"alarmType\": \"Houseman\",\n" +
-                "\"severity\":\"normal\",\n" +
-                "\"title\": \"test title\"\n" +
-                "}";
-         */
         // check payload
         log.debug("payload: " + payload);
         // send the post request to hkt alarm
@@ -75,7 +67,7 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public void webhookAlarm(AtWorkAlarmResponseDto atWorkAlarmResponseDto) {
         String alarmId = atWorkAlarmResponseDto.getData().getId();
-        log.debug("alarmId: " + alarmId);
+        //log.debug("alarmId: " + alarmId);
         if (alarmId != null) {
             //get the server request
             List<ServiceRequest> serviceRequestList = serviceRequestRepository.findAll().stream()
