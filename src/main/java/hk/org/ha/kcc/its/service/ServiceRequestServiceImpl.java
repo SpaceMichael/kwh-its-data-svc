@@ -26,7 +26,7 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.DayOfWeek;
+//import java.time.DayOfWeek;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,9 +79,9 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
     public ServiceRequestDto create(ServiceRequestDto serviceRequestDto) {
 
         // test day of week
-        LocalDate date =LocalDate.now();
+        /*LocalDate date =LocalDate.now();
         DayOfWeek dayOfWeek =date.getDayOfWeek();
-        System.out.println("dayOfWeek: "+dayOfWeek);
+        System.out.println("dayOfWeek: "+dayOfWeek);*/
 
 
         ServiceRequest serviceRequest = serviceRequestMapper.ServiceRequestDtoToServiceRequest(serviceRequestDto);
