@@ -26,8 +26,11 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.DayOfWeek;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 
 import static hk.org.ha.kcc.its.util.BeanUtilsCustom.getNullPropertyNames;
@@ -74,6 +77,13 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     @Override
     public ServiceRequestDto create(ServiceRequestDto serviceRequestDto) {
+
+        // test day of week
+        LocalDate date =LocalDate.now();
+        DayOfWeek dayOfWeek =date.getDayOfWeek();
+        System.out.println("dayOfWeek: "+dayOfWeek);
+
+
         ServiceRequest serviceRequest = serviceRequestMapper.ServiceRequestDtoToServiceRequest(serviceRequestDto);
         // save
         ServiceRequest serviceRequest1 = serviceRequestRepository.save(serviceRequest);
@@ -94,7 +104,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         String senderId = serviceAlarmSenderList.stream().findFirst().get().getSenderId();
         // get sender id to override ServiceAlarmSender suppose only one sender Id
         if (senderId != null) {
-            log.debug("sender id: " + senderId);
+            //log.debug("sender id: " + senderId);
             alarmDto.setSenderGroupIds(senderId);
             serviceRequest1.setSenderId(senderId);
         } else {

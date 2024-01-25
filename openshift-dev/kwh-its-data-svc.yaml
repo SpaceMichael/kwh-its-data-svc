@@ -26,6 +26,18 @@ spec:
           persistentVolumeClaim:
             # claimName: hostpathcldlog-kccclinicaldev-pvc
             claimName: cldlog-kccclinicaldev-pvc
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - kcc-spring-boot-svc
+                topologyKey: esxi
       containers:
         - name: kwh-its-data-svc
           image: image-registry.openshift-image-registry.svc:5000/kccclinical-dev/kwh-its-data-svc
