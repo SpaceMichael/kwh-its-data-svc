@@ -4,5 +4,5 @@ import hk.org.ha.kcc.its.model.UserAccess;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface UserAcessRespository extends JpaRepository<UserAccess, String> {
+public interface UserAccessRepository extends JpaRepository<UserAccess, String> {
 }

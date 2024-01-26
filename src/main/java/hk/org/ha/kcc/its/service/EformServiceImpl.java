@@ -103,7 +103,6 @@ public class EformServiceImpl implements EformService {
             EformResponseDto eformResponseDto = new EformResponseDto();
             eformResponseDto.setSuccess(true);
             // get user access by corpId
-            // UserAccessDto userAccessDto = this.userAccessService.getDtoById(currentAuditor); //
             // Split the userAccessDto.getFormId() by '," to list of formID
 
             List<FormDto> forms = new ArrayList<>();
