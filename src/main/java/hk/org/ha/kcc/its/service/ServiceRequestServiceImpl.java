@@ -1,14 +1,15 @@
 package hk.org.ha.kcc.its.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hk.org.ha.kcc.common.logging.AlsXLogger;
 import hk.org.ha.kcc.common.logging.AlsXLoggerFactory;
 
-
 import hk.org.ha.kcc.its.dto.ServiceRequestDto;
 import hk.org.ha.kcc.its.dto.alarm.AlarmDto;
 import hk.org.ha.kcc.its.dto.alarm.AtWorkAlarmResponseDto;
+
 import hk.org.ha.kcc.its.mapper.ServiceRequestMapper;
 import hk.org.ha.kcc.its.model.ServiceAlarmSender;
 import hk.org.ha.kcc.its.model.ServiceAlarmReceiver;
@@ -19,6 +20,7 @@ import hk.org.ha.kcc.its.repository.ServiceAlarmReceiverRepository;
 import hk.org.ha.kcc.its.repository.ServiceRepository;
 import hk.org.ha.kcc.its.repository.ServiceRequestRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,7 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -58,6 +61,18 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
     private final ServiceRepository serviceRepository;
 
     private final AlarmService alarmService;
+
+    @Value("${app.calendar.api.path}")
+    private String calendarApiPath;
+
+    @Value("${app.auth.api.path}")
+    private String authApiPath;
+
+    @Value("${app.auth.api.password}")
+    private String password;
+
+    @Value("${app.auth.api.user}")
+    private String user;
 
     public ServiceRequestServiceImpl(ServiceRequestRepository serviceRequestRepository, ServiceAlarmSenderRepository serviceAlarmSenderRepository, ServiceAlarmReceiverRepository sServiceAlarmReceiverRepository, ServiceRequestMapper serviceRequestMapper, ServiceRepository serviceRepository, AlarmService alarmService) {
         this.serviceRequestRepository = serviceRequestRepository;
@@ -87,28 +102,34 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         // get day of week
         LocalDate date = LocalDate.now();
         DayOfWeek dayOfWeek = date.getDayOfWeek();
-        System.out.println("dayOfWeek: " + dayOfWeek + " dayOfWeek.getValue: " + dayOfWeek.getValue());
         // date formart change to YYYY-MM-DD
         String dateStr = date.toString();
-        //System.out.println("dateStr: " + dateStr);
-
         //KCC calendar path
-        String path = "https://kcc-calendar-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk/api/v1/calendar/public-holiday?startDate=2024-02-10&endDate=" + dateStr;
-        log.debug("path: " + path);
+        String path = calendarApiPath + dateStr + "&endDate=" + dateStr;
         // get JWT token
         String jwtToken = getJwtToken();
         // use webclient to get public holiday for check
         WebClient webClient = WebClient.create();
+
+        // send api request with two parameters startDate and endDate
         ResponseEntity<String> response = webClient.get()
                 .uri(path)
                 .header("Authorization", "Bearer " + jwtToken)
                 .retrieve()
                 .toEntity(String.class)
                 .block();
-        // check response
-        System.out.println("test response" + response);
-
-
+        //check PH is ture if response type is P ,
+        boolean PH = false;
+        if (!Objects.equals(response != null ? response.getBody() : null, "[]")) {
+            try {
+                String responseBody = response != null ? response.getBody() : null;
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(responseBody);
+                PH = jsonNode.get(0).get("type").asText().equals("P");
+            } catch (JsonProcessingException e) {
+                log.debug(e.toString());
+            }
+        }
         /* java vs HA
         DayOfWeek.MONDAY corresponds to 1 HA 2
         DayOfWeek.TUESDAY corresponds to 2 HA 3
@@ -118,7 +139,6 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         DayOfWeek.SATURDAY corresponds to 6 HA 7
         DayOfWeek.SUNDAY corresponds to 7 HA 1
          */
-
         ServiceRequest serviceRequest = serviceRequestMapper.ServiceRequestDtoToServiceRequest(serviceRequestDto);
         // save
         ServiceRequest serviceRequest1 = serviceRequestRepository.save(serviceRequest);
@@ -146,13 +166,18 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
             log.debug("sender id is null: " + alarmDto.getSenderGroupIds());
         }
         // find serviceAlarmReceiver
+        boolean finalPH = PH;
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))
                 .filter(serviceAlarmReceiver -> {
                     // if dayOfWeek =1 , the start time is start_time_sun , end time is end_time_sun  , if dayOfWeek = 7 , the start time is start_time_sat , end time is end_time_sat, others is start_time and end_time
                     LocalDateTime startTime;
                     LocalDateTime endTime;
-                    if (dayOfWeek.getValue() == 7) { // sunday
+                    // if  dayOfWeek.getValue() == 7 or PH is true , the start time is start_time_sun , end time is end_time_sun
+                    if (finalPH) {
+                        startTime = serviceAlarmReceiver.getStartTimeSun().atDate(LocalDate.now());
+                        endTime = serviceAlarmReceiver.getEndTimeSun().atDate(LocalDate.now());
+                    } else if (dayOfWeek.getValue() == 7) { // sunday
                         startTime = serviceAlarmReceiver.getStartTimeSun().atDate(LocalDate.now());
                         endTime = serviceAlarmReceiver.getEndTimeSun().atDate(LocalDate.now());
                     } else if (dayOfWeek.getValue() == 6) { // saturday
@@ -162,12 +187,12 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                         startTime = serviceAlarmReceiver.getStartTime().atDate(LocalDate.now());
                         endTime = serviceAlarmReceiver.getEndTime().atDate(LocalDate.now());
                     }
+                    //log.debug("startTime: " + startTime + " endTime: " + endTime);
                     LocalDateTime endTime2 = null;
                     LocalDateTime startTime2 = null;
                     if (startTime.isAfter(endTime)) {
                         startTime2 = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
                         endTime2 = endTime;
-                        //startTime = startTime;
                         endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
                     }
                     // add if startTime2 and endTime2 is not null
@@ -237,29 +262,23 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     private String getJwtToken() {
         String jwtToken;
-        String jwtTokenUrl = "https://kcc-auth-svc-kccclinical-stag-prd.prdcld61.server.ha.org.hk/api/v1/auth";
-        //System.out.println("jwtTokenUrl: " + jwtTokenUrl);
+        String jwtTokenUrl = authApiPath;
         try {
-            String url = jwtTokenUrl;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("username", "admin");
-            requestBody.put("password", "ecppass");
-
-            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-
-            // use webclient replace restTemplate
+            requestBody.put("username", user);
+            requestBody.put("password", password);
+            // use webclient call
             WebClient webClient = WebClient.create();
             ResponseEntity<String> response = webClient.post()
-                    .uri(url)
+                    .uri(jwtTokenUrl)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(requestBody)
                     .retrieve()
                     .toEntity(String.class)
                     .block();
 
-            //ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
             assert response != null;
             String responseBody = response.getBody();
 
