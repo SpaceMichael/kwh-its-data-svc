@@ -54,4 +54,6 @@ public class ServiceRequest extends Auditable {
     @Column(name = "ack_date")
     private LocalDateTime ack_date;
 
+
+
 }

@@ -21,7 +21,7 @@ public class ServiceAlarmSender extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; // e.g 1
     @Column(name = "service_code", length = 50)
-    private String serviceCode; // Houseman  = service name ?
+    private String serviceCode; // PAED_HOUSEMAN_%
     @Column(name = "location_code", length = 50)
     private String locationCode; //  e.g 3A
     @Column(name = "sender_id")

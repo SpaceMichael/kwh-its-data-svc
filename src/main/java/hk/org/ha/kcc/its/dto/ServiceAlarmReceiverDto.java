@@ -16,12 +16,16 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class ServiceAlarmReceiverDto {
     private Integer id; // e.g 1
-    private String serviceCode; // Houseman  = service name ?
-    private LocalTime startTime; //   8:00 ?
-    private LocalTime endTime; //    17:00 ?
-    private Integer ackTimeout; //  1,2,3?
-    private Integer escalationId; // fro
+    private String serviceCode; // PAED_HOUSEMAN_T1
+    private LocalTime startTime; //   8:00
+    private LocalTime endTime; //    17:00
+    private Integer ackTimeout; //  1,2,3
+    private Integer escalationId; //
     private String alarmTitle;
     private String alarmMessage;
+    private LocalTime startTimeSat; //
+    private LocalTime endTimeSat; //
+    private LocalTime startTimeSun; //
+    private LocalTime endTimeSun; //
 
 }
