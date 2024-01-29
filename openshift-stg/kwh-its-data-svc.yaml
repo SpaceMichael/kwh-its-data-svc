@@ -26,18 +26,18 @@ spec:
           persistentVolumeClaim:
             # claimName: hostpathcldlog-kccclinicalstagprd-pvc
             claimName: cldlog-kccclinicalstagprd-pvc
-            affinity:
-              podAntiAffinity:
-                preferredDuringSchedulingIgnoredDuringExecution:
-                  - weight: 100
-                    podAffinityTerm:
-                      labelSelector:
-                        matchExpressions:
-                          - key: app
-                            operator: In
-                            values:
-                              - kcc-spring-boot-svc
-                      topologyKey: esxi
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - kcc-spring-boot-svc
+                topologyKey: esxi
       containers:
         - name: kwh-its-data-svc
           image: image-registry.openshift-image-registry.svc:5000/kccclinical-stag-prd/kwh-its-data-svc
@@ -87,6 +87,16 @@ spec:
                 secretKeyRef:
                   name: kwh-its-secret
                   key: kwh.its.key
+            - name: KWH_ITS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kwh-its-data-secret
+                  key: kwh.its.data.password
+            - name: KWH_ITS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: kwh-its-data-secret
+                  key: kwh.its.data.user
             - name: API_KEY
               valueFrom:
                 secretKeyRef:
