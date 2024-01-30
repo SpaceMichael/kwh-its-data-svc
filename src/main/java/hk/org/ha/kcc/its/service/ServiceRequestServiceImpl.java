@@ -173,19 +173,19 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))
                 // start time is not null and end time is not null
-                //.filter(serviceAlarmReceiver -> serviceAlarmReceiver.getStartTime() != null && serviceAlarmReceiver.getEndTime() != null)
+                .filter(serviceAlarmReceiver -> serviceAlarmReceiver.getStartTime() != null && serviceAlarmReceiver.getEndTime() != null)
                 .filter(serviceAlarmReceiver -> {
                     // if dayOfWeek =1 , the start time is start_time_sun , end time is end_time_sun  , if dayOfWeek = 7 , the start time is start_time_sat , end time is end_time_sat, others is start_time and end_time
                     LocalDateTime startTime;
                     LocalDateTime endTime;
                     // if  dayOfWeek.getValue() == 7 or PH is true , the start time is start_time_sun , end time is end_time_sun
-                    if (finalPH) {
+                    if (finalPH && serviceAlarmReceiver.getStartTimeSun() != null && serviceAlarmReceiver.getEndTimeSun() != null) {
                         startTime = serviceAlarmReceiver.getStartTimeSun().atDate(LocalDate.now());
                         endTime = serviceAlarmReceiver.getEndTimeSun().atDate(LocalDate.now());
                     } else if (dayOfWeek.getValue() == 7 && serviceAlarmReceiver.getStartTimeSun() != null && serviceAlarmReceiver.getEndTimeSun() != null) { // sunday
                         startTime = serviceAlarmReceiver.getStartTimeSun().atDate(LocalDate.now());
                         endTime = serviceAlarmReceiver.getEndTimeSun().atDate(LocalDate.now());
-                    } else if (dayOfWeek.getValue() == 6) { // saturday
+                    } else if (dayOfWeek.getValue() == 6 && serviceAlarmReceiver.getStartTimeSat() != null && serviceAlarmReceiver.getEndTimeSat() != null) { // saturday
                         startTime = serviceAlarmReceiver.getStartTimeSat().atDate(LocalDate.now());
                         endTime = serviceAlarmReceiver.getEndTimeSat().atDate(LocalDate.now());
                     } else {
