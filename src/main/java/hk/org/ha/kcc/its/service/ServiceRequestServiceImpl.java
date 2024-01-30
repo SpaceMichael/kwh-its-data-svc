@@ -100,10 +100,13 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
     public ServiceRequestDto create(ServiceRequestDto serviceRequestDto) {
 
         // get day of week
-        LocalDate date = LocalDate.now();
+        //LocalDate date = LocalDate.now();
+        LocalDate date = LocalDate.of(2024, 2, 4);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         // date formart change to YYYY-MM-DD
         String dateStr = date.toString();
+        // test 2024-02-04
+        //String dateStr ="2024-02-04";
         //KCC calendar path
         String path = calendarApiPath + dateStr + "&endDate=" + dateStr;
         // get JWT token
@@ -169,6 +172,8 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         boolean finalPH = PH;
         List<ServiceAlarmReceiver> serviceAlarmReceiverlist = sServiceAlarmReceiverRepository.findAll().stream()
                 .filter(s -> s.getServiceCode().equals(serviceCode))
+                // start time is not null and end time is not null
+                //.filter(serviceAlarmReceiver -> serviceAlarmReceiver.getStartTime() != null && serviceAlarmReceiver.getEndTime() != null)
                 .filter(serviceAlarmReceiver -> {
                     // if dayOfWeek =1 , the start time is start_time_sun , end time is end_time_sun  , if dayOfWeek = 7 , the start time is start_time_sat , end time is end_time_sat, others is start_time and end_time
                     LocalDateTime startTime;
@@ -177,7 +182,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
                     if (finalPH) {
                         startTime = serviceAlarmReceiver.getStartTimeSun().atDate(LocalDate.now());
                         endTime = serviceAlarmReceiver.getEndTimeSun().atDate(LocalDate.now());
-                    } else if (dayOfWeek.getValue() == 7) { // sunday
+                    } else if (dayOfWeek.getValue() == 7 && serviceAlarmReceiver.getStartTimeSun() != null && serviceAlarmReceiver.getEndTimeSun() != null) { // sunday
                         startTime = serviceAlarmReceiver.getStartTimeSun().atDate(LocalDate.now());
                         endTime = serviceAlarmReceiver.getEndTimeSun().atDate(LocalDate.now());
                     } else if (dayOfWeek.getValue() == 6) { // saturday

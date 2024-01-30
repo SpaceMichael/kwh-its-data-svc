@@ -187,7 +187,7 @@
   $ oc create secret generic mysql-db-secret --from-literal=mysql.db.user=[db_user] --from-literal=mysql.db.password=[db_password]
   $ oc get secret mysql-db-secret
 
-  $ oc apply -f openshift\kwh-its-data-svc.yaml
+  $ oc apply -f openshift-prd\kwh-its-data-svc.yaml
   $ oc get pod
   $ oc logs -f kwh-its-data-svc-57cb8ff78f-qctht
   $ oc get route
