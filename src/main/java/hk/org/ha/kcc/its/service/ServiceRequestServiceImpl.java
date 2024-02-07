@@ -86,6 +86,8 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
     @Override
     public List<ServiceRequestDto> getAllDto() {
         // filter get active flag is true and then mapper to dto
+        /*String hostname = serviceRequestRepository.gethostname();
+        log.debug("hostname: " + hostname);*/
         List<ServiceRequest> serviceRequestList = serviceRequestRepository.findAll();
         return serviceRequestList.stream().map(serviceRequestMapper::ServiceRequestToServiceRequestDto).collect(Collectors.toList());
     }
@@ -98,10 +100,11 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
     @Override
     public ServiceRequestDto create(ServiceRequestDto serviceRequestDto) {
-
+        /*String hostname = serviceRequestRepository.gethostname();
+        log.debug("hostname: " + hostname);*/
         // get day of week
-        //LocalDate date = LocalDate.now();
-        LocalDate date = LocalDate.of(2024, 2, 4);
+        LocalDate date = LocalDate.now();
+        //LocalDate date = LocalDate.of(2024, 2, 4); for quick test
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         // date formart change to YYYY-MM-DD
         String dateStr = date.toString();
