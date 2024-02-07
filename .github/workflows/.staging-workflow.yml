@@ -1,4 +1,4 @@
-name: Staging Workflow
+name: Development Workflow
 
 on:
   workflow_dispatch:
@@ -39,6 +39,7 @@ jobs:
         id: generate-image-tag
         run: |
           echo "image-tag=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_OUTPUT
+
       - name: Process string case of repo type
         id: set-LC-repo-type
         uses: ASzc/change-string-case-action@v5
@@ -59,10 +60,10 @@ jobs:
       RUNS_ON: ${{ vars.RUNS_ON }}
       ENVIRONMENT: DEV
       PRODUCT: ${{ needs._Init_.outputs.product }}
-      APP_NAME: ${{ needs.setup.outputs.APP_NAME }}
-      IMAGE_TAG: ${{ needs.setup.outputs.IMAGE_TAG }}
+      APP_NAME: ${{ needs._Init_.outputs.app-name }}
+      IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
       REACT_DOTENV_FILE: .env.development
-      DOCKER_REGISTRY: ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}
+      DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
       REPO_TYPE: ${{ needs._Init_.outputs.repo-type }}
     secrets:
       CERT_HA_ROOT_CA: ${{ secrets.CERT_HA_ROOT_CA }}
