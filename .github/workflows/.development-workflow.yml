@@ -2,13 +2,13 @@ name: Development Workflow
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - develop
-      - "feature/**"
-      - "release/**"
-      - "hotfix/**"
+  #push:
+  #  branches:
+  #    - main
+  #    - develop
+  #    - "feature/**"
+  #    - "release/**"
+  #    - "hotfix/**"
 
 jobs:
   _Init_:
