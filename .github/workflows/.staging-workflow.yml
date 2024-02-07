@@ -58,6 +58,7 @@ jobs:
     with:
       RUNS_ON: ${{ vars.RUNS_ON }}
       ENVIRONMENT: DEV
+      PRODUCT: ${{ needs._Init_.outputs.product }}
       APP_NAME: ${{ needs.setup.outputs.APP_NAME }}
       IMAGE_TAG: ${{ needs.setup.outputs.IMAGE_TAG }}
       REACT_DOTENV_FILE: .env.development
