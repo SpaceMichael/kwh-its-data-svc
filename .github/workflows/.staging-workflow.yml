@@ -70,19 +70,19 @@ jobs:
       ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER_DEV }}
       ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD_DEV }}
 
-  deploy-stg-c1:
+  deploy-dev-c1:
     name: Deploy (DEV C1)
-    needs: [setup, build-container]
+    needs: [_Init_, build-container]
     uses: KCC-Info/kcc-workflow-template/.github/workflows/deploy-ecp-workflow.yml@main
     with:
       RUNS_ON: ${{ vars.RUNS_ON }}
       ENVIRONMENT: DEV
-      APP_NAME: ${{ needs.setup.outputs.APP_NAME }}
-      IMAGE_TAG: ${{ needs.setup.outputs.IMAGE_TAG }}
-      DOCKER_REGISTRY: ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}
-      ARTIFACTORY_REPO_PATH: ${{ vars.ARTIFACTORY_REPO_PATH_DEV }}
+      PRODUCT: ${{ needs._Init_.outputs.product }}
+      APP_NAME: ${{ needs._Init_.outputs.app-name }}
+      IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
+      DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
+      REPO_TYPE: ${{ needs._Init_.outputs.repo-type }}
       CLUSTER_URL: ${{ vars.CLUSTER_URL_DEV_C1 }}
       NAMESPACE: ${{ vars.NAMESPACE_DEV }}
-      YAML_CONFIG_FILE: openshift-dev\${{ needs.setup.outputs.APP_NAME }}.yaml
     secrets:
       ECP_SA_TOKEN: ${{ secrets.ECP_SA_TOKEN_DEV_C1 }}
