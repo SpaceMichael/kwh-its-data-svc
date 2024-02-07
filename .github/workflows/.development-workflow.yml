@@ -8,20 +8,49 @@ on:
   #    - develop
 
 jobs:
-  setup:
-    name: Setup
+  _Init_:
+    name: Init
     runs-on: ${{ vars.RUNS_ON }}
     outputs:
-      APP_NAME: ${{ github.event.repository.name }}
-      IMAGE_TAG: ${{ steps.generate-image-tag.outputs.IMAGE_TAG }}
+      product: ${{ steps.set-output-defaults.outputs.product }}
+      app-name: ${{ github.event.repository.name }}
+      image-tag: ${{ steps.generate-image-tag.outputs.image-tag }}
+      artifactory: ${{ steps.set-artifactory-variable.outputs.result }}
+      repo-type: ${{ steps.set-output-defaults.outputs.repo-type }}
     steps:
+      - name: Set variable of artifactory's docker registry
+        uses: bluwy/substitute-string-action@v2
+        id: set-artifactory-variable
+        with:
+          _input-text: ${{ vars.ARTIFACTORY_URL }}
+          https://: ""
+          /artifactory: ""
+
+      - name: Process string case of product
+        id: set-LC-product
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ vars.PRODUCT }}
+
       - name: Generate image tag
         id: generate-image-tag
-        run: echo "IMAGE_TAG=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_OUTPUT
+        run: |
+          echo "image-tag=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_OUTPUT
+      - name: Process string case of repo type
+        id: set-LC-repo-type
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ vars.REPO_TYPE_DEV }}
+
+      - name: Set outputs default values
+        id: set-output-defaults
+        run: |
+          echo "product=${{ steps.set-LC-product.outputs.lowercase }}" >> $env:GITHUB_OUTPUT
+          echo "repo-type=${{ steps.set-LC-repo-type.outputs.lowercase }}" >> $env:GITHUB_OUTPUT
 
   build-container:
     name: Build Container (DEV)
-    needs: [setup]
+    needs: [_Init_]
     uses: KCC-Info/kcc-workflow-template/.github/workflows/build-container-workflow.yml@main
     with:
       RUNS_ON: ${{ vars.RUNS_ON }}

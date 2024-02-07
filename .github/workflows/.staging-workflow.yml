@@ -53,7 +53,7 @@ jobs:
 
   build-container:
     name: Build Container (DEV)
-    needs: [setup]
+    needs: [_Init_]
     uses: KCC-Info/kcc-workflow-template/.github/workflows/build-container-workflow.yml@main
     with:
       RUNS_ON: ${{ vars.RUNS_ON }}
