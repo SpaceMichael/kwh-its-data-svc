@@ -1,14 +1,14 @@
-name: Development Workflow
+name: Staging Workflow
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - develop
-      - "feature/**"
-      - "release/**"
-      - "hotfix/**"
+  # push:
+  #   branches:
+  #     - main
+  #     - develop
+  #     - "feature/**"
+  #     - "release/**"
+  #     - "hotfix/**"
 
 jobs:
   _Init_:
@@ -44,7 +44,7 @@ jobs:
         id: set-LC-repo-type
         uses: ASzc/change-string-case-action@v5
         with:
-          string: ${{ vars.REPO_TYPE_DEV }}
+          string: ${{ vars.REPO_TYPE_STG }}
 
       - name: Set outputs default values
         id: set-output-defaults
@@ -53,12 +53,12 @@ jobs:
           echo "repo-type=${{ steps.set-LC-repo-type.outputs.lowercase }}" >> $env:GITHUB_OUTPUT
 
   build-container:
-    name: Build Container (DEV)
+    name: Build Container (STG)
     needs: [_Init_]
     uses: KCC-Info/kcc-workflow-template/.github/workflows/build-container-workflow.yml@main
     with:
       RUNS_ON: ${{ vars.RUNS_ON }}
-      ENVIRONMENT: DEV
+      ENVIRONMENT: STG
       PRODUCT: ${{ needs._Init_.outputs.product }}
       APP_NAME: ${{ needs._Init_.outputs.app-name }}
       IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
@@ -67,24 +67,42 @@ jobs:
       REPO_TYPE: ${{ needs._Init_.outputs.repo-type }}
     secrets:
       CERT_HA_ROOT_CA: ${{ secrets.CERT_HA_ROOT_CA }}
+      CERT_HA_TRIAL_ROOT_CA: ${{ secrets.CERT_HA_TRIAL_ROOT_CA }}
       MVN_CONFIG: ${{ secrets.MVN_CONFIG }}
-      MVN_SETTINGS: ${{ secrets.MVN_SETTINGS_DEV }}
-      ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER_DEV }}
-      ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD_DEV }}
+      MVN_SETTINGS: ${{ secrets.MVN_SETTINGS_STG }}
+      ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER_STG }}
+      ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD_STG }}
 
-  deploy-dev-c1:
-    name: Deploy (DEV C1)
+  deploy-stg-c1:
+    name: Deploy (STG C1)
     needs: [_Init_, build-container]
     uses: KCC-Info/kcc-workflow-template/.github/workflows/deploy-ecp-workflow.yml@main
     with:
       RUNS_ON: ${{ vars.RUNS_ON }}
-      ENVIRONMENT: DEV
+      ENVIRONMENT: STG
       PRODUCT: ${{ needs._Init_.outputs.product }}
       APP_NAME: ${{ needs._Init_.outputs.app-name }}
       IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
       DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
       REPO_TYPE: ${{ needs._Init_.outputs.repo-type }}
-      CLUSTER_URL: ${{ vars.CLUSTER_URL_DEV_C1 }}
-      NAMESPACE: ${{ vars.NAMESPACE_DEV }}
+      CLUSTER_URL: ${{ vars.CLUSTER_URL_STG_C1 }}
+      NAMESPACE: ${{ vars.NAMESPACE_STG }}
     secrets:
-      ECP_SA_TOKEN: ${{ secrets.ECP_SA_TOKEN_DEV_C1 }}
+      ECP_SA_TOKEN: ${{ secrets.ECP_SA_TOKEN_STG_C1 }}
+
+  deploy-stg-c2:
+    name: Deploy (STG C2)
+    needs: [_Init_, build-container]
+    uses: KCC-Info/kcc-workflow-template/.github/workflows/deploy-ecp-workflow.yml@main
+    with:
+      RUNS_ON: ${{ vars.RUNS_ON }}
+      ENVIRONMENT: STG
+      PRODUCT: ${{ needs._Init_.outputs.product }}
+      APP_NAME: ${{ needs._Init_.outputs.app-name }}
+      IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
+      DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
+      REPO_TYPE: ${{ needs._Init_.outputs.repo-type }}
+      CLUSTER_URL: ${{ vars.CLUSTER_URL_STG_C2 }}
+      NAMESPACE: ${{ vars.NAMESPACE_STG }}
+    secrets:
+      ECP_SA_TOKEN: ${{ secrets.ECP_SA_TOKEN_STG_C2 }}

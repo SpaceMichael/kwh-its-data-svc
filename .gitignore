@@ -33,4 +33,7 @@ build/
 .vscode/
 .mvn/jvm.config
 .mvn/maven.config
+.mvn/settings.xml
 .env
+ha-root-ca.cer
+ha-trial-root-ca.cer

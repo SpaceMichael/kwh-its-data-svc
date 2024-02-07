@@ -6,100 +6,90 @@ on:
     tags:
       - "**"
 
-env:
-  APP_NAME: ${{ github.event.repository.name }}
-
 jobs:
-  build-artifact:
-    name: Build artifact
-    runs-on: [self-hosted]
-    env:
-      MAVEN_CONFIG: ${{ secrets.MAVEN_CONFIG }}
+  _Init_:
+    name: Init
+    runs-on: ${{ vars.RUNS_ON }}
+    outputs:
+      product: ${{ steps.set-output-defaults.outputs.product }}
+      app-name: ${{ github.event.repository.name }}
+      image-tag: ${{ steps.generate-image-tag.outputs.image-tag }}
+      artifactory: ${{ steps.set-artifactory-variable.outputs.result }}
+      repo-type: ${{ steps.set-output-defaults.outputs.repo-type }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Set variable of artifactory's docker registry
+        uses: bluwy/substitute-string-action@v2
+        id: set-artifactory-variable
+        with:
+          _input-text: ${{ vars.ARTIFACTORY_URL }}
+          https://: ""
+          /artifactory: ""
 
-      - name: Create Maven configuration file
+      - name: Process string case of product
+        id: set-LC-product
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ vars.PRODUCT }}
+
+      - name: Generate image tag
+        id: generate-image-tag
         run: |
-          $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
-          [System.IO.File]::WriteAllLines(".mvn/maven.config", $env:MAVEN_CONFIG, $Utf8NoBomEncoding)
+          echo "image-tag=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_OUTPUT
 
-      - name: Build source with Maven
-        run: mvn clean install
+      - name: Set outputs default values
+        id: set-output-defaults
+        run: echo "product=${{ steps.set-LC-product.outputs.lowercase }}" >> $env:GITHUB_OUTPUT
 
   build-container:
-    name: Build container
-    needs: build-artifact
-    runs-on: [self-hosted]
-    steps:
-      - name: Generate image tag
-        run: echo "IMAGE_TAG=$(Get-Date -Format "yy.M.d.Hmm")" >> $env:GITHUB_ENV
-
-      - name: Build image with Docker
-        run: docker build -t ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_PRD }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} .
-
-      - name: Login to JFrog Docker Registry
-        run: docker login -u ${{ secrets.ARTIFACTORY_USER_PRD }} -p '${{ secrets.ARTIFACTORY_PASSWORD_PRD }}' ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}
-
-      - name: Push image to JFrog Docker Registry
-        run: docker push ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_PRD }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}
-    outputs:
-      IMAGE_TAG: ${{ env.IMAGE_TAG }}
+    name: Build Container (PRD)
+    needs: [_Init_]
+    uses: KCC-Info/kcc-workflow-template/.github/workflows/build-container-workflow.yml@main
+    with:
+      RUNS_ON: ${{ vars.RUNS_ON }}
+      ENVIRONMENT: PRD
+      PRODUCT: ${{ needs._Init_.outputs.product }}
+      APP_NAME: ${{ needs._Init_.outputs.app-name }}
+      IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
+      DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
+      REPO_TYPE: prd
+    secrets:
+      CERT_HA_ROOT_CA: ${{ secrets.CERT_HA_ROOT_CA }}
+      CERT_HA_TRIAL_ROOT_CA: ${{ secrets.CERT_HA_TRIAL_ROOT_CA }}
+      MVN_CONFIG: ${{ secrets.MVN_CONFIG }}
+      MVN_SETTINGS: ${{ secrets.MVN_SETTINGS_PRD }}
+      ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER_PRD }}
+      ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD_PRD }}
 
   deploy-prd-c1:
-    name: Deploy (PROD primary)
-    needs: build-container
-    runs-on: [self-hosted]
-    env:
-      IMAGE_TAG: ${{ needs.build-container.outputs.IMAGE_TAG }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Login to Openshift
-        run: |
-          oc login --token=${{ secrets.ECP_SA_TOKEN_PRD_C1 }} --server=${{ vars.CLUSTER_URL_PRD_C1 }}
-          oc project ${{ vars.NAMESPACE_PRD }}
-
-
-      - name: Import image from JFrog to OpenShift
-        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_PRD }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_PRD }}
-        continue-on-error: true
-
-      - name: Update image tag in YAML configuration file
-        run: (Get-Content openshift\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift\${{ env.APP_NAME }}.yaml
-
-      - name: Create resources from YAML configuration file
-        run: oc apply -f openshift\${{ env.APP_NAME }}.yaml
-
-      - name: Check Rollout Status
-        run: |
-          oc set image deployment ${{ env.APP_NAME }} ${{ env.APP_NAME }}=image-registry.openshift-image-registry.svc:5000/${{ vars.NAMESPACE_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} -n ${{ vars.NAMESPACE_STG }}
-          oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}
+    name: Deploy (PRD C1)
+    needs: [_Init_, build-container]
+    uses: KCC-Info/kcc-workflow-template/.github/workflows/deploy-ecp-workflow.yml@main
+    with:
+      RUNS_ON: ${{ vars.RUNS_ON }}
+      ENVIRONMENT: PRD
+      PRODUCT: ${{ needs._Init_.outputs.product }}
+      APP_NAME: ${{ needs._Init_.outputs.app-name }}
+      IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
+      DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
+      REPO_TYPE: prd
+      CLUSTER_URL: ${{ vars.CLUSTER_URL_PRD_C1 }}
+      NAMESPACE: ${{ vars.NAMESPACE_PRD }}
+    secrets:
+      ECP_SA_TOKEN: ${{ secrets.ECP_SA_TOKEN_PRD_C1 }}
 
   deploy-prd-c2:
-    name: Deploy (PROD secondary)
-    needs: [build-container]
-    runs-on: [self-hosted]
-    env:
-      IMAGE_TAG: ${{ needs.build-container.outputs.IMAGE_TAG }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Login to Openshift
-        run: |
-          oc login --token=${{ secrets.ECP_SA_TOKEN_PRD_C2 }} --server=${{ vars.CLUSTER_URL_PRD_C2 }}
-          oc project ${{ vars.NAMESPACE_PRD }}
-
-      - name: Import image from JFrog to OpenShift
-        run: oc import-image ${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --from ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}/${{ vars.ARTIFACTORY_REPO_PATH_PRD }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} --confirm --reference-policy=local -n ${{ vars.NAMESPACE_PRD }}
-        continue-on-error: true
-
-      - name: Update image tag in YAML configuration file
-        run: (Get-Content openshift\${{ env.APP_NAME }}.yaml) -replace '/${{ env.APP_NAME }}', '/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}' | Set-Content openshift\${{ env.APP_NAME }}.yaml
-
-      - name: Create resources from YAML configuration file
-        run: oc apply -f openshift\${{ env.APP_NAME }}.yaml
-
-      - name: Check Rollout Status
-        run: |
-          oc set image deployment ${{ env.APP_NAME }} ${{ env.APP_NAME }}=image-registry.openshift-image-registry.svc:5000/${{ vars.NAMESPACE_STG }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }} -n ${{ vars.NAMESPACE_STG }}
-          oc rollout status deployment/${{ env.APP_NAME }} -n ${{ vars.NAMESPACE_STG }}
+    name: Deploy (PRD C2)
+    needs: [_Init_, build-container]
+    uses: KCC-Info/kcc-workflow-template/.github/workflows/deploy-ecp-workflow.yml@main
+    with:
+      RUNS_ON: ${{ vars.RUNS_ON }}
+      ENVIRONMENT: PRD
+      PRODUCT: ${{ needs._Init_.outputs.product }}
+      APP_NAME: ${{ needs._Init_.outputs.app-name }}
+      IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
+      DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
+      REPO_TYPE: prd
+      CLUSTER_URL: ${{ vars.CLUSTER_URL_PRD_C2 }}
+      NAMESPACE: ${{ vars.NAMESPACE_PRD }}
+    secrets:
+      ECP_SA_TOKEN: ${{ secrets.ECP_SA_TOKEN_PRD_C2 }}
