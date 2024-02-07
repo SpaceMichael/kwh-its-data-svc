@@ -62,7 +62,7 @@ jobs:
       IMAGE_TAG: ${{ needs.setup.outputs.IMAGE_TAG }}
       REACT_DOTENV_FILE: .env.development
       DOCKER_REGISTRY: ${{ vars.ARTIFACTORY_DOCKER_REGISTRY }}
-      ARTIFACTORY_REPO_PATH: ${{ vars.ARTIFACTORY_REPO_PATH_DEV }}
+      REPO_TYPE: ${{ needs._Init_.outputs.repo-type }}
     secrets:
       CERT_HA_ROOT_CA: ${{ secrets.CERT_HA_ROOT_CA }}
       MVN_CONFIG: ${{ secrets.MVN_CONFIG }}
