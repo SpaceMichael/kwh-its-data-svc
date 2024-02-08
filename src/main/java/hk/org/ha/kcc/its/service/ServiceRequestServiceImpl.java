@@ -223,6 +223,13 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle().isEmpty()) {
             alarmDto.setTitle(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmTitle(), serviceRequest1.getLocation()));
         }
+
+        // check the linebreak from serviceRequest1.getRemarks() , if not null , replace \n to \\n
+        if (serviceRequest1.getRemarks() != null) {
+            serviceRequest1.setRemarks(serviceRequest1.getRemarks().replace("\n", "\\n"));
+        }
+
+
         if (serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage() != null || !serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage().isEmpty()) {
             alarmDto.setMessage(MessageFormat.format(serviceAlarmReceiverlist.stream().findFirst().get().getAlarmMessage(), serviceRequest1.getCaseNo(), serviceRequest1.getLocation(), serviceRequest1.getBedNo(), serviceRequest1.getRemarks()));
         }
