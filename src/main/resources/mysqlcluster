@@ -1,0 +1,490 @@
+====
+ dba.getCluster().status()
+{
+    "clusterName": "InnoDBCluster",
+    "defaultReplicaSet": {
+        "name": "default",
+        "primary": "mql032vmcprd61a:40000",
+        "ssl": "REQUIRED",
+        "status": "OK",
+        "statusText": "Cluster is ONLINE and can tolerate up to 2 failures.",
+        "topology": {
+            "mql032vmcprd61a:40000": {
+                "address": "mql032vmcprd61a:40000",
+                "memberRole": "PRIMARY",
+                "mode": "R/W",
+                "readReplicas": {},
+                "replicationLag": null,
+                "role": "HA",
+                "status": "ONLINE",
+                "version": "8.0.27"
+            },
+            "mql032vmcprd61b:40000": {
+                "address": "mql032vmcprd61b:40000",
+                "memberRole": "SECONDARY",
+                "mode": "R/O",
+                "readReplicas": {},
+                "replicationLag": null,
+                "role": "HA",
+                "status": "ONLINE",
+                "version": "8.0.27"
+            },
+            "mql032vmcprd61c:40000": {
+                "address": "mql032vmcprd61c:40000",
+                "memberRole": "SECONDARY",
+                "mode": "R/O",
+                "readReplicas": {},
+                "replicationLag": null,
+                "role": "HA",
+                "status": "ONLINE",
+                "version": "8.0.27"
+            },
+            "mql032vmcprd81a:40000": {
+                "address": "mql032vmcprd81a:40000",
+                "memberRole": "SECONDARY",
+                "mode": "R/O",
+                "readReplicas": {},
+                "replicationLag": null,
+                "role": "HA",
+                "status": "ONLINE",
+                "version": "8.0.27"
+            },
+            "mql032vmcprd81b:40000": {
+                "address": "mql032vmcprd81b:40000",
+                "memberRole": "SECONDARY",
+                "mode": "R/O",
+                "readReplicas": {},
+                "replicationLag": null,
+                "role": "HA",
+                "status": "ONLINE",
+                "version": "8.0.27"
+            }
+        },
+        "topologyMode": "Single-Primary"
+    },
+    "groupInformationSourceMember": "mql032vmcprd61a:40000"
+}
+topology
+===
+
+ print(options.defaultReplicaSet.topology)
+{
+    "mql032vmcprd61a:40000": [
+        {
+            "option": "autoRejoinTries",
+            "value": "12",
+            "variable": "group_replication_autorejoin_tries"
+        },
+        {
+            "option": "consistency",
+            "value": "EVENTUAL",
+            "variable": "group_replication_consistency"
+        },
+        {
+            "option": "exitStateAction",
+            "value": "READ_ONLY",
+            "variable": "group_replication_exit_state_action"
+        },
+        {
+            "option": "expelTimeout",
+            "value": "30",
+            "variable": "group_replication_member_expel_timeout"
+        },
+        {
+            "option": "groupSeeds",
+            "value": "mql032vmcprd61b:40002,mql032vmcprd61c:40002,mql032vmcprd81a:40002,mql032vmcprd81b:40002",
+            "variable": "group_replication_group_seeds"
+        },
+        {
+            "option": "ipAllowlist",
+            "value": "mql032vmcprd61a,mql032vmcprd61b,mql032vmcprd61c,mql032vmcprd81a,mql032vmcprd81b",
+            "variable": "group_replication_ip_allowlist"
+        },
+        {
+            "option": "ipWhitelist",
+            "value": "AUTOMATIC",
+            "variable": "group_replication_ip_whitelist"
+        },
+        {
+            "option": "localAddress",
+            "value": "mql032vmcprd61a:40002",
+            "variable": "group_replication_local_address"
+        },
+        {
+            "option": "memberWeight",
+            "value": "50",
+            "variable": "group_replication_member_weight"
+        },
+        {
+            "value": "WRITESET",
+            "variable": "binlog_transaction_dependency_tracking"
+        },
+        {
+            "value": "LOGICAL_CLOCK",
+            "variable": "replica_parallel_type"
+        },
+        {
+            "value": "4",
+            "variable": "replica_parallel_workers"
+        },
+        {
+            "value": "ON",
+            "variable": "replica_preserve_commit_order"
+        },
+        {
+            "value": "XXHASH64",
+            "variable": "transaction_write_set_extraction"
+        }
+    ],
+    "mql032vmcprd61b:40000": [
+        {
+            "option": "autoRejoinTries",
+            "value": "12",
+            "variable": "group_replication_autorejoin_tries"
+        },
+        {
+            "option": "consistency",
+            "value": "EVENTUAL",
+            "variable": "group_replication_consistency"
+        },
+        {
+            "option": "exitStateAction",
+            "value": "READ_ONLY",
+            "variable": "group_replication_exit_state_action"
+        },
+        {
+            "option": "expelTimeout",
+            "value": "30",
+            "variable": "group_replication_member_expel_timeout"
+        },
+        {
+            "option": "groupSeeds",
+            "value": "mql032vmcprd61a:40002,mql032vmcprd61c:40002,mql032vmcprd81a:40002,mql032vmcprd81b:40002",
+            "variable": "group_replication_group_seeds"
+        },
+        {
+            "option": "ipAllowlist",
+            "value": "mql032vmcprd61a,mql032vmcprd61b,mql032vmcprd61c,mql032vmcprd81a,mql032vmcprd81b",
+            "variable": "group_replication_ip_allowlist"
+        },
+        {
+            "option": "ipWhitelist",
+            "value": "AUTOMATIC",
+            "variable": "group_replication_ip_whitelist"
+        },
+        {
+            "option": "localAddress",
+            "value": "mql032vmcprd61b:40002",
+            "variable": "group_replication_local_address"
+        },
+        {
+            "option": "memberWeight",
+            "value": "50",
+            "variable": "group_replication_member_weight"
+        },
+        {
+            "value": "WRITESET",
+            "variable": "binlog_transaction_dependency_tracking"
+        },
+        {
+            "value": "LOGICAL_CLOCK",
+            "variable": "replica_parallel_type"
+        },
+        {
+            "value": "4",
+            "variable": "replica_parallel_workers"
+        },
+        {
+            "value": "ON",
+            "variable": "replica_preserve_commit_order"
+        },
+        {
+            "value": "XXHASH64",
+            "variable": "transaction_write_set_extraction"
+        }
+    ],
+    "mql032vmcprd61c:40000": [
+        {
+            "option": "autoRejoinTries",
+            "value": "12",
+            "variable": "group_replication_autorejoin_tries"
+        },
+        {
+            "option": "consistency",
+            "value": "EVENTUAL",
+            "variable": "group_replication_consistency"
+        },
+        {
+            "option": "exitStateAction",
+            "value": "READ_ONLY",
+            "variable": "group_replication_exit_state_action"
+        },
+        {
+            "option": "expelTimeout",
+            "value": "30",
+            "variable": "group_replication_member_expel_timeout"
+        },
+        {
+            "option": "groupSeeds",
+            "value": "mql032vmcprd61a:40002,mql032vmcprd61b:40002,mql032vmcprd81a:40002,mql032vmcprd81b:40002",
+            "variable": "group_replication_group_seeds"
+        },
+        {
+            "option": "ipAllowlist",
+            "value": "mql032vmcprd61a,mql032vmcprd61b,mql032vmcprd61c,mql032vmcprd81a,mql032vmcprd81b",
+            "variable": "group_replication_ip_allowlist"
+        },
+        {
+            "option": "ipWhitelist",
+            "value": "AUTOMATIC",
+            "variable": "group_replication_ip_whitelist"
+        },
+        {
+            "option": "localAddress",
+            "value": "mql032vmcprd61c:40002",
+            "variable": "group_replication_local_address"
+        },
+        {
+            "option": "memberWeight",
+            "value": "50",
+            "variable": "group_replication_member_weight"
+        },
+        {
+            "value": "WRITESET",
+            "variable": "binlog_transaction_dependency_tracking"
+        },
+        {
+            "value": "LOGICAL_CLOCK",
+            "variable": "replica_parallel_type"
+        },
+        {
+            "value": "4",
+            "variable": "replica_parallel_workers"
+        },
+        {
+            "value": "ON",
+            "variable": "replica_preserve_commit_order"
+        },
+        {
+            "value": "XXHASH64",
+            "variable": "transaction_write_set_extraction"
+        }
+    ],
+    "mql032vmcprd81a:40000": [
+        {
+            "option": "autoRejoinTries",
+            "value": "12",
+            "variable": "group_replication_autorejoin_tries"
+        },
+        {
+            "option": "consistency",
+            "value": "EVENTUAL",
+            "variable": "group_replication_consistency"
+        },
+        {
+            "option": "exitStateAction",
+            "value": "READ_ONLY",
+            "variable": "group_replication_exit_state_action"
+        },
+        {
+            "option": "expelTimeout",
+            "value": "30",
+            "variable": "group_replication_member_expel_timeout"
+        },
+        {
+            "option": "groupSeeds",
+            "value": "mql032vmcprd61a:40002,mql032vmcprd61b:40002,mql032vmcprd61c:40002,mql032vmcprd81b:40002",
+            "variable": "group_replication_group_seeds"
+        },
+        {
+            "option": "ipAllowlist",
+            "value": "mql032vmcprd61a,mql032vmcprd61b,mql032vmcprd61c,mql032vmcprd81a,mql032vmcprd81b",
+            "variable": "group_replication_ip_allowlist"
+        },
+        {
+            "option": "ipWhitelist",
+            "value": "AUTOMATIC",
+            "variable": "group_replication_ip_whitelist"
+        },
+        {
+            "option": "localAddress",
+            "value": "mql032vmcprd81a:40002",
+            "variable": "group_replication_local_address"
+        },
+        {
+            "option": "memberWeight",
+            "value": "50",
+            "variable": "group_replication_member_weight"
+        },
+        {
+            "value": "WRITESET",
+            "variable": "binlog_transaction_dependency_tracking"
+        },
+        {
+            "value": "LOGICAL_CLOCK",
+            "variable": "replica_parallel_type"
+        },
+        {
+            "value": "4",
+            "variable": "replica_parallel_workers"
+        },
+        {
+            "value": "ON",
+            "variable": "replica_preserve_commit_order"
+        },
+        {
+            "value": "XXHASH64",
+            "variable": "transaction_write_set_extraction"
+        }
+    ],
+    "mql032vmcprd81b:40000": [
+        {
+            "option": "autoRejoinTries",
+            "value": "12",
+            "variable": "group_replication_autorejoin_tries"
+        },
+        {
+            "option": "consistency",
+            "value": "EVENTUAL",
+            "variable": "group_replication_consistency"
+        },
+        {
+            "option": "exitStateAction",
+            "value": "READ_ONLY",
+            "variable": "group_replication_exit_state_action"
+        },
+        {
+            "option": "expelTimeout",
+            "value": "30",
+            "variable": "group_replication_member_expel_timeout"
+        },
+        {
+            "option": "groupSeeds",
+            "value": "mql032vmcprd61a:40002,mql032vmcprd61b:40002,mql032vmcprd61c:40002,mql032vmcprd81a:40002",
+            "variable": "group_replication_group_seeds"
+        },
+        {
+            "option": "ipAllowlist",
+            "value": "mql032vmcprd61a,mql032vmcprd61b,mql032vmcprd61c,mql032vmcprd81a,mql032vmcprd81b",
+            "variable": "group_replication_ip_allowlist"
+        },
+        {
+            "option": "ipWhitelist",
+            "value": "AUTOMATIC",
+            "variable": "group_replication_ip_whitelist"
+        },
+        {
+            "option": "localAddress",
+            "value": "mql032vmcprd81b:40002",
+            "variable": "group_replication_local_address"
+        },
+        {
+            "option": "memberWeight",
+            "value": "50",
+            "variable": "group_replication_member_weight"
+        },
+        {
+            "value": "WRITESET",
+            "variable": "binlog_transaction_dependency_tracking"
+        },
+        {
+            "value": "LOGICAL_CLOCK",
+            "variable": "replica_parallel_type"
+        },
+        {
+            "value": "4",
+            "variable": "replica_parallel_workers"
+        },
+        {
+            "value": "ON",
+            "variable": "replica_preserve_commit_order"
+        },
+        {
+            "value": "XXHASH64",
+            "variable": "transaction_write_set_extraction"
+        }
+    ]
+}
+
+
+[DEFAULT]
+name=mql032vmcprd61a_router
+logging_folder=/appl/kccit/kccit_all_myp1/router/log
+runtime_folder=/appl/kccit/kccit_all_myp1/router/run
+data_folder=/appl/kccit/kccit_all_myp1/router/data
+keyring_path=/appl/kccit/kccit_all_myp1/router/data/keyring
+master_key_path=/appl/kccit/kccit_all_myp1/router/mysqlrouter.key
+connect_timeout=15
+read_timeout=30
+dynamic_state=/appl/kccit/kccit_all_myp1/router/data/state.json
+client_ssl_cert=/appl/kccit/kccit_all_myp1/router/data/router-cert.pem
+client_ssl_key=/appl/kccit/kccit_all_myp1/router/data/router-key.pem
+client_ssl_mode=PREFERRED
+server_ssl_mode=AS_CLIENT
+server_ssl_verify=DISABLED
+
+[logger]
+level = INFO
+
+[metadata_cache:InnoDBCluster]
+cluster_type=gr
+router_id=1
+user=router_user
+metadata_cluster=InnoDBCluster
+ttl=0.5
+auth_cache_ttl=-1
+auth_cache_refresh_interval=2
+use_gr_notifications=0
+
+[routing:InnoDBCluster_rw]
+bind_address=mql032vmcprd61a
+bind_port=40005
+destinations=metadata-cache://InnoDBCluster/?role=PRIMARY
+routing_strategy=first-available
+protocol=classic
+
+[routing:InnoDBCluster_ro]
+bind_address=mql032vmcprd61a
+bind_port=40006
+destinations=metadata-cache://InnoDBCluster/?role=SECONDARY
+routing_strategy=round-robin-with-fallback
+protocol=classic
+
+[routing:InnoDBCluster_x_rw]
+bind_address=mql032vmcprd61a
+bind_port=40007
+destinations=metadata-cache://InnoDBCluster/?role=PRIMARY
+routing_strategy=first-available
+protocol=x
+
+[routing:InnoDBCluster_x_ro]
+bind_address=mql032vmcprd61a
+bind_port=40008
+destinations=metadata-cache://InnoDBCluster/?role=SECONDARY
+routing_strategy=round-robin-with-fallback
+protocol=x
+
+[http_server]
+port=8443
+ssl=1
+ssl_cert=/appl/kccit/kccit_all_myp1/router/data/router-cert.pem
+ssl_key=/appl/kccit/kccit_all_myp1/router/data/router-key.pem
+
+[http_auth_realm:default_auth_realm]
+backend=default_auth_backend
+method=basic
+name=default_realm
+
+[rest_router]
+require_realm=default_auth_realm
+
+[rest_api]
+
+[http_auth_backend:default_auth_backend]
+backend=metadata_cache
+
+[rest_routing]
+require_realm=default_auth_realm
+
+[rest_metadata_cache]
+require_realm=default_auth_realm

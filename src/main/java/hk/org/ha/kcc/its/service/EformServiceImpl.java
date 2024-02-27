@@ -49,7 +49,6 @@ public class EformServiceImpl implements EformService {
         // get user access by corpId && Split the userAccessDto.getFormId() by '," to list of formID
         UserAccessDto userAccessDto = this.userAccessService.getDtoById(currentAuditor);
 
-
         // for test
         List<Integer> formIdList = new ArrayList<>();
         if (userAccessDto.getFormId() != null && !userAccessDto.getFormId().isEmpty()) {

@@ -29,7 +29,7 @@ public class AuthController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public Object getAuth() throws Exception {
-    log.debug("Get Authentication object with valid JWT.");
+    //log.debug("Get Authentication object with valid JWT.");
     return SecurityContextHolder.getContext().getAuthentication();
   }
 }

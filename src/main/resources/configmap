@@ -1,0 +1,123 @@
+{{- range $cluster, $values := .Values.clusters }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Release.Name }}-{{ $cluster }}-configmap
+data:
+  proxysql.cnf: |
+    datadir={{ $.Values.configuration.datadir | quote}}
+
+    admin_variables=
+    {
+      # Copied from helm chart
+      admin_credentials="admin:admin;radmin:radmin"
+      mysql_ifaces="0.0.0.0:6032"
+      # Added config
+      hash_passwords="false"
+      cluster_username="radmin"
+      cluster_password="radmin"
+    }
+
+    mysql_variables=
+    {
+      # Copied from helm chart
+      threads=2
+      max_connections=2048
+      default_query_delay=0
+      default_query_timeout=36000000
+      have_compress=true
+      poll_timeout=2000
+      interfaces="0.0.0.0:6033"
+      default_schema="information_schema"
+      stacksize=1048576
+      server_version="8.0.20"
+      connect_timeout_server=3000
+      monitor_username="monitor"
+      monitor_password="monitor"
+      monitor_history=600000
+      monitor_connect_interval=5000
+      monitor_ping_interval=2000
+      monitor_read_only_interval=1500
+      monitor_read_only_timeout=500
+      ping_interval_server_msec=15000
+      ping_timeout_server=500
+      commands_stats=true
+      sessions_sort=true
+      connect_retries_on_failure=10
+      # Added config
+      eventslog_default_log="1" # enable query logging
+      eventslog_filename="queries.log"
+      eventslog_format=2 # json format
+
+    }
+
+    proxysql_servers:
+      (
+      {{- include "proxysql.server" (merge (dict "cluster" $cluster "podNumber" 0) $) | nindent 8 }}
+      {{- range (untilStep 1 ($.Values.replicaCount | int) 1) -}}
+        ,
+        {{- include "proxysql.server" (merge (dict "cluster" $cluster "podNumber" .) $) | nindent 8 }}
+      {{- end }}
+      )
+
+    # Hostgroup 0 = WRITE
+    # Hostgroup 1 = READ
+    # Hostgroup 2 = BACKUP WRITE
+    # Hostgroup 3 = OFFLINE
+    mysql_servers:
+      (
+        { address="160.98.25.126", port=40005, hostgroup=0, weight=10000000, max_connections=1000, max_replication_lag=0},
+        { address="160.98.25.135", port=40005, hostgroup=1, weight=100, max_connections=1000, max_replication_lag=0},
+        { address="160.98.17.168", port=40005, hostgroup=1, weight=10, max_connections=100, max_replication_lag=0},
+        { address="160.99.39.139", port=40005, hostgroup=1, weight=10, max_connections=100, max_replication_lag=0},
+        { address="160.99.39.129", port=40005, hostgroup=1, weight=1, max_connections=100, max_replication_lag=0},
+        # 26=read_only
+      )
+    mysql_users:
+      (
+      {{- include "mysql.user" (first $values.staticUsers) | nindent 8 }}
+      {{- range (rest $values.staticUsers) -}}
+        ,
+        {{- include "mysql.user" . | nindent 8 }}
+      {{- end }}
+      )
+    mysql_replication_hostgroups:
+      (
+        {
+          writer_hostgroup=0
+          reader_hostgroup=1
+        }
+      )
+
+    #defines MySQL Query Rules
+    mysql_query_rules:
+      (
+        #Selects go to the read hostgroup by default, except for select for update
+        {
+          rule_id=1
+          active=1
+          match_digest="^SELECT.*FOR UPDATE"
+          destination_hostgroup=0
+          apply=1
+          log=0
+        },
+        {
+          rule_id=2
+          active=1
+          match_digest="^SELECT"
+          destination_hostgroup=1
+          apply=1
+          log=0
+        },
+        # Don't log queries
+        {
+          rule_id=3
+          active=1
+          match_digest="."
+          apply=0
+          log=0
+        }
+      )
+  probe-proxysql.bash: |
+{{ tpl ($.Files.Get "files/probe-proxysql.bash") $ | indent 4 }}
+{{- end }}

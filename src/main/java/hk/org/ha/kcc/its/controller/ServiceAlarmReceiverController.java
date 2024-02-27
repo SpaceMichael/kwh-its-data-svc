@@ -36,39 +36,4 @@ public class ServiceAlarmReceiverController {
         return this.serviceAlarmReceiverService.getAllDto();
     }
 
-/*    //create dto
-    @Operation(summary = "Create new ServiceAlarmReceiverDto")
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ServiceAlarmReceiverDto createServiceAlarmReceiver(@RequestBody ServiceAlarmReceiverDto serviceAlarmReceiverDto) {
-        log.debug("create service alarm receiver by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
-        return this.serviceAlarmReceiverService.createDto(serviceAlarmReceiverDto);
-    }
-
-    // get dto by id
-    @Operation(summary = "Get ServiceAlarmReceiverDto by id")
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ServiceAlarmReceiverDto getServiceAlarmReceiverById(@PathVariable Integer id) {
-        log.debug("get service alarm receiver by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
-        return this.serviceAlarmReceiverService.getDtoById(id);
-    }
-
-    // update dto by id
-    @Operation(summary = "Update ServiceAlarmReceiverDto by id")
-    @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ServiceAlarmReceiverDto updateServiceAlarmReceiverById(@PathVariable Integer id, @RequestBody ServiceAlarmReceiverDto serviceAlarmReceiverDto) {
-        log.debug("update service alarm receiver by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
-        return this.serviceAlarmReceiverService.updateDtoById(id, serviceAlarmReceiverDto);
-    }
-
-    //delete by id
-    @Operation(summary = "Delete ServiceAlarmReceiverDto by id")
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteServiceAlarmReceiverById(@PathVariable Integer id) {
-        log.debug("delete service alarm receiver by id: " + id + " by: " + auditorAware.getCurrentAuditor().orElse("Unknown"));
-        this.serviceAlarmReceiverService.delDtoById(id);
-    }*/
 }

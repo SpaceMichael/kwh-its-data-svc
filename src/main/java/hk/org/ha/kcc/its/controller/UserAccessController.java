@@ -38,7 +38,7 @@ public class UserAccessController {
         return this.userAccessService.getAllDto();
     }
 
-    // post user access
+   /* // post user access
     @Operation(summary = "Create new UserAccess")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -69,15 +69,7 @@ public class UserAccessController {
     public UserAccessDto getUserAccessById(@PathVariable String id) {
         log.debug("get user access by id: " + id);
         return this.userAccessService.getDtoById(id);
-    }
-
-/*    // delete user by id
-    @Operation(summary = "Delete UserAccess by id")
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteUserAccessById(@PathVariable String id) {
-        String currentAuditor = auditorAware.getCurrentAuditor().orElse("Unknown");
-        log.debug("delete user access by: " + currentAuditor);
-        this.userAccessService.deleteById(id);
     }*/
+
+
 }
