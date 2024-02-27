@@ -62,7 +62,7 @@ jobs:
       PRODUCT: ${{ needs._Init_.outputs.product }}
       APP_NAME: ${{ needs._Init_.outputs.app-name }}
       IMAGE_TAG: ${{ needs._Init_.outputs.image-tag }}
-      REACT_DOTENV_FILE: .env.development
+      DOTENV_FILE: .env.development
       DOCKER_REGISTRY: ${{ needs._Init_.outputs.artifactory }}
       REPO_TYPE: ${{ needs._Init_.outputs.repo-type }}
     secrets:
